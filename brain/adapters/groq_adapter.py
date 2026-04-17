@@ -45,8 +45,8 @@ class GroqAdapter(BaseAdapter):
         TaskType.GENERAL,
     ]
 
-    # llama3-8b-8192 is the fastest free model; upgrade to llama3-70b for quality.
-    DEFAULT_MODEL = "llama3-8b-8192"
+    # llama-3.1-8b-instant is the current fast free model (llama3-8b-8192 was decommissioned).
+    DEFAULT_MODEL = "llama-3.1-8b-instant"
 
     def __init__(self) -> None:
         self._api_key = os.getenv("GROQ_API_KEY", "")

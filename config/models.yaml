@@ -69,18 +69,18 @@ providers:
       requests_per_minute: 30
       tokens_per_minute: 14400   # llama3-8b
     models:
-      llama3-8b-8192:
-        context_tokens: 8192
+      llama-3.1-8b-instant:
+        context_tokens: 131072
         cost: free
         notes: "Default; fastest model in the system — excellent for classification"
-      llama3-70b-8192:
-        context_tokens: 8192
+      llama-3.3-70b-versatile:
+        context_tokens: 131072
         cost: free
-        notes: "Higher quality Llama3; use when 8b is not accurate enough"
+        notes: "Higher quality; use when 8b is not accurate enough"
       mixtral-8x7b-32768:
         context_tokens: 32768
         cost: free
-        notes: "Good balance; larger context than llama3 8b"
+        notes: "Good balance; larger context window"
 
   cohere:
     tier: free             # Trial API key is free

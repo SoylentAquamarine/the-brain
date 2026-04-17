@@ -15,6 +15,8 @@ openai>=1.50.0             # GPT-4o-mini and family
 google-genai>=1.0.0        # Gemini 2.0 Flash (replaces deprecated google-generativeai)
 groq>=0.11.0               # Llama 3 on Groq LPUs (free tier)
 cohere>=5.0.0              # Command-R (free trial tier)
+mistralai>=1.0.0           # Mistral Small / Codestral (free tier)
+cerebras-cloud-sdk>=1.0.0  # Llama on Cerebras wafer silicon (free tier, fastest)
 
 # ── Dev / testing (not needed in production) ──────────────────────────────
 pytest>=8.0.0

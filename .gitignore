@@ -34,6 +34,9 @@ env/
 .DS_Store
 Thumbs.db
 
+# ── Stats data — committed intentionally via update_readme_stats.py ────────
+# (Do NOT add stats/ here — we want usage.json tracked in git)
+
 # ── Test / coverage ────────────────────────────────────────────────────────
 .coverage
 htmlcov/

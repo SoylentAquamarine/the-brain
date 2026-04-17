@@ -20,6 +20,7 @@ from typing import List, Optional
 
 from brain.adapters import REGISTRY
 from brain.router import Router
+from brain.stats import tracker
 from brain.task import Task, TaskResult, TaskStatus
 
 logger = logging.getLogger(__name__)
@@ -97,7 +98,7 @@ class Orchestrator:
             )
 
             result = adapter.complete(task)
-            self._account(result)
+            self._account(result, task)
 
             if result.succeeded:
                 task.status = TaskStatus.COMPLETED
@@ -169,9 +170,10 @@ class Orchestrator:
         # Put the primary choice first, then the rest in availability order.
         return [primary] + [p for p in available if p != primary]
 
-    def _account(self, result: TaskResult) -> None:
-        """Update session counters from a completed TaskResult."""
+    def _account(self, result: TaskResult, task: Task) -> None:
+        """Update session counters and persistent stats from a completed TaskResult."""
         self._total_calls  += 1
         self._total_tokens += result.tokens_used
         if result.cost_usd is not None:
             self._total_cost += result.cost_usd
+        tracker.record(result, task)

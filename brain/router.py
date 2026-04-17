@@ -41,15 +41,17 @@ logger = logging.getLogger(__name__)
 #   - Priority.LOW tasks will only walk as far as the first available free model.
 
 STATIC_ROUTING_TABLE: Dict[TaskType, List[str]] = {
-    TaskType.CLASSIFICATION:  ["groq",     "cohere",     "gemini", "openai", "anthropic"],
-    TaskType.FACTUAL_QA:      ["groq",     "gemini",     "cohere", "openai", "anthropic"],
-    TaskType.SUMMARIZATION:   ["gemini",   "groq",       "cohere", "openai", "anthropic"],
-    TaskType.EXTRACTION:      ["cohere",   "gemini",     "groq",   "openai", "anthropic"],
-    TaskType.TRANSLATION:     ["gemini",   "groq",       "cohere", "openai", "anthropic"],
-    TaskType.CODING:          ["openai",   "anthropic",  "groq",   "gemini", "cohere"],
-    TaskType.REASONING:       ["anthropic","openai",     "gemini", "groq",   "cohere"],
-    TaskType.CREATIVE:        ["anthropic","openai",     "gemini", "groq",   "cohere"],
-    TaskType.GENERAL:         ["groq",     "gemini",     "cohere", "openai", "anthropic"],
+    # Speed-first: cerebras > groq for raw throughput; free models preferred
+    TaskType.CLASSIFICATION:  ["cerebras", "groq",    "cohere",   "gemini",  "mistral",  "openai",    "anthropic"],
+    TaskType.FACTUAL_QA:      ["cerebras", "groq",    "gemini",   "mistral", "cohere",   "openai",    "anthropic"],
+    TaskType.SUMMARIZATION:   ["gemini",   "cerebras","groq",     "mistral", "cohere",   "together",  "openai",   "anthropic"],
+    TaskType.EXTRACTION:      ["cohere",   "gemini",  "deepseek", "mistral", "groq",     "openai",    "anthropic"],
+    TaskType.TRANSLATION:     ["gemini",   "cerebras","groq",     "mistral", "cohere",   "openai",    "anthropic"],
+    # DeepSeek rivals GPT-4o on coding — free tier, use it first
+    TaskType.CODING:          ["deepseek", "mistral", "openai",   "together","anthropic","groq",      "gemini"],
+    TaskType.REASONING:       ["deepseek", "mistral", "openai",   "together","anthropic","gemini",    "groq"],
+    TaskType.CREATIVE:        ["together", "mistral", "openai",   "anthropic","gemini",  "groq",      "deepseek"],
+    TaskType.GENERAL:         ["cerebras", "groq",    "gemini",   "mistral", "cohere",   "together",  "openai",   "anthropic"],
 }
 
 # ---------------------------------------------------------------------------

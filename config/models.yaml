@@ -1,0 +1,100 @@
+# models.yaml — Provider and model reference for The Brain.
+#
+# This file is documentation / reference only — the adapters read from
+# environment variables, not from here.  Use this to track model options,
+# context limits, and free-tier quotas as they change over time.
+
+providers:
+
+  anthropic:
+    tier: paid
+    sign_up: https://console.anthropic.com/
+    env_key: ANTHROPIC_API_KEY
+    models:
+      claude-sonnet-4-6:
+        context_tokens: 200000
+        cost_per_1k_input:  0.003
+        cost_per_1k_output: 0.015
+        notes: "Default orchestrator model — best balance of speed and quality"
+      claude-opus-4-7:
+        context_tokens: 200000
+        cost_per_1k_input:  0.015
+        cost_per_1k_output: 0.075
+        notes: "Highest quality; use for the most complex reasoning tasks"
+      claude-haiku-4-5-20251001:
+        context_tokens: 200000
+        cost_per_1k_input:  0.00025
+        cost_per_1k_output: 0.00125
+        notes: "Fastest Claude model; good for lightweight orchestration calls"
+
+  openai:
+    tier: paid
+    sign_up: https://platform.openai.com/
+    env_key: OPENAI_API_KEY
+    models:
+      gpt-4o-mini:
+        context_tokens: 128000
+        cost_per_1k_input:  0.00015
+        cost_per_1k_output: 0.0006
+        notes: "Default; excellent value for coding and instruction-following"
+      gpt-4o:
+        context_tokens: 128000
+        cost_per_1k_input:  0.005
+        cost_per_1k_output: 0.015
+        notes: "Highest quality OpenAI model; use when gpt-4o-mini is insufficient"
+
+  gemini:
+    tier: free             # Flash is free up to rate limits
+    sign_up: https://aistudio.google.com/app/apikey
+    env_key: GEMINI_API_KEY
+    free_tier_limits:
+      requests_per_minute: 15
+      tokens_per_minute: 1000000
+      requests_per_day: 1500
+    models:
+      gemini-1.5-flash:
+        context_tokens: 1000000    # 1 million token context window!
+        cost: free
+        notes: "Default; massive context = ideal for long-doc summarisation"
+      gemini-1.5-pro:
+        context_tokens: 2000000
+        cost: "paid above free quota"
+        notes: "Highest quality Gemini; large context at higher cost"
+
+  groq:
+    tier: free
+    sign_up: https://console.groq.com/
+    env_key: GROQ_API_KEY
+    free_tier_limits:
+      requests_per_minute: 30
+      tokens_per_minute: 14400   # llama3-8b
+    models:
+      llama3-8b-8192:
+        context_tokens: 8192
+        cost: free
+        notes: "Default; fastest model in the system — excellent for classification"
+      llama3-70b-8192:
+        context_tokens: 8192
+        cost: free
+        notes: "Higher quality Llama3; use when 8b is not accurate enough"
+      mixtral-8x7b-32768:
+        context_tokens: 32768
+        cost: free
+        notes: "Good balance; larger context than llama3 8b"
+
+  cohere:
+    tier: free             # Trial API key is free
+    sign_up: https://dashboard.cohere.com/
+    env_key: COHERE_API_KEY
+    free_tier_limits:
+      requests_per_minute: 20
+      notes: "Trial key rate limited; upgrade for production"
+    models:
+      command-r:
+        context_tokens: 128000
+        cost: free_trial
+        notes: "Default; strong at extraction and structured tasks"
+      command-r-plus:
+        context_tokens: 128000
+        cost: paid
+        notes: "Higher quality; use for demanding extraction tasks"

@@ -1,0 +1,40 @@
+# .gitignore for The Brain
+
+# ── Secrets — NEVER commit these ─────────────────────────────────────────
+.env
+*.key
+*.pem
+secrets/
+
+# ── Python ────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+
+# ── Virtual environments ───────────────────────────────────────────────────
+venv/
+.venv/
+env/
+.env/
+
+# ── IDE ────────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ── OS ─────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Test / coverage ────────────────────────────────────────────────────────
+.coverage
+htmlcov/
+.pytest_cache/

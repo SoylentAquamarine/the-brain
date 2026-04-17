@@ -1,0 +1,21 @@
+# requirements.txt — Python dependencies for The Brain
+#
+# Install with:  pip install -r requirements.txt
+#
+# All AI SDKs are optional — the system gracefully skips providers whose
+# SDK is not installed or whose API key is missing.
+
+# ── Core ──────────────────────────────────────────────────────────────────
+python-dotenv>=1.0.0       # Load .env files automatically
+pyyaml>=6.0                # Parse config/models.yaml
+
+# ── AI Provider SDKs ──────────────────────────────────────────────────────
+anthropic>=0.40.0          # Claude (orchestrator + worker)
+openai>=1.50.0             # GPT-4o-mini and family
+google-generativeai>=0.8.0 # Gemini 1.5 Flash
+groq>=0.11.0               # Llama 3 on Groq LPUs (free tier)
+cohere>=5.0.0              # Command-R (free trial tier)
+
+# ── Dev / testing (not needed in production) ──────────────────────────────
+pytest>=8.0.0
+pytest-mock>=3.14.0

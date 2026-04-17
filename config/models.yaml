@@ -52,14 +52,14 @@ providers:
       tokens_per_minute: 1000000
       requests_per_day: 1500
     models:
-      gemini-1.5-flash:
+      gemini-2.0-flash:
         context_tokens: 1000000    # 1 million token context window!
         cost: free
         notes: "Default; massive context = ideal for long-doc summarisation"
-      gemini-1.5-pro:
-        context_tokens: 2000000
-        cost: "paid above free quota"
-        notes: "Highest quality Gemini; large context at higher cost"
+      gemini-2.5-flash:
+        context_tokens: 1000000
+        cost: free
+        notes: "Latest Gemini Flash; higher quality, same free tier"
 
   groq:
     tier: free

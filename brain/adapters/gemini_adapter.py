@@ -1,15 +1,18 @@
 """
 adapters/gemini_adapter.py — Adapter for Google Gemini models.
 
-Gemini 1.5 Flash is FREE up to generous rate limits and has a massive
+Gemini 2.0 Flash is FREE up to generous rate limits and has a massive
 1M-token context window — ideal for long-document summarisation and
 extraction tasks that would be expensive elsewhere.
+
+Uses the current `google-genai` SDK (the older `google-generativeai`
+package is deprecated and no longer receives updates).
 
 Required env var:
     GEMINI_API_KEY  — obtain from https://aistudio.google.com/app/apikey
 
 Optional env var:
-    GEMINI_MODEL    — defaults to "gemini-1.5-flash" (free tier, large context)
+    GEMINI_MODEL    — defaults to "gemini-2.0-flash" (free tier, large context)
 """
 
 from __future__ import annotations
@@ -18,7 +21,8 @@ import os
 from typing import List
 
 try:
-    import google.generativeai as genai
+    from google import genai
+    from google.genai import types as genai_types
     _SDK_AVAILABLE = True
 except ImportError:
     _SDK_AVAILABLE = False
@@ -28,11 +32,11 @@ from brain.task import Task, TaskResult, TaskType
 
 
 class GeminiAdapter(BaseAdapter):
-    """Wraps the `google-generativeai` SDK."""
+    """Wraps the `google-genai` SDK (replaces deprecated google-generativeai)."""
 
     PROVIDER_KEY = "gemini"
-    TIER = "free"          # 1.5 Flash is free up to rate limits
-    COST_PER_1K_TOKENS = None  # Free tier — no per-token charge
+    TIER = "free"          # 2.0 Flash is free up to rate limits
+    COST_PER_1K_TOKENS = None
 
     # Flash's large context window makes it the best choice for long inputs.
     SUPPORTED_TASK_TYPES: List[TaskType] = [
@@ -44,23 +48,22 @@ class GeminiAdapter(BaseAdapter):
         TaskType.GENERAL,
     ]
 
-    DEFAULT_MODEL = "gemini-1.5-flash"
+    DEFAULT_MODEL = "gemini-2.5-flash-lite"
 
     def __init__(self) -> None:
-        self._api_key = os.getenv("GEMINI_API_KEY", "")
+        self._api_key    = os.getenv("GEMINI_API_KEY", "")
         self._model_name = os.getenv("GEMINI_MODEL", self.DEFAULT_MODEL)
-        self._model = None
+        self._client     = None
 
         if _SDK_AVAILABLE and self._api_key:
-            genai.configure(api_key=self._api_key)
-            self._model = genai.GenerativeModel(self._model_name)
+            self._client = genai.Client(api_key=self._api_key)
 
     # ------------------------------------------------------------------
     # BaseAdapter contract
     # ------------------------------------------------------------------
 
     def is_available(self) -> bool:
-        return bool(_SDK_AVAILABLE and self._api_key and self._model)
+        return bool(_SDK_AVAILABLE and self._api_key and self._client)
 
     def complete(self, task: Task) -> TaskResult:
         if not self.is_available():
@@ -71,17 +74,16 @@ class GeminiAdapter(BaseAdapter):
 
         start = self._start_timer()
         try:
-            # GenerationConfig caps the output length.
-            gen_config = genai.types.GenerationConfig(
-                max_output_tokens=task.max_tokens,
+            response = self._client.models.generate_content(
+                model=self._model_name,
+                contents=task.full_prompt(),
+                config=genai_types.GenerateContentConfig(
+                    max_output_tokens=task.max_tokens,
+                ),
             )
-            response = self._model.generate_content(
-                task.full_prompt(),
-                generation_config=gen_config,
-            )
-            content = response.text if response.parts else ""
+            content = response.text or ""
 
-            # Gemini's SDK doesn't always expose token counts on free tier.
+            # Token counts are available in usage_metadata on paid/quota calls.
             tokens = 0
             if hasattr(response, "usage_metadata") and response.usage_metadata:
                 tokens = (

@@ -38,6 +38,7 @@ _TIERS = {
     "mistral":      "FREE",
     "cerebras":     "FREE",
     "huggingface":  "FREE",
+    "pollinations": "FREE",
 }
 
 

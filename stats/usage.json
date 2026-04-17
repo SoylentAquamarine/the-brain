@@ -2,10 +2,10 @@
   "providers": {
     "cerebras": {
       "provider": "cerebras",
-      "calls": 1,
-      "tokens": 84,
+      "calls": 2,
+      "tokens": 130,
       "cost_usd": 0.0,
-      "total_latency": 223.4630000020843,
+      "total_latency": 437.838699988788,
       "errors": 0
     },
     "gemini": {
@@ -33,12 +33,12 @@
       "errors": 0
     }
   },
-  "total_calls": 4,
-  "total_tokens": 209,
+  "total_calls": 5,
+  "total_tokens": 255,
   "total_cost_usd": 1.3349999999999998e-05,
   "claude_calls": 0,
   "claude_tokens": 0,
-  "worker_tokens": 209,
+  "worker_tokens": 255,
   "first_call_ts": 1776448625.4107182,
-  "last_call_ts": 1776448629.9443927
+  "last_call_ts": 1776451771.648945
 }

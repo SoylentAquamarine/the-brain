@@ -2,7 +2,11 @@
 adapters/base.py — Abstract base class that every provider adapter must implement.
 
 By coding to this interface the orchestrator and router never need to know
-anything about individual SDKs.  Adding a new provider = subclass + register.
+anything about individual SDKs.  Adding a new provider means:
+  1. Subclass BaseAdapter
+  2. Set the class-level metadata constants
+  3. Implement is_available() and complete()
+  4. Register in adapters/__init__.py
 """
 
 from __future__ import annotations
@@ -18,56 +22,77 @@ class BaseAdapter(ABC):
     """
     Contract that all AI provider adapters must satisfy.
 
-    Subclasses should:
-      1. Accept API credentials in __init__ (read from env vars, not hard-coded).
-      2. Implement `complete()` to call the provider and return a TaskResult.
-      3. Set class-level `PROVIDER_KEY`, `SUPPORTED_TASK_TYPES`, and `TIER`.
+    Class-level constants
+    ---------------------
+    PROVIDER_KEY          : Short string ID used by the router ("groq", "gemini", …).
+    SUPPORTED_TASK_TYPES  : Task types this provider handles well — used as routing hints.
+    TIER                  : "free" or "paid" — lets the router prefer free models.
+    COST_PER_1K_TOKENS    : Approximate USD per 1 000 tokens; None for free/unknown.
     """
 
-    # -----------------------------------------------------------------------
-    # Class-level metadata — set in every subclass
-    # -----------------------------------------------------------------------
+    PROVIDER_KEY:           str             = "base"
+    SUPPORTED_TASK_TYPES:   List[TaskType]  = list(TaskType)
+    TIER:                   str             = "paid"
+    COST_PER_1K_TOKENS:     Optional[float] = None
 
-    PROVIDER_KEY: str = "base"
-    """Short identifier used by the router, e.g. "openai", "groq"."""
-
-    SUPPORTED_TASK_TYPES: List[TaskType] = list(TaskType)
-    """Task types this provider handles well (used for routing hints)."""
-
-    TIER: str = "paid"
-    """'free' or 'paid' — lets the router prefer free models when cost matters."""
-
-    COST_PER_1K_TOKENS: Optional[float] = None
-    """Approximate USD cost per 1 000 tokens (None = free / unknown)."""
-
-    # -----------------------------------------------------------------------
-    # Public API
-    # -----------------------------------------------------------------------
+    # ------------------------------------------------------------------
+    # Abstract methods — every subclass must implement these
+    # ------------------------------------------------------------------
 
     @abstractmethod
     def complete(self, task: Task) -> TaskResult:
         """
         Send *task* to the provider and return a populated TaskResult.
 
-        Implementations must:
-          - Record latency (use `_timed_call` helper below).
-          - Catch provider-specific exceptions and surface them via
-            TaskResult.error rather than raising, so the orchestrator can
-            attempt fallbacks gracefully.
+        Implementation requirements
+        ---------------------------
+        - Always return a TaskResult — never raise.  Surface errors via
+          TaskResult.error so the orchestrator can attempt fallbacks.
+        - Record wall-clock latency using _start_timer() / _elapsed_ms().
+        - If the SDK raises, catch the specific SDK exception type (not bare
+          Exception) and map it to a failed TaskResult.
+
+        Parameters
+        ----------
+        task : Task
+            The work to perform.  Use task.full_prompt() to get the prompt
+            with any context block prepended.
+
+        Returns
+        -------
+        TaskResult
         """
         ...
 
     @abstractmethod
     def is_available(self) -> bool:
         """
-        Return True if the adapter has valid credentials and can be called.
+        Return True if this adapter has valid credentials and can be called.
 
-        Used at startup to skip providers that aren't configured yet.
+        Used at startup to skip unconfigured providers gracefully, and by
+        the router to build the available-provider list.
+
+        Returns
+        -------
+        bool
         """
         ...
 
+    # ------------------------------------------------------------------
+    # Non-abstract helpers — available to all subclasses
+    # ------------------------------------------------------------------
+
     def provider_info(self) -> dict:
-        """Return a dict describing this provider (useful for /status endpoints)."""
+        """
+        Return a serialisable dict describing this provider.
+
+        Used by Orchestrator.provider_status() and report.py to display
+        provider capabilities without importing each adapter directly.
+
+        Returns
+        -------
+        dict
+        """
         return {
             "provider":    self.PROVIDER_KEY,
             "tier":        self.TIER,
@@ -76,23 +101,41 @@ class BaseAdapter(ABC):
             "available":   self.is_available(),
         }
 
-    # -----------------------------------------------------------------------
-    # Helpers available to subclasses
-    # -----------------------------------------------------------------------
-
     @staticmethod
     def _make_result(
-        task: Task,
-        provider: str,
-        model: str,
-        content: str,
-        tokens_used: int = 0,
-        latency_ms: float = 0.0,
-        cost_usd: Optional[float] = None,
-        error: Optional[str] = None,
+        task:        Task,
+        provider:    str,
+        model:       str,
+        content:     str,
+        tokens_used: int            = 0,
+        latency_ms:  float          = 0.0,
+        cost_usd:    Optional[float] = None,
+        error:       Optional[str]  = None,
         **metadata,
     ) -> TaskResult:
-        """Convenience factory so subclasses don't import TaskResult directly."""
+        """
+        Convenience factory so subclasses don't import TaskResult directly.
+
+        Pass keyword arguments beyond the named ones as **metadata and they
+        will be stored in TaskResult.metadata for provider-specific extras
+        (e.g. finish_reason, stop_reason).
+
+        Parameters
+        ----------
+        task        : Originating Task (for task_id linkage).
+        provider    : Provider key string.
+        model       : Model name as returned by the SDK.
+        content     : Response text (empty string on error).
+        tokens_used : Total tokens (prompt + completion).
+        latency_ms  : Wall-clock time from send to response in milliseconds.
+        cost_usd    : Estimated cost, or None for free-tier calls.
+        error       : Error message string, or None on success.
+        **metadata  : Provider-specific extras stored in TaskResult.metadata.
+
+        Returns
+        -------
+        TaskResult
+        """
         return TaskResult(
             task_id=task.id,
             provider=provider,
@@ -102,15 +145,35 @@ class BaseAdapter(ABC):
             latency_ms=latency_ms,
             cost_usd=cost_usd,
             error=error,
-            metadata=metadata,
+            metadata=dict(metadata),
         )
 
     @staticmethod
     def _start_timer() -> float:
-        """Return the current high-resolution time for latency measurement."""
+        """
+        Return the current high-resolution monotonic time.
+
+        Use this at the start of a provider call, then pass the result to
+        _elapsed_ms() to get the wall-clock latency.
+
+        Returns
+        -------
+        float  (seconds, from perf_counter)
+        """
         return time.perf_counter()
 
     @staticmethod
     def _elapsed_ms(start: float) -> float:
-        """Return milliseconds elapsed since `start`."""
+        """
+        Return milliseconds elapsed since *start* (from _start_timer()).
+
+        Parameters
+        ----------
+        start : float
+            Value returned by a previous _start_timer() call.
+
+        Returns
+        -------
+        float  (milliseconds)
+        """
         return (time.perf_counter() - start) * 1000.0

@@ -1,0 +1,44 @@
+{
+  "providers": {
+    "cerebras": {
+      "provider": "cerebras",
+      "calls": 1,
+      "tokens": 84,
+      "cost_usd": 0.0,
+      "total_latency": 223.4630000020843,
+      "errors": 0
+    },
+    "gemini": {
+      "provider": "gemini",
+      "calls": 1,
+      "tokens": 36,
+      "cost_usd": 0.0,
+      "total_latency": 514.9412999744527,
+      "errors": 0
+    },
+    "deepseek": {
+      "provider": "deepseek",
+      "calls": 1,
+      "tokens": 0,
+      "cost_usd": 0.0,
+      "total_latency": 1006.523299991386,
+      "errors": 1
+    },
+    "openai": {
+      "provider": "openai",
+      "calls": 1,
+      "tokens": 89,
+      "cost_usd": 1.3349999999999998e-05,
+      "total_latency": 2779.5198000094388,
+      "errors": 0
+    }
+  },
+  "total_calls": 4,
+  "total_tokens": 209,
+  "total_cost_usd": 1.3349999999999998e-05,
+  "claude_calls": 0,
+  "claude_tokens": 0,
+  "worker_tokens": 209,
+  "first_call_ts": 1776448625.4107182,
+  "last_call_ts": 1776448629.9443927
+}

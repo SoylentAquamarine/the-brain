@@ -41,17 +41,18 @@ logger = logging.getLogger(__name__)
 #   - Priority.LOW tasks will only walk as far as the first available free model.
 
 STATIC_ROUTING_TABLE: Dict[TaskType, List[str]] = {
-    # Speed-first: cerebras > groq for raw throughput; free models preferred
-    TaskType.CLASSIFICATION:  ["cerebras", "groq",    "cohere",   "gemini",  "mistral",  "openai",    "anthropic"],
-    TaskType.FACTUAL_QA:      ["cerebras", "groq",    "gemini",   "mistral", "cohere",   "openai",    "anthropic"],
-    TaskType.SUMMARIZATION:   ["gemini",   "cerebras","groq",     "mistral", "cohere",   "together",  "openai",   "anthropic"],
-    TaskType.EXTRACTION:      ["cohere",   "gemini",  "deepseek", "mistral", "groq",     "openai",    "anthropic"],
-    TaskType.TRANSLATION:     ["gemini",   "cerebras","groq",     "mistral", "cohere",   "openai",    "anthropic"],
-    # DeepSeek rivals GPT-4o on coding — free tier, use it first
-    TaskType.CODING:          ["deepseek", "mistral", "openai",   "together","anthropic","groq",      "gemini"],
-    TaskType.REASONING:       ["deepseek", "mistral", "openai",   "together","anthropic","gemini",    "groq"],
-    TaskType.CREATIVE:        ["together", "mistral", "openai",   "anthropic","gemini",  "groq",      "deepseek"],
-    TaskType.GENERAL:         ["cerebras", "groq",    "gemini",   "mistral", "cohere",   "together",  "openai",   "anthropic"],
+    # All free, no credit card required.
+    # cerebras = fastest, gemini = largest context, mistral = best reasoning,
+    # huggingface = good general fallback, groq = reliable + fast.
+    TaskType.CLASSIFICATION:  ["cerebras", "groq",        "mistral",     "gemini",     "huggingface"],
+    TaskType.FACTUAL_QA:      ["cerebras", "groq",        "gemini",      "mistral",    "huggingface"],
+    TaskType.SUMMARIZATION:   ["gemini",   "mistral",     "cerebras",    "groq",       "huggingface"],
+    TaskType.EXTRACTION:      ["mistral",  "gemini",      "groq",        "cerebras",   "huggingface"],
+    TaskType.TRANSLATION:     ["gemini",   "mistral",     "cerebras",    "groq",       "huggingface"],
+    TaskType.CODING:          ["mistral",  "cerebras",    "groq",        "gemini",     "huggingface"],
+    TaskType.REASONING:       ["mistral",  "gemini",      "cerebras",    "groq",       "huggingface"],
+    TaskType.CREATIVE:        ["mistral",  "huggingface", "gemini",      "cerebras",   "groq"],
+    TaskType.GENERAL:         ["cerebras", "groq",        "gemini",      "mistral",    "huggingface"],
 }
 
 # ---------------------------------------------------------------------------

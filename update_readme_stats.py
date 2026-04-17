@@ -33,15 +33,11 @@ _START = "<!-- BRAIN_STATS_START -->"
 _END   = "<!-- BRAIN_STATS_END -->"
 
 _TIERS = {
-    "anthropic": "PAID",
-    "openai":    "PAID",
-    "gemini":    "FREE",
-    "groq":      "FREE",
-    "cohere":    "FREE",
-    "mistral":   "FREE",
-    "deepseek":  "FREE",
-    "cerebras":  "FREE",
-    "together":  "FREE",
+    "groq":         "FREE",
+    "gemini":       "FREE",
+    "mistral":      "FREE",
+    "cerebras":     "FREE",
+    "huggingface":  "FREE",
 }
 
 

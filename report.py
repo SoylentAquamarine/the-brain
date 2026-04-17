@@ -27,15 +27,11 @@ _CLAUDE_COST_PER_1K = 0.003
 
 # Tier labels for display
 _TIERS = {
-    "anthropic": "PAID",
-    "openai":    "PAID",
-    "gemini":    "FREE",
-    "groq":      "FREE",
-    "cohere":    "FREE",
-    "mistral":   "FREE",
-    "deepseek":  "FREE",
-    "cerebras":  "FREE",
-    "together":  "FREE",
+    "groq":         "FREE",
+    "gemini":       "FREE",
+    "mistral":      "FREE",
+    "cerebras":     "FREE",
+    "huggingface":  "FREE",
 }
 
 

@@ -56,8 +56,7 @@ You → Orchestrator (Claude) → Router
 | **HuggingFace** | Llama 3 8B | Open-source fallback | ~924ms | [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens) |
 | **SambaNova** | Llama 3.3 70B | High-quality free inference | ~11s | [cloud.sambanova.ai](https://cloud.sambanova.ai) |
 | **Fireworks AI** | DeepSeek V3 | Fast general inference, free tier | ~1963ms | [fireworks.ai](https://fireworks.ai) |
-
-| **OpenAI** | GPT-4o-mini | Coding, structured output, general fallback | ~2372ms | [platform.openai.com](https://platform.openai.com/api-keys) |
+| **OpenAI** | GPT-4o-mini | Coding, structured output, general tasks | ~2372ms | [platform.openai.com](https://platform.openai.com/api-keys) |
 
 ### Free — no key, no sign-up
 
@@ -105,7 +104,7 @@ CEREBRAS_API_KEY=...
 HUGGINGFACE_API_KEY=...
 SAMBANOVA_API_KEY=...
 FIREWORKS_API_KEY=...
-OPENAI_API_KEY=...     # optional fallback
+OPENAI_API_KEY=...
 ```
 
 ### 3. Offload a task

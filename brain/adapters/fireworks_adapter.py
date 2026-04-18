@@ -42,7 +42,7 @@ class FireworksAdapter(BaseAdapter):
         TaskType.CLASSIFICATION,
     ]
 
-    DEFAULT_MODEL = "accounts/fireworks/models/llama-v3p1-8b-instruct"
+    DEFAULT_MODEL = "accounts/fireworks/models/deepseek-v3p1"
     BASE_URL = "https://api.fireworks.ai/inference/v1"
 
     def __init__(self) -> None:

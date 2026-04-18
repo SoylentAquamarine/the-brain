@@ -42,7 +42,7 @@ class OpenRouterAdapter(BaseAdapter):
 
     SUPPORTED_TASK_TYPES: List[TaskType] = list(TaskType)
 
-    DEFAULT_MODEL = "meta-llama/llama-3.1-8b-instruct:free"
+    DEFAULT_MODEL = "google/gemma-4-26b-a4b-it:free"
     BASE_URL = "https://openrouter.ai/api/v1"
 
     def __init__(self) -> None:

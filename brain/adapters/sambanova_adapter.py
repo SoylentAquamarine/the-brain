@@ -42,7 +42,7 @@ class SambaNovaAdapter(BaseAdapter):
         TaskType.EXTRACTION,
     ]
 
-    DEFAULT_MODEL = "Meta-Llama-3.1-8B-Instruct"
+    DEFAULT_MODEL = "Meta-Llama-3.3-70B-Instruct"
     BASE_URL = "https://api.sambanova.ai/v1"
 
     def __init__(self) -> None:

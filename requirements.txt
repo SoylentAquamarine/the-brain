@@ -18,6 +18,9 @@ cohere>=5.0.0              # Command-R (free trial tier)
 mistralai>=1.0.0           # Mistral Small / Codestral (free tier)
 cerebras-cloud-sdk>=1.0.0  # Llama on Cerebras wafer silicon (free tier, fastest)
 
+# ── Graphing (health check graphs) ───────────────────────────────────────
+matplotlib>=3.8.0          # Provider latency + uptime graphs
+
 # ── Dev / testing (not needed in production) ──────────────────────────────
 pytest>=8.0.0
 pytest-mock>=3.14.0

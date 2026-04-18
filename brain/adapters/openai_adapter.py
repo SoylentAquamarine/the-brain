@@ -81,7 +81,7 @@ class OpenAIAdapter(BaseAdapter):
             choice  = response.choices[0]
             content = choice.message.content or ""
             tokens  = response.usage.total_tokens if response.usage else 0
-            cost    = (tokens / 1000) * self.COST_PER_1K_TOKENS
+            cost    = (tokens / 1000) * self.COST_PER_1K_TOKENS if self.COST_PER_1K_TOKENS else None
 
             return self._make_result(
                 task, self.PROVIDER_KEY, response.model,

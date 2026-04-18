@@ -122,6 +122,19 @@ the-brain/
 
 ---
 
+## Session startup — always do this first
+
+At the start of every new session, run:
+
+```bash
+cd C:\Claude\git\the-brain && python session_start.py
+```
+
+This reads `stats/health_log.json` and prints a heads-up on how each
+provider has been performing in the last 24 hours — which are slow,
+which had errors, which are healthy. Use this to inform routing decisions
+for the session (e.g. avoid a provider that has been failing).
+
 ## Status command
 
 When the user types just **`status`**, run:

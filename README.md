@@ -51,13 +51,13 @@ You → Orchestrator (Claude) → Router
 | **SambaNova** | Llama 3.3 70B | High-quality free inference | ~11s | [cloud.sambanova.ai](https://cloud.sambanova.ai) |
 | **Fireworks AI** | DeepSeek V3 | Fast general inference, free tier | ~1963ms | [fireworks.ai](https://fireworks.ai) |
 
+| **OpenAI** | GPT-4o-mini | Coding, structured output, general fallback | ~2372ms | [platform.openai.com](https://platform.openai.com/api-keys) |
+
 ### Free — no key, no sign-up
 
 | Provider | Capability | Notes |
 |---|---|---|
 | **Pollinations.ai** | Text + Image generation | HTTP GET only, zero setup, FLUX model for images |
-
-| **OpenAI** | GPT-4o-mini | Coding, structured output, general fallback | ~2372ms | [platform.openai.com](https://platform.openai.com/api-keys) |
 
 ---
 

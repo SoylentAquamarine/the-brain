@@ -31,8 +31,8 @@ class OpenAIAdapter(BaseAdapter):
     """Wraps the official `openai` Python SDK (v1+)."""
 
     PROVIDER_KEY = "openai"
-    TIER = "paid"
-    COST_PER_1K_TOKENS = 0.00015  # gpt-4o-mini blended; varies by model
+    TIER = "free"
+    COST_PER_1K_TOKENS = None
 
     # GPT shines at coding, extraction, and structured output.
     SUPPORTED_TASK_TYPES: List[TaskType] = [

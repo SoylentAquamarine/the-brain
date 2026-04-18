@@ -57,11 +57,7 @@ You → Orchestrator (Claude) → Router
 |---|---|---|
 | **Pollinations.ai** | Text + Image generation | HTTP GET only, zero setup, FLUX model for images |
 
-### Paid — used sparingly
-
-| Provider | Model | When used | Cost |
-|---|---|---|---|
-| **OpenAI** | GPT-4o-mini | Fallback when free providers fail | ~$0.000004/call |
+| **OpenAI** | GPT-4o-mini | Coding, structured output, general fallback | ~2372ms | [platform.openai.com](https://platform.openai.com/api-keys) |
 
 ---
 
@@ -103,7 +99,7 @@ CEREBRAS_API_KEY=...
 HUGGINGFACE_API_KEY=...
 SAMBANOVA_API_KEY=...
 FIREWORKS_API_KEY=...
-OPENAI_API_KEY=...     # optional paid fallback
+OPENAI_API_KEY=...     # optional fallback
 ```
 
 ### 3. Offload a task
@@ -142,7 +138,7 @@ python report.py
 | Image generation | `pollinations` | No key needed |
 | High-quality, no rush | `sambanova` | 70B model, free, slower |
 | General fallback | `fireworks` | DeepSeek V3, free |
-| Last resort fallback | `openai` | Paid — avoid unless needed |
+| General fallback (GPT-4o-mini) | `openai` | Strong all-rounder, free tier |
 
 ---
 

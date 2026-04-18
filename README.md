@@ -104,11 +104,81 @@ OPENAI_API_KEY=...     # optional fallback
 
 ### 3. Offload a task
 
+#### Cerebras — fastest inference (~1500 tok/s), best for classification
+**Available models:** `llama3.1-8b` (default) · `qwen-3-235b-a22b-instruct-2507` · `gpt-oss-120b`
 ```bash
 python delegate.py --provider cerebras --type classification --prompt "Is this positive or negative: 'Great product!'"
-python delegate.py --provider gemini   --type summarization  --prompt "Summarise: ..."
-python delegate.py --provider mistral  --type coding         --prompt "Write a Python function that..."
-python delegate.py --provider groq     --type factual_qa     --prompt "What year was Python created?"
+python delegate.py --provider cerebras --type factual_qa     --prompt "What is the capital of France?"
+```
+
+#### Groq — very fast, great all-rounder
+**Available models:** `llama-3.1-8b-instant` (default) · `meta-llama/llama-4-scout-17b-16e-instruct` · `qwen/qwen3-32b` · `groq/compound`
+```bash
+python delegate.py --provider groq --type factual_qa   --prompt "What year was Python created?"
+python delegate.py --provider groq --type general      --prompt "Explain REST APIs in plain English"
+```
+
+#### Gemini — huge context window (1M tokens), best for long documents
+**Available models:** `gemini-2.5-flash-lite` (default) · `gemini-2.5-flash` · `gemini-2.5-pro` · `gemini-2.0-flash` · `gemma-3-27b-it`
+```bash
+python delegate.py --provider gemini --type summarization --prompt "Summarise this 50-page document: ..."
+python delegate.py --provider gemini --type translation   --prompt "Translate to Spanish: ..."
+```
+
+#### Mistral — best free model for coding and creative writing
+**Available models:** `mistral-small-latest` (default) · `mistral-medium-latest` · `codestral-latest` · `devstral-latest` · `open-mistral-nemo`
+```bash
+python delegate.py --provider mistral --type coding    --prompt "Write a Python function that sorts a list of dicts by key"
+python delegate.py --provider mistral --type creative  --prompt "Write a cover letter for a software engineer role at Stripe"
+python delegate.py --provider mistral --type extraction --prompt "Extract all skills mentioned in this job posting: ..."
+```
+
+#### OpenAI — strong all-rounder, free tier
+**Available models:** `gpt-4o-mini` (default) · `gpt-4o` · `gpt-5.4-mini` · `gpt-5.4` · `gpt-3.5-turbo`
+```bash
+python delegate.py --provider openai --type coding    --prompt "Write a regex to validate email addresses"
+python delegate.py --provider openai --type reasoning --prompt "What are the trade-offs between SQL and NoSQL databases?"
+```
+
+#### HuggingFace — open-source model variety, free fallback
+**Available models:** `meta-llama/Meta-Llama-3-8B-Instruct` (default) · `mistralai/Mistral-7B-Instruct-v0.3` · `HuggingFaceH4/zephyr-7b-beta`
+```bash
+python delegate.py --provider huggingface --type general      --prompt "Summarise the key points of this paragraph: ..."
+python delegate.py --provider huggingface --type factual_qa   --prompt "What is machine learning?"
+```
+
+#### SambaNova — free 70B model, highest quality of the free providers
+**Available models:** `Meta-Llama-3.3-70B-Instruct` (default) · `Llama-4-Maverick-17B-128E-Instruct` · `DeepSeek-V3.1` · `DeepSeek-V3.2` · `gemma-3-12b-it`
+```bash
+python delegate.py --provider sambanova --type reasoning   --prompt "Analyse the pros and cons of microservices architecture"
+python delegate.py --provider sambanova --type creative    --prompt "Write a detailed blog post about AI orchestration"
+```
+
+#### Fireworks — fast inference, free tier
+**Available models:** `accounts/fireworks/models/deepseek-v3p1` (default) · `accounts/fireworks/models/deepseek-v3p2` · `accounts/fireworks/models/kimi-k2p5` · `accounts/fireworks/models/gpt-oss-120b`
+```bash
+python delegate.py --provider fireworks --type coding   --prompt "Write a Python class for a binary search tree"
+python delegate.py --provider fireworks --type general  --prompt "What are the SOLID principles?"
+```
+
+#### Pollinations — no key needed, text and images
+```bash
+# Text
+python delegate.py --provider pollinations --type general  --prompt "Write a haiku about coding"
+# Image — use the adapter directly
+python -c "from brain.adapters.pollinations_adapter import PollinationsAdapter; ..."
+```
+
+#### Override the model for any provider
+```bash
+# Use Groq with the larger Llama 4 Scout model
+GROQ_MODEL=meta-llama/llama-4-scout-17b-16e-instruct python delegate.py --provider groq --type reasoning --prompt "..."
+
+# Use Mistral's code-specific model
+MISTRAL_MODEL=codestral-latest python delegate.py --provider mistral --type coding --prompt "..."
+
+# Use Gemini Pro instead of Flash Lite
+GEMINI_MODEL=gemini-2.5-pro python delegate.py --provider gemini --type summarization --prompt "..."
 ```
 
 ### 4. Check status

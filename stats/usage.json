@@ -2,18 +2,18 @@
   "providers": {
     "cerebras": {
       "provider": "cerebras",
-      "calls": 3,
-      "tokens": 520,
+      "calls": 4,
+      "tokens": 1236,
       "cost_usd": 0.0,
-      "total_latency": 906.6911999834701,
+      "total_latency": 1350.8555000007618,
       "errors": 0
     },
     "gemini": {
       "provider": "gemini",
-      "calls": 1,
-      "tokens": 36,
+      "calls": 2,
+      "tokens": 225,
       "cost_usd": 0.0,
-      "total_latency": 514.9412999744527,
+      "total_latency": 1302.8886999818496,
       "errors": 0
     },
     "deepseek": {
@@ -34,19 +34,27 @@
     },
     "mistral": {
       "provider": "mistral",
-      "calls": 1,
-      "tokens": 320,
+      "calls": 4,
+      "tokens": 3424,
       "cost_usd": 0.0,
-      "total_latency": 1255.4833000176586,
+      "total_latency": 8356.768400029978,
+      "errors": 0
+    },
+    "groq": {
+      "provider": "groq",
+      "calls": 1,
+      "tokens": 541,
+      "cost_usd": 0.0,
+      "total_latency": 1145.3888999822084,
       "errors": 0
     }
   },
-  "total_calls": 7,
-  "total_tokens": 965,
+  "total_calls": 13,
+  "total_tokens": 5515,
   "total_cost_usd": 1.3349999999999998e-05,
   "claude_calls": 0,
   "claude_tokens": 0,
-  "worker_tokens": 965,
+  "worker_tokens": 5515,
   "first_call_ts": 1776448625.4107182,
-  "last_call_ts": 1776464051.6829872
+  "last_call_ts": 1776480938.1643171
 }

@@ -96,3 +96,19 @@ the-brain/
 ├── stats/usage.json         # Running usage log (auto-created)
 └── assets/brain.png         # Project image
 ```
+
+---
+
+## Status command
+
+When the user types just **`status`**, run:
+
+```bash
+python status.py
+```
+
+This prints a live dashboard showing:
+- Which providers are online / offline
+- Usage per provider (calls, tokens, avg latency, success rate, cost)
+- Total Claude tokens saved and estimated dollar savings
+- Stats file location and last-modified time

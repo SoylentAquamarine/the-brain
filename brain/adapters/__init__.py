@@ -16,9 +16,11 @@ from brain.adapters.huggingface_adapter import HuggingFaceAdapter
 # ── Active keyless adapters (no sign-up, no key, completely free) ──────────
 from brain.adapters.pollinations_adapter import PollinationsAdapter
 
+# ── Active paid adapters (key configured in .env) ─────────────────────────
+from brain.adapters.openai_adapter    import OpenAIAdapter
+
 # ── Inactive (require CC or paid balance) — import kept for future use ─────
 # from brain.adapters.anthropic_adapter import AnthropicAdapter   # paid API
-# from brain.adapters.openai_adapter    import OpenAIAdapter       # paid API
 # from brain.adapters.cohere_adapter    import CohereAdapter       # broken key
 # from brain.adapters.deepseek_adapter  import DeepSeekAdapter     # needs balance
 # from brain.adapters.together_adapter  import TogetherAdapter     # requires CC
@@ -30,6 +32,7 @@ ALL_ADAPTERS = [
     CerebrasAdapter,
     HuggingFaceAdapter,
     PollinationsAdapter,
+    OpenAIAdapter,
 ]
 
 REGISTRY: dict = {

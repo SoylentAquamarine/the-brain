@@ -394,5 +394,104 @@
     "latency_ms": 574,
     "quality": 0.5,
     "response": "First, the user asked: \"What is "
+  },
+  {
+    "timestamp": "2026-04-18T15:35:33Z",
+    "provider": "groq",
+    "model": "llama-3.1-8b-instant",
+    "status": "ok",
+    "latency_ms": 377,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-18T15:35:33Z",
+    "provider": "gemini",
+    "model": "gemini-2.5-flash-lite",
+    "status": "ok",
+    "latency_ms": 463,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-18T15:35:34Z",
+    "provider": "mistral",
+    "model": "mistral-small-latest",
+    "status": "ok",
+    "latency_ms": 491,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-18T15:35:34Z",
+    "provider": "cerebras",
+    "model": "llama3.1-8b",
+    "status": "ok",
+    "latency_ms": 215,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-18T15:35:34Z",
+    "provider": "huggingface",
+    "model": "meta-llama/Meta-Llama-3-8B-Instruct",
+    "status": "ok",
+    "latency_ms": 556,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-18T15:35:35Z",
+    "provider": "pollinations",
+    "model": "openai",
+    "status": "ok",
+    "latency_ms": 270,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-18T15:35:37Z",
+    "provider": "openai",
+    "model": "gpt-4o-mini-2024-07-18",
+    "status": "ok",
+    "latency_ms": 1780,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-18T15:35:38Z",
+    "provider": "openrouter",
+    "model": "google/gemma-4-26b-a4b-it-20260403:free",
+    "status": "ok",
+    "latency_ms": 1915,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-18T15:35:38Z",
+    "provider": "xai",
+    "model": "n/a",
+    "status": "no_key",
+    "latency_ms": 0,
+    "quality": 0.0,
+    "response": "API key not configured"
+  },
+  {
+    "timestamp": "2026-04-18T15:35:40Z",
+    "provider": "sambanova",
+    "model": "Meta-Llama-3.3-70B-Instruct",
+    "status": "ok",
+    "latency_ms": 1610,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-18T15:35:41Z",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/deepseek-v3p1",
+    "status": "degraded",
+    "latency_ms": 730,
+    "quality": 0.5,
+    "response": "First, the user asked: \"What is "
   }
 ]

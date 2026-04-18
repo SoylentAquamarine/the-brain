@@ -32,22 +32,22 @@ _BOLD   = "\033[1m"
 _RESET  = "\033[0m"
 
 def _tick(ok: bool) -> str:
-    return f"{_GREEN}✓ online {_RESET}" if ok else f"{_RED}✗ offline{_RESET}"
+    return f"{_GREEN}[online] {_RESET}" if ok else f"{_RED}[offline]{_RESET}"
 
 
 def main() -> None:
     print()
     print(f"{_BOLD}{'=' * 62}{_RESET}")
-    print(f"{_BOLD}           THE BRAIN  —  Status Dashboard{_RESET}")
+    print(f"{_BOLD}           THE BRAIN  -  Status Dashboard{_RESET}")
     print(f"{_BOLD}{'=' * 62}{_RESET}")
     print(f"  {_CYAN}{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}{_RESET}")
     print()
 
     # ── Provider connectivity ─────────────────────────────────────────────
     print(f"  {_BOLD}Provider Connectivity{_RESET}")
-    print(f"  {'─' * 58}")
+    print(f"  {'-' * 58}")
     print(f"  {'Provider':<14} {'Status':<18} {'Tier':<6}  Best for")
-    print(f"  {'─' * 58}")
+    print(f"  {'-' * 58}")
 
     best_for = {
         "cerebras":    "classification, scoring, yes/no",
@@ -68,7 +68,7 @@ def main() -> None:
         tip    = best_for.get(key, "")
         print(f"  {key:<14} {status:<27} {tier:<6}  {tip}")
 
-    print(f"  {'─' * 58}")
+    print(f"  {'-' * 58}")
     print(f"  {available_count}/{len(REGISTRY)} providers online")
     print()
 
@@ -83,9 +83,9 @@ def main() -> None:
         last  = datetime.fromtimestamp(stats.last_call_ts).strftime("%Y-%m-%d %H:%M")
 
         print(f"  {_BOLD}Usage Stats{_RESET}  (since {since})")
-        print(f"  {'─' * 58}")
+        print(f"  {'-' * 58}")
         print(f"  {'Provider':<14} {'Calls':>6}  {'Tokens':>10}  {'Avg ms':>7}  {'Success':>7}  Cost")
-        print(f"  {'─' * 58}")
+        print(f"  {'-' * 58}")
 
         sorted_providers = sorted(
             stats.providers.items(), key=lambda x: -x[1].calls
@@ -97,7 +97,7 @@ def main() -> None:
                 f"{ps.avg_latency_ms:>7.0f}  {ps.success_rate:>6.1f}%  {cost_str}"
             )
 
-        print(f"  {'─' * 58}")
+        print(f"  {'-' * 58}")
         print(f"  {'TOTAL':<14} {stats.total_calls:>6}  {stats.total_tokens:>10,}")
         print()
 
@@ -106,7 +106,7 @@ def main() -> None:
         savings = stats.estimated_savings_usd
         pct     = (saved / stats.total_tokens * 100) if stats.total_tokens else 0
         print(f"  {_BOLD}Claude Token Savings{_RESET}")
-        print(f"  {'─' * 58}")
+        print(f"  {'-' * 58}")
         print(f"  Tokens offloaded from Claude : {saved:,}")
         print(f"  % of total tokens saved      : {pct:.1f}%")
         print(f"  Estimated savings (Sonnet)   : ${savings:.4f}")
@@ -119,7 +119,7 @@ def main() -> None:
         size = stats_file.stat().st_size
         mtime = datetime.fromtimestamp(stats_file.stat().st_mtime).strftime("%Y-%m-%d %H:%M")
         print(f"  {_BOLD}Stats File{_RESET}")
-        print(f"  {'─' * 58}")
+        print(f"  {'-' * 58}")
         print(f"  Path     : {stats_file}")
         print(f"  Size     : {size:,} bytes")
         print(f"  Modified : {mtime}")

@@ -5,26 +5,24 @@
 
 > Claude orchestrates. Free AI does the heavy lifting. Git remembers everything.
 
-**The Brain** is an AI orchestration system where Claude acts as the intelligent dispatcher, routing every task to the cheapest and most capable AI provider available — then committing every result to Git so nothing is ever lost, overwritten, or untraceable.
+**The Brain** is an AI orchestration system where Claude acts as the intelligent dispatcher, routing every task to the cheapest and most capable AI provider available — saving Claude tokens for decisions, planning, and conversation only.
 
 ```
 You → Orchestrator (Claude) → Router
                                  ↓
-              ┌──────────────────────────────────┐
-              │  classification  →  Groq (FREE)  │
-              │  summarisation   →  Gemini (FREE) │
-              │  extraction      →  Cohere (FREE) │
-              │  coding          →  OpenAI (paid) │
-              │  complex reason  →  Claude (paid) │
-              └──────────────────────────────────┘
+              ┌──────────────────────────────────────┐
+              │  classification  →  Cerebras (FREE)  │
+              │  summarisation   →  Gemini   (FREE)  │
+              │  coding          →  Mistral  (FREE)  │
+              │  creative        →  Mistral  (FREE)  │
+              │  general         →  Groq     (FREE)  │
+              │  image           →  Pollinations     │
+              └──────────────────────────────────────┘
                                  ↓
-                         Git commit
+                         stats/usage.json
                                  ↓
-                         GitHub push → CI/CD
+                         Nightly GitHub Action → README update
 ```
-
-**Without Git, this breaks down.**  
-Multiple AIs writing outputs with no history = chaos. With Git every AI action is reproducible, auditable, and reversible.
 
 ---
 
@@ -33,32 +31,54 @@ Multiple AIs writing outputs with no history = chaos. With Git every AI action i
 | Problem | Solution |
 |---|---|
 | Claude tokens are expensive | Route simple tasks to free models |
-| Different AIs excel at different tasks | Smart routing table + optional Claude-assisted routing |
-| AI outputs overwrite each other | Every output is a git commit with full metadata |
-| Hard to debug AI pipelines | `git log` shows exactly which model ran what |
-| Automation is fragile | Push to GitHub → Actions workflow triggers |
+| Different AIs excel at different tasks | Smart routing table per task type |
+| Hard to track what was used | Every call logged to stats/usage.json |
+| Want to know savings | Nightly report shows tokens saved vs Claude cost |
 
 ---
 
-## Providers
+## Active Providers
 
 ### Free — API key required (no credit card)
 
-| Provider | Model | Best for | Sign up |
-|---|---|---|---|
-| **Groq** | Llama 3.1 8B | Ultra-fast classification, short Q&A (~400 tok/s) | [console.groq.com](https://console.groq.com) |
-| **Google Gemini** | 2.5 Flash Lite | Long documents (1M token context), summarisation | [aistudio.google.com](https://aistudio.google.com/app/apikey) |
-| **Mistral** | Mistral Small | Coding, reasoning, general tasks | [console.mistral.ai](https://console.mistral.ai) |
-| **Cerebras** | Llama 3.1 8B | Fastest inference available (~1500 tok/s) | [cloud.cerebras.ai](https://cloud.cerebras.ai) |
-| **Hugging Face** | Llama 3 8B | Open-source model variety, general fallback | [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens) |
+| Provider | Model | Best for | Speed | Sign up |
+|---|---|---|---|---|
+| **Cerebras** | Llama 3.1 8B | Classification, scoring, yes/no | ~284ms | [cloud.cerebras.ai](https://cloud.cerebras.ai) |
+| **Groq** | Llama 3.1 8B Instant | Factual Q&A, general tasks | ~366ms | [console.groq.com](https://console.groq.com) |
+| **Gemini** | 2.5 Flash Lite | Summarisation, long text (1M context), translation | ~541ms | [aistudio.google.com](https://aistudio.google.com/app/apikey) |
+| **Mistral** | Mistral Small | Coding, creative writing, extraction | ~1172ms | [console.mistral.ai](https://console.mistral.ai) |
+| **HuggingFace** | Llama 3 8B | Open-source fallback | ~924ms | [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens) |
+| **SambaNova** | Llama 3.3 70B | High-quality free inference | ~11s | [cloud.sambanova.ai](https://cloud.sambanova.ai) |
+| **Fireworks AI** | DeepSeek V3 | Fast general inference, free tier | ~1963ms | [fireworks.ai](https://fireworks.ai) |
 
-### Keyless — no sign-up, no API key, completely free
+### Free — no key, no sign-up
 
 | Provider | Capability | Notes |
 |---|---|---|
-| **Pollinations.ai** | Text + Image generation | Zero setup — HTTP GET only, powered by FLUX |
+| **Pollinations.ai** | Text + Image generation | HTTP GET only, zero setup, FLUX model for images |
 
-The system **automatically skips** any provider whose API key is missing — keyless providers are always available.
+### Paid — used sparingly
+
+| Provider | Model | When used | Cost |
+|---|---|---|---|
+| **OpenAI** | GPT-4o-mini | Fallback when free providers fail | ~$0.000004/call |
+
+---
+
+## Providers NOT in use — and why
+
+| Provider | Reason |
+|---|---|
+| **xAI (Grok)** | Free API tier removed in 2026 |
+| **OpenRouter** | Free tier is rate-limited and unreliable in practice |
+| **Cohere** | API key was never properly configured (placeholder value) |
+| **DeepSeek** | Key is valid but account has no balance |
+| **Together AI** | Credit limit exceeded — needs payment added |
+| **Anthropic (direct)** | Key not configured — would be paid anyway; Claude is already the orchestrator |
+| **Ollama** | Local-only, requires local installation — no cloud option |
+| **DuckDuckGo AI** | Officially blocked/archived as of January 2026 |
+| **GPT4Free (g4f)** | Providers break daily — too fragile for a stable system |
+| **mlvoca.com** | Unproven, very new service |
 
 ---
 
@@ -67,47 +87,62 @@ The system **automatically skips** any provider whose API key is missing — key
 ### 1. Clone and install
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/the-brain.git
+git clone https://github.com/SoylentAquamarine/the-brain.git
 cd the-brain
-python -m venv .venv
-source .venv/bin/activate      # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
 ### 2. Configure API keys
 
 ```bash
-cp .env.example .env
-# Edit .env and paste in your keys — see config/models.yaml for sign-up links
+# Edit .env and paste in your keys
+GROQ_API_KEY=...
+GEMINI_API_KEY=...
+MISTRAL_API_KEY=...
+CEREBRAS_API_KEY=...
+HUGGINGFACE_API_KEY=...
+SAMBANOVA_API_KEY=...
+FIREWORKS_API_KEY=...
+OPENAI_API_KEY=...     # optional paid fallback
 ```
 
-### 3. Run
+### 3. Offload a task
 
 ```bash
-# Interactive
-python main.py "Explain quantum entanglement in one paragraph"
-
-# Force a specific provider
-python main.py --provider groq "What is 2 + 2?"
-
-# Summarise a long document and commit the output to git
-python main.py --type summarization --commit "$(cat my_document.txt)"
-
-# Commit AND push to GitHub
-python main.py --type coding --commit --push "Write a Python merge sort"
-
-# Show which providers are available
-python main.py --status
-
-# Full demo (5 tasks across 5 providers)
-python examples/demo.py
+python delegate.py --provider cerebras --type classification --prompt "Is this positive or negative: 'Great product!'"
+python delegate.py --provider gemini   --type summarization  --prompt "Summarise: ..."
+python delegate.py --provider mistral  --type coding         --prompt "Write a Python function that..."
+python delegate.py --provider groq     --type factual_qa     --prompt "What year was Python created?"
 ```
 
-### 4. Run tests
+### 4. Check status
 
 ```bash
-pytest tests/ -v
+python status.py
 ```
+
+### 5. View usage report
+
+```bash
+python report.py
+```
+
+---
+
+## Routing guide
+
+| Task | Use | Why |
+|---|---|---|
+| Classify, label, yes/no | `cerebras` | Fastest (~1500 tok/s), free |
+| Quick factual Q&A | `groq` | Fast, reliable, free |
+| Summarise long text | `gemini` | 1M token context, free |
+| Code generation | `mistral` | Best free coding model |
+| Creative writing / drafting | `mistral` | Best quality output, free |
+| Translation | `gemini` | Strongest multilingual, free |
+| Image generation | `pollinations` | No key needed |
+| High-quality, no rush | `sambanova` | 70B model, free, slower |
+| General fallback | `fireworks` | DeepSeek V3, free |
+| Last resort fallback | `openai` | Paid — avoid unless needed |
 
 ---
 
@@ -115,142 +150,35 @@ pytest tests/ -v
 
 ```
 the-brain/
+├── delegate.py              # Call this to offload a task to a free AI worker
+├── status.py                # Live provider dashboard + usage stats
+├── report.py                # Usage report (human-readable)
+├── update_readme_stats.py   # Auto-update this README with stats
+├── INTEGRATION.md           # How to wire a new workflow window into the-brain
 ├── brain/
-│   ├── __init__.py            # Public API: Orchestrator, Task, TaskType
-│   ├── orchestrator.py        # Central dispatcher + fallback logic
-│   ├── router.py              # Static + dynamic routing table
-│   ├── task.py                # Task / TaskResult dataclasses
-│   ├── git_ops.py             # Git integration — write, commit, push
-│   └── adapters/
-│       ├── __init__.py        # Auto-discovery registry
-│       ├── base.py            # Abstract base adapter
-│       ├── anthropic_adapter.py
-│       ├── openai_adapter.py
-│       ├── gemini_adapter.py
-│       ├── groq_adapter.py
-│       └── cohere_adapter.py
-├── config/
-│   └── models.yaml            # Model reference — context limits, costs, sign-up links
-├── examples/
-│   └── demo.py                # Live 5-provider demonstration
-├── tests/
-│   └── test_adapters.py       # Unit tests (no API keys required)
-├── outputs/                   # Git-committed AI outputs land here
-├── .env.example               # Copy to .env and fill in keys
-├── main.py                    # CLI entry point
-└── requirements.txt
+│   ├── orchestrator.py      # Core dispatcher
+│   ├── router.py            # Routing table
+│   ├── stats.py             # Persistent usage tracking
+│   └── adapters/            # One file per provider
+├── stats/usage.json         # Running usage log (auto-created)
+├── assets/brain.png
+└── .github/workflows/
+    └── nightly-stats.yml    # Midnight UTC — updates this README automatically
 ```
 
 ---
 
-## How routing works
+## Nightly stats update
 
-**Static routing** (default) uses a priority table — no extra tokens spent:
-
-```python
-FACTUAL_QA   → groq → gemini → cohere → openai → anthropic
-SUMMARIZATION→ gemini → groq → cohere → openai → anthropic
-CODING       → openai → anthropic → groq → gemini → cohere
-REASONING    → anthropic → openai → gemini → groq → cohere
-```
-
-The first provider in the list that has a valid API key and is available wins.
-
-**Dynamic routing** (opt-in, `--dynamic` flag or `BRAIN_DYNAMIC_ROUTING=1`) sends a 300-character snippet of your task to Claude, which overrides the static choice when the content warrants it.  Costs ~100 tokens per routing decision.
-
-**Automatic fallback**: if the chosen provider returns an error, the orchestrator automatically tries the next available provider — transparent to the caller.
-
----
-
-## Git as the control layer
-
-Every `--commit` call produces a structured commit:
-
-```
-[brain] groq/llama3-8b-8192 — classification (42 tokens, 318ms)
-
-Task ID  : 3f8a1b2c-...
-Time     : 2025-04-17T14:23:01Z
-Prompt   : Classify the sentiment of...
-Provider : groq
-Model    : llama3-8b-8192
-Tokens   : 42
-Latency  : 318ms
-Cost     : free
-```
-
-This gives you:
-- **`git log`** — full AI action history
-- **`git diff`** — exactly what each model changed
-- **`git revert`** — undo any AI output cleanly
-- **GitHub Actions** — push triggers your CI/CD pipeline automatically
-
----
-
-## Adding a new provider
-
-1. Create `brain/adapters/your_provider_adapter.py` subclassing `BaseAdapter`
-2. Set `PROVIDER_KEY`, `TIER`, `SUPPORTED_TASK_TYPES`
-3. Implement `is_available()` and `complete()`
-4. Register it in `brain/adapters/__init__.py`
-5. Add a routing preference to `brain/router.py`
-
-That's it — the orchestrator picks it up automatically.
-
----
-
-## Environment variables
-
-| Variable | Required | Default | Purpose |
-|---|---|---|---|
-| `ANTHROPIC_API_KEY` | Yes | — | Claude orchestrator |
-| `OPENAI_API_KEY` | No | — | GPT-4o-mini worker |
-| `GEMINI_API_KEY` | No | — | Gemini 1.5 Flash worker |
-| `GROQ_API_KEY` | No | — | Llama 3 on Groq worker |
-| `COHERE_API_KEY` | No | — | Command-R worker |
-| `BRAIN_DYNAMIC_ROUTING` | No | `0` | Set to `1` for Claude-assisted routing |
-| `LOG_LEVEL` | No | `INFO` | Python logging level |
-| `ANTHROPIC_MODEL` | No | `claude-sonnet-4-6` | Override Claude model |
-| `OPENAI_MODEL` | No | `gpt-4o-mini` | Override OpenAI model |
-| `GEMINI_MODEL` | No | `gemini-1.5-flash` | Override Gemini model |
-| `GROQ_MODEL` | No | `llama3-8b-8192` | Override Groq model |
-| `COHERE_MODEL` | No | `command-r` | Override Cohere model |
+A GitHub Actions workflow runs every night at midnight UTC. It reads
+`stats/usage.json`, updates the stats block below, and commits back to
+the repo automatically. Push your local `stats/usage.json` after each
+session so the report stays current.
 
 ---
 
 <!-- BRAIN_STATS_START -->
-*Last updated: 2026-04-18 02:41 UTC — auto-generated by `update_readme_stats.py`*
-
-## Live Usage Stats
-
-| Provider | Tier | Calls | Tokens | Avg Latency | Cost |
-|---|---|---|---|---|---|
-| **cerebras** | FREE | 3 | 520 | 302ms | free |
-| **mistral** | FREE | 1 | 320 | 1255ms | free |
-| **openai** | ? | 1 | 89 | 2780ms | $0.0000 |
-| **gemini** | FREE | 1 | 36 | 515ms | free |
-| **deepseek** | ? | 1 | 0 | 1007ms | free |
-
-### Token Savings
-
-| Metric | Value |
-|---|---|
-| Total calls | 7 |
-| Calls handled by free workers | 7 |
-| Tokens offloaded from Claude | 965 |
-| % of tokens saved | 100.0% |
-| Estimated savings (Claude Sonnet rate) | $0.0029 |
-| Total spend on paid APIs | $0.0000 |
-
-### Token Distribution
-
-```
-cerebras     [FREE]  ██████████████████████████                          53.9%
-mistral      [FREE]  ████████████████                                    33.2%
-openai       [?]  ████                                                 9.2%
-gemini       [FREE]  █                                                    3.7%
-deepseek     [?]                                                       0.0%
-```
+*Stats auto-generated by nightly-stats.yml — last updated when the action runs.*
 <!-- BRAIN_STATS_END -->
 
 ---

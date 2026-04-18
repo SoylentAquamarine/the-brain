@@ -17,7 +17,13 @@ from brain.adapters.huggingface_adapter import HuggingFaceAdapter
 from brain.adapters.pollinations_adapter import PollinationsAdapter
 
 # ── Active paid adapters (key configured in .env) ─────────────────────────
-from brain.adapters.openai_adapter    import OpenAIAdapter
+from brain.adapters.openai_adapter      import OpenAIAdapter
+
+# ── New free-tier adapters (API key required, no CC) ──────────────────────
+from brain.adapters.openrouter_adapter  import OpenRouterAdapter
+from brain.adapters.xai_adapter         import XAIAdapter
+from brain.adapters.sambanova_adapter   import SambaNovaAdapter
+from brain.adapters.fireworks_adapter   import FireworksAdapter
 
 # ── Inactive (require CC or paid balance) — import kept for future use ─────
 # from brain.adapters.anthropic_adapter import AnthropicAdapter   # paid API
@@ -33,6 +39,10 @@ ALL_ADAPTERS = [
     HuggingFaceAdapter,
     PollinationsAdapter,
     OpenAIAdapter,
+    OpenRouterAdapter,
+    XAIAdapter,
+    SambaNovaAdapter,
+    FireworksAdapter,
 ]
 
 REGISTRY: dict = {

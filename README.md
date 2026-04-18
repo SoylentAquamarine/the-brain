@@ -282,6 +282,150 @@ deepseek     [?]                                                       0.0%
 
 ---
 
+## Using Claude Code with The Brain
+
+This section explains how to wire up your own local Claude Code instance so it
+automatically offloads AI tasks to free workers — the same setup used to build
+and maintain this project.
+
+### What is Claude Code?
+
+Claude Code is Anthropic's CLI tool that runs Claude directly in your terminal
+with full access to your file system, git, and shell. Unlike the web chat, it
+can execute commands, read and write files, and follow persistent instructions
+stored in a `CLAUDE.md` file in your project.
+
+Download it from: **[claude.ai/code](https://claude.ai/code)**
+
+---
+
+### Step 1 — Clone the repo and install dependencies
+
+```bash
+git clone https://github.com/SoylentAquamarine/the-brain.git
+cd the-brain
+pip install -r requirements.txt
+```
+
+---
+
+### Step 2 — Add your API keys
+
+Copy the example env file and fill in your keys. All providers listed have
+free tiers — no credit card required for most of them.
+
+```bash
+# Create your .env file
+cp .env.example .env   # or create it manually
+
+# Add keys for the providers you want — you don't need all of them
+GROQ_API_KEY=...        # https://console.groq.com
+GEMINI_API_KEY=...      # https://aistudio.google.com/app/apikey
+MISTRAL_API_KEY=...     # https://console.mistral.ai
+CEREBRAS_API_KEY=...    # https://cloud.cerebras.ai
+HUGGINGFACE_API_KEY=... # https://huggingface.co/settings/tokens
+SAMBANOVA_API_KEY=...   # https://cloud.sambanova.ai
+FIREWORKS_API_KEY=...   # https://fireworks.ai
+OPENAI_API_KEY=...      # https://platform.openai.com/api-keys
+```
+
+Even with just one or two keys you get meaningful offloading. Groq + Gemini
+covers most use cases for free.
+
+---
+
+### Step 3 — Open the project in Claude Code
+
+```bash
+cd the-brain
+claude
+```
+
+That's the key step. When Claude Code starts inside a directory it
+**automatically reads `CLAUDE.md`** and follows it as standing instructions for
+the entire session. The `CLAUDE.md` in this repo tells Claude to:
+
+- Route classification and scoring → Cerebras
+- Route summarisation → Gemini
+- Route coding and creative writing → Mistral
+- Route analysis and reasoning → SambaNova
+- Route general questions → Groq
+- Keep only git, file I/O, and orchestration decisions for itself
+
+You don't have to configure anything else. Open the folder, Claude picks up
+the instructions and starts offloading automatically.
+
+---
+
+### Step 4 — Verify it is working
+
+Type `status` in the Claude Code window:
+
+```
+status
+```
+
+You should see a dashboard showing which providers are online and any usage
+stats accumulated so far. If all your keys are valid, all providers will show
+as `[online]`.
+
+To test a live offload:
+
+```bash
+python delegate.py --provider groq --type factual_qa --prompt "What is 2+2?"
+```
+
+---
+
+### Step 5 — Push stats so the nightly report captures your usage
+
+Every `delegate.py` call writes to `stats/usage.json` locally. Push it to
+GitHub so the nightly action picks it up:
+
+```bash
+git add stats/usage.json
+git diff --staged --quiet || git commit -m "chore: session stats"
+git push
+```
+
+Add this to the end of any workflow or script that calls `delegate.py` to keep
+stats current automatically.
+
+---
+
+### Step 6 — Enable the nightly GitHub Actions report (optional)
+
+The repo includes `.github/workflows/nightly-stats.yml` which runs at midnight
+UTC every day. It reads `stats/usage.json`, updates the README stats block, and
+commits back automatically.
+
+To enable it on your own fork:
+1. Fork the repo on GitHub
+2. Go to **Actions** tab → enable workflows if prompted
+3. Add your API keys as GitHub Secrets if you want the workflow to call
+   providers directly (not required — it only reads the stats file)
+4. Push any `stats/usage.json` changes and the next midnight run will
+   update your README automatically
+
+---
+
+### How CLAUDE.md works — the short version
+
+Any file named `CLAUDE.md` in a project directory (or any parent directory) is
+automatically loaded by Claude Code at session start. It acts like a permanent
+system prompt for that project. You can:
+
+- Tell Claude which tools to use
+- Define workflows and shortcuts (`status` → run `python status.py`)
+- Set routing rules (what to offload, what to keep)
+- Document project conventions
+
+Editing `CLAUDE.md` and reopening the project is all it takes to change
+Claude's default behaviour for that window. The offloading rules in this repo's
+`CLAUDE.md` are a working example — copy and adapt them for your own projects.
+
+---
+
 ## License
 
 MIT — build on it, fork it, ship it.

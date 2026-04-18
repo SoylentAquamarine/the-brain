@@ -5,6 +5,12 @@
 
 > Claude orchestrates. Free AI does the heavy lifting. Git remembers everything.
 
+## Why I built this
+
+I was paying $20/month for Claude Pro and kept running out of tokens — it felt like 1998 AOL dial-up screeching to a halt mid-sentence. So I built The Brain: an orchestration system that offloads as much AI work as possible to free providers like Groq, Gemini, Mistral, and Cerebras, while Claude handles only the decisions and orchestration. Now I get smart AI assistance without the token anxiety. No more dial-up drama.
+
+---
+
 **The Brain** is an AI orchestration system where Claude acts as the intelligent dispatcher, routing every task to the cheapest and most capable AI provider available — saving Claude tokens for decisions, planning, and conversation only.
 
 ```
@@ -296,6 +302,13 @@ can execute commands, read and write files, and follow persistent instructions
 stored in a `CLAUDE.md` file in your project.
 
 Download it from: **[claude.ai/code](https://claude.ai/code)**
+
+**Does it work on the free tier?**
+No — Claude Code requires a Claude Pro subscription ($20/month) or an Anthropic
+API key with credits. But that is exactly why this project exists. With The Brain
+doing the heavy lifting, Claude handles almost nothing directly — it just decides
+who to call and relays the result. In a typical session, 100% of AI tokens go to
+free workers. You pay $20/month for the orchestrator; the actual work is free.
 
 ---
 

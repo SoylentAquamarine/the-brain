@@ -94,59 +94,21 @@ the-brain/
 │   ├── stats.py             # Persistent usage tracking
 │   └── adapters/            # One file per provider
 ├── stats/usage.json         # Running usage log (auto-created)
-├── assets/brain.png         # Project image
-└── workflows/
-    └── jobseeking.py        # Job seeking workflow (see below)
+└── assets/brain.png         # Project image
 ```
 
 ---
 
-## Workflow: Job Seeking
+## Status command
 
-**Trigger phrase:** "Start jobseeking workflow"
-
-When the user says this, run:
+When the user types just **`status`**, run:
 
 ```bash
-python workflows/jobseeking.py
+python status.py
 ```
 
-Or with files if they provide them:
-
-```bash
-python workflows/jobseeking.py --job-file posting.txt --resume-file resume.txt
-```
-
-### What it does (all offloaded to free AI workers)
-
-| Step | Task | Provider | Why |
-|---|---|---|---|
-| 1 | Extract job requirements | Mistral | Best free extraction model |
-| 2 | Score resume fit | Cerebras | Fastest classification |
-| 3 | Summarise company | Gemini | Large context, summarisation |
-| 4 | Draft cover letter | Mistral | Best free creative writing |
-| 5 | Tailor resume bullets | Mistral | Best instruction following |
-| 6 | Generate interview questions | Groq | Fast factual generation |
-| 7 | Commit all outputs | Git | Full audit trail |
-
-### Outputs saved to:
-`outputs/jobseeking/<company>_<date>/`
-- `job_requirements.txt`
-- `fit_score.txt`
-- `company_summary.txt`
-- `cover_letter.md`
-- `resume_bullets.md`
-- `interview_questions.md`
-
-### If the user wants to do a step manually instead
-
-```bash
-python delegate.py --provider mistral --type creative --prompt "Write a cover letter for..."
-python delegate.py --provider cerebras --type classification --prompt "Score my fit for..."
-python delegate.py --provider gemini --type summarization --prompt "Summarise this company..."
-```
-
-### Adding a resume file
-
-Tell the user to save their resume as `resume.txt` in the project root,
-then the workflow picks it up automatically via `--resume-file resume.txt`.
+This prints a live dashboard showing:
+- Which providers are online / offline
+- Usage per provider (calls, tokens, avg latency, success rate, cost)
+- Total Claude tokens saved and estimated dollar savings
+- Stats file location and last-modified time

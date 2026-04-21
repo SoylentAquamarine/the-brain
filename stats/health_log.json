@@ -5659,5 +5659,113 @@
     "latency_ms": 0,
     "quality": 0.0,
     "response": "API key not configured"
+  },
+  {
+    "timestamp": "2026-04-21T23:32:55Z",
+    "provider": "groq",
+    "model": "llama-3.1-8b-instant",
+    "status": "ok",
+    "latency_ms": 238,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-21T23:32:56Z",
+    "provider": "gemini",
+    "model": "gemini-2.5-flash-lite",
+    "status": "ok",
+    "latency_ms": 636,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-21T23:32:56Z",
+    "provider": "mistral",
+    "model": "mistral-small-latest",
+    "status": "ok",
+    "latency_ms": 512,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-21T23:32:56Z",
+    "provider": "cerebras",
+    "model": "llama3.1-8b",
+    "status": "ok",
+    "latency_ms": 225,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-21T23:32:57Z",
+    "provider": "huggingface",
+    "model": "meta-llama/Meta-Llama-3-8B-Instruct",
+    "status": "ok",
+    "latency_ms": 691,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-21T23:32:57Z",
+    "provider": "pollinations",
+    "model": "openai",
+    "status": "ok",
+    "latency_ms": 384,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-21T23:33:01Z",
+    "provider": "openai",
+    "model": "gpt-4o-mini-2024-07-18",
+    "status": "ok",
+    "latency_ms": 3264,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-21T23:33:02Z",
+    "provider": "openrouter",
+    "model": "google/gemma-4-26b-a4b-it-20260403:free",
+    "status": "ok",
+    "latency_ms": 928,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-21T23:33:02Z",
+    "provider": "xai",
+    "model": "n/a",
+    "status": "no_key",
+    "latency_ms": 0,
+    "quality": 0.0,
+    "response": "API key not configured"
+  },
+  {
+    "timestamp": "2026-04-21T23:33:03Z",
+    "provider": "sambanova",
+    "model": "Meta-Llama-3.3-70B-Instruct",
+    "status": "ok",
+    "latency_ms": 1082,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-21T23:33:03Z",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/deepseek-v3p1",
+    "status": "degraded",
+    "latency_ms": 563,
+    "quality": 0.5,
+    "response": "First, the user asked: \"What is "
+  },
+  {
+    "timestamp": "2026-04-21T23:33:03Z",
+    "provider": "cloudflare",
+    "model": "n/a",
+    "status": "no_key",
+    "latency_ms": 0,
+    "quality": 0.0,
+    "response": "API key not configured"
   }
 ]

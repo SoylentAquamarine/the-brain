@@ -16,14 +16,18 @@ I was paying $20/month for Claude Pro and kept running out of tokens — it felt
 ```
 You → Orchestrator (Claude) → Router
                                  ↓
-              ┌──────────────────────────────────────┐
-              │  classification  →  Cerebras (FREE)  │
-              │  summarisation   →  Gemini   (FREE)  │
-              │  coding          →  Mistral  (FREE)  │
-              │  creative        →  Mistral  (FREE)  │
-              │  general         →  Groq     (FREE)  │
-              │  image           →  Pollinations     │
-              └──────────────────────────────────────┘
+              ┌─────────────────────────────────────────────────────┐
+              │  classification  →  Cerebras    (FREE, ~1500 tok/s)  │
+              │  factual Q&A     →  Cerebras    (FREE, ~1500 tok/s)  │
+              │  summarisation   →  Gemini      (FREE, 1M context)   │
+              │  extraction      →  Mistral     (FREE)               │
+              │  translation     →  Gemini      (FREE)               │
+              │  coding          →  Mistral     (FREE) → Fireworks   │
+              │  reasoning       →  SambaNova   (FREE 70B)           │
+              │  creative        →  Mistral     (FREE) → SambaNova   │
+              │  general         →  Cerebras    (FREE) → Groq        │
+              │  image           →  Pollinations (no key)            │
+              └─────────────────────────────────────────────────────┘
                                  ↓
                          stats/usage.json
                                  ↓
@@ -56,6 +60,8 @@ You → Orchestrator (Claude) → Router
 | **HuggingFace** | Llama 3 8B | Open-source fallback | ~924ms | [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens) |
 | **SambaNova** | Llama 3.3 70B | High-quality free inference | ~11s | [cloud.sambanova.ai](https://cloud.sambanova.ai) |
 | **Fireworks AI** | DeepSeek V3 | Fast general inference, free tier | ~1963ms | [fireworks.ai](https://fireworks.ai) |
+| **Cloudflare Workers AI** | llama-3.1-8b-instruct | General, classification | ✓ Free (no CC) | [dash.cloudflare.com](https://dash.cloudflare.com) |
+| **OpenRouter** | llama-3.1-8b-instruct:free | General fallback, many models | ✓ Free tier | [openrouter.ai](https://openrouter.ai) |
 | **OpenAI** | GPT-4o-mini | Coding, structured output, general tasks | ~2372ms | [platform.openai.com](https://platform.openai.com/api-keys) |
 
 ### Free — no key, no sign-up
@@ -71,8 +77,8 @@ You → Orchestrator (Claude) → Router
 | Provider | Reason |
 |---|---|
 | **xAI (Grok)** | Free API tier removed in 2026 |
-| **OpenRouter** | Free tier is rate-limited and unreliable in practice |
 | **Cohere** | API key was never properly configured (placeholder value) |
+| **OpenRouter (free models)** | Free tier models rotate frequently — keep as fallback only |
 | **DeepSeek** | Key is valid but account has no balance |
 | **Together AI** | Credit limit exceeded — needs payment added |
 | **Anthropic (direct)** | Key not configured — would be paid anyway; Claude is already the orchestrator |
@@ -105,6 +111,8 @@ HUGGINGFACE_API_KEY=...
 SAMBANOVA_API_KEY=...
 FIREWORKS_API_KEY=...
 OPENAI_API_KEY=...
+OPENROUTER_API_KEY=...
+CLOUDFLARE_API_KEY=...  # format: accountID:apiToken — get both from dash.cloudflare.com
 ```
 
 ### 3. Offload a task
@@ -164,6 +172,20 @@ python delegate.py --provider sambanova --type creative    --prompt "Write a det
 ```bash
 python delegate.py --provider fireworks --type coding   --prompt "Write a Python class for a binary search tree"
 python delegate.py --provider fireworks --type general  --prompt "What are the SOLID principles?"
+```
+
+#### Cloudflare Workers AI — edge-hosted, fast, free tier
+**Available models:** `@cf/meta/llama-3.1-8b-instruct` (default) · `@cf/meta/llama-3.3-70b-instruct-fp8-fast`
+**Key format:** Set `CLOUDFLARE_API_KEY=accountID:apiToken` in .env
+```bash
+python delegate.py --provider cloudflare --type general        --prompt "Explain what an API is"
+python delegate.py --provider cloudflare --type classification --prompt "Classify as question or statement: 'What time is it?'"
+```
+
+#### OpenRouter — gateway to hundreds of models, free tier available
+**Available models:** `meta-llama/llama-3.1-8b-instruct:free` (default) · `google/gemma-3-27b-it:free` · `mistralai/mistral-small-3.1-24b-instruct:free`
+```bash
+python delegate.py --provider openrouter --type general  --prompt "What is the difference between TCP and UDP?"
 ```
 
 #### Pollinations — no key needed, text and images
@@ -339,6 +361,8 @@ HUGGINGFACE_API_KEY=... # https://huggingface.co/settings/tokens
 SAMBANOVA_API_KEY=...   # https://cloud.sambanova.ai
 FIREWORKS_API_KEY=...   # https://fireworks.ai
 OPENAI_API_KEY=...      # https://platform.openai.com/api-keys
+OPENROUTER_API_KEY=...  # https://openrouter.ai
+CLOUDFLARE_API_KEY=...  # format: accountID:apiToken — get both from dash.cloudflare.com
 ```
 
 Even with just one or two keys you get meaningful offloading. Groq + Gemini

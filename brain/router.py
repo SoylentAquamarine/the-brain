@@ -47,31 +47,32 @@ logger = logging.getLogger(__name__)
 
 STATIC_ROUTING_TABLE: Dict[TaskType, List[str]] = {
     # Speed-first: cerebras is fastest for quick binary/label tasks.
-    TaskType.CLASSIFICATION: ["cerebras", "groq",    "mistral",     "gemini",     "huggingface"],
+    # cloudflare added as a fast edge option after groq.
+    TaskType.CLASSIFICATION: ["cerebras", "groq",       "cloudflare", "mistral",    "gemini",     "openrouter", "huggingface"],
 
-    # Factual Q&A needs speed more than depth — cerebras / groq win.
-    TaskType.FACTUAL_QA:     ["cerebras", "groq",    "gemini",      "mistral",    "huggingface"],
+    # Factual Q&A: speed over depth.
+    TaskType.FACTUAL_QA:     ["cerebras", "groq",       "cloudflare", "gemini",     "mistral",    "openrouter", "huggingface"],
 
     # Gemini's 1M context window makes it ideal for long documents.
-    TaskType.SUMMARIZATION:  ["gemini",   "mistral", "cerebras",    "groq",       "huggingface"],
+    TaskType.SUMMARIZATION:  ["gemini",   "mistral",    "sambanova",  "cerebras",   "groq",       "openrouter", "huggingface"],
 
     # Mistral is the strongest free model for structured extraction.
-    TaskType.EXTRACTION:     ["mistral",  "gemini",  "groq",        "cerebras",   "huggingface"],
+    TaskType.EXTRACTION:     ["mistral",  "sambanova",  "gemini",     "groq",       "cerebras",   "openrouter", "huggingface"],
 
     # Gemini handles multilingual best among the free providers.
-    TaskType.TRANSLATION:    ["gemini",   "mistral", "cerebras",    "groq",       "huggingface"],
+    TaskType.TRANSLATION:    ["gemini",   "mistral",    "cerebras",   "groq",       "openrouter", "huggingface"],
 
-    # Mistral Small beats the other free models on code generation benchmarks.
-    TaskType.CODING:         ["mistral",  "cerebras","groq",        "gemini",     "huggingface"],
+    # Fireworks (DeepSeek V3) and SambaNova 70B are strong on code.
+    TaskType.CODING:         ["mistral",  "fireworks",  "sambanova",  "cerebras",   "groq",       "gemini",     "openrouter", "huggingface"],
 
-    # Mistral leads on multi-step reasoning; gemini second for long contexts.
-    TaskType.REASONING:      ["mistral",  "gemini",  "cerebras",    "groq",       "huggingface"],
+    # SambaNova's 70B leads on deep reasoning; mistral second.
+    TaskType.REASONING:      ["sambanova","mistral",    "gemini",     "fireworks",  "cerebras",   "groq",       "openrouter", "huggingface"],
 
-    # Creative tasks benefit from Mistral's instruction following and variety.
-    TaskType.CREATIVE:       ["mistral",  "huggingface", "gemini",  "cerebras",   "groq"],
+    # Creative writing: mistral and sambanova have the most nuance.
+    TaskType.CREATIVE:       ["mistral",  "sambanova",  "gemini",     "huggingface","cerebras",   "groq",       "openrouter"],
 
-    # General catch-all: fast cerebras/groq first, mistral for quality.
-    TaskType.GENERAL:        ["cerebras", "groq",    "gemini",      "mistral",    "huggingface"],
+    # General catch-all: fast cerebras/groq first, escalate for quality.
+    TaskType.GENERAL:        ["cerebras", "groq",       "cloudflare", "gemini",     "mistral",    "fireworks",  "openrouter", "huggingface"],
 }
 
 # ---------------------------------------------------------------------------
@@ -85,11 +86,15 @@ STATIC_ROUTING_TABLE: Dict[TaskType, List[str]] = {
 _ROUTING_PROMPT_TEMPLATE = """\
 You are a routing controller for an AI orchestration system.
 Available providers and their strengths:
-  cerebras    : FREE, ultra-fast (~1500 tok/s) — classification, short Q&A
-  groq        : FREE, very fast (~400 tok/s)   — classification, factual Q&A
-  gemini      : FREE, 1M context window        — long docs, summarisation, translation
-  mistral     : FREE, highest quality          — coding, reasoning, creative
-  huggingface : FREE, reliable fallback        — general tasks
+  cerebras    : FREE, ultra-fast (~1500 tok/s)  — classification, short Q&A
+  groq        : FREE, very fast (~400 tok/s)    — classification, factual Q&A
+  cloudflare  : FREE, edge-hosted, fast         — general, classification
+  gemini      : FREE, 1M context window         — long docs, summarisation, translation
+  mistral     : FREE, high quality              — coding, extraction, creative
+  sambanova   : FREE, 70B model, best quality   — reasoning, coding, creative
+  fireworks   : FREE, DeepSeek V3               — coding, general
+  openrouter  : FREE tier available             — general fallback, many models
+  huggingface : FREE, reliable fallback         — general tasks
 
 Task type   : {task_type}
 Priority    : {priority}

@@ -23,14 +23,45 @@ DYNAMIC (opt-in)
 
 from __future__ import annotations
 
+import json
 import logging
 import os
+from pathlib import Path
 from typing import Dict, List, Optional
 
 from brain.constants import ROUTING_MAX_TOKENS, ROUTING_PROMPT_SNIPPET_LEN
 from brain.task import Task, TaskType, Priority
 
 logger = logging.getLogger(__name__)
+
+_HEALTH_LOG = Path(__file__).parent.parent / "stats" / "health_log.json"
+
+# Health status tiers used for routing priority.
+# ok/unknown → normal position; degraded → after ok; error → last resort.
+_HEALTH_TIER: Dict[str, int] = {"ok": 0, "degraded": 1, "error": 2, "no_key": 2}
+
+
+def _load_health_snapshot() -> Dict[str, str]:
+    """
+    Read health_log.json and return the most recent status per provider.
+
+    Returns {} if the file is missing or unreadable — callers treat
+    an absent entry as "ok" so routing is unaffected.
+    """
+    if not _HEALTH_LOG.exists():
+        return {}
+    try:
+        entries = json.loads(_HEALTH_LOG.read_text(encoding="utf-8"))
+        snapshot: Dict[str, str] = {}
+        # Entries are appended chronologically; iterate newest-first.
+        for entry in reversed(entries):
+            key = entry.get("provider", "")
+            if key and key not in snapshot:
+                snapshot[key] = entry.get("status", "ok")
+        return snapshot
+    except Exception as exc:
+        logger.warning("Could not load health snapshot: %s", exc)
+        return {}
 
 # ---------------------------------------------------------------------------
 # Static routing table
@@ -131,6 +162,15 @@ class Router:
         ]
         # Set for O(1) membership checks inside _preference_order.
         self._available_set: set = set(self._available)
+
+        # Most recent health status per provider from health_log.json.
+        # Loaded once at init; reflects the last manual/CI health check run.
+        self._health: Dict[str, str] = _load_health_snapshot()
+        if self._health:
+            degraded = [k for k, v in self._health.items() if v in ("degraded", "error")]
+            if degraded:
+                logger.info("Health snapshot loaded. Degraded/errored: %s", degraded)
+
         logger.info("Router ready. Available providers: %s", self._available)
 
     # ------------------------------------------------------------------
@@ -262,6 +302,21 @@ class Router:
             free = [p for p in full if self._registry[p].TIER == "free"]
             paid = [p for p in full if self._registry[p].TIER != "free"]
             full = free + paid
+
+        # Health reordering: bucket by last known status, preserving relative
+        # order within each bucket. Unknown providers treated as "ok".
+        # ok/unknown → degraded → error  (error providers stay as last resort).
+        if self._health:
+            buckets: Dict[int, List[str]] = {0: [], 1: [], 2: []}
+            for p in full:
+                tier = _HEALTH_TIER.get(self._health.get(p, "ok"), 0)
+                buckets[tier].append(p)
+            full = buckets[0] + buckets[1] + buckets[2]
+            if buckets[1] or buckets[2]:
+                logger.debug(
+                    "Health reorder — ok: %s  degraded: %s  error: %s",
+                    buckets[0], buckets[1], buckets[2],
+                )
 
         # Promote top to position 0 without re-filtering the rest.
         if top and top != full[0]:

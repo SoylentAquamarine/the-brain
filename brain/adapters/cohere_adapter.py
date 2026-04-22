@@ -9,7 +9,7 @@ Required env var:
     COHERE_API_KEY  — obtain from https://dashboard.cohere.com/api-keys
 
 Optional env var:
-    COHERE_MODEL    — defaults to "command-r" (free trial tier)
+    COHERE_MODEL    — defaults to "command-r-08-2024" (command-r alias retired 2025-09-15)
 """
 
 from __future__ import annotations
@@ -43,7 +43,7 @@ class CohereAdapter(BaseAdapter):
         TaskType.GENERAL,
     ]
 
-    DEFAULT_MODEL = "command-r"
+    DEFAULT_MODEL = "command-r-08-2024"
 
     def __init__(self) -> None:
         self._api_key = os.getenv("COHERE_API_KEY", "")

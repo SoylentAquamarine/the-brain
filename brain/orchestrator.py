@@ -24,13 +24,46 @@ Typical call flow
 from __future__ import annotations
 
 import logging
-from typing import List, Optional
+import re
+from enum import Enum
+from typing import Dict, List, Optional, Set
 
 from brain.adapters import REGISTRY
 from brain.constants import DEFAULT_MAX_FALLBACKS
 from brain.router import Router
 from brain.stats import tracker
 from brain.task import Task, TaskResult, TaskStatus
+
+
+# ---------------------------------------------------------------------------
+# Failure classification
+# ---------------------------------------------------------------------------
+
+class FailureType(Enum):
+    TIMEOUT     = "timeout"
+    RATE_LIMIT  = "rate_limit"
+    AUTH_ERROR  = "auth_error"
+    MODEL_ERROR = "model_error"
+    UNKNOWN     = "unknown"
+
+
+_RE_TIMEOUT     = re.compile(r"timeout|timed.?out|connection.?reset|read.?error", re.I)
+_RE_RATE_LIMIT  = re.compile(r"429|rate.?limit|quota|too.?many.?request", re.I)
+_RE_AUTH        = re.compile(r"401|403|invalid.?api.?key|unauthorized|authentication failed|invalid.?key", re.I)
+_RE_MODEL       = re.compile(r"400|invalid.?request|context.?length|max.?token|model.?not.?found", re.I)
+
+
+def _classify_failure(error: str) -> FailureType:
+    """Classify a provider error string into a FailureType."""
+    if _RE_TIMEOUT.search(error):
+        return FailureType.TIMEOUT
+    if _RE_RATE_LIMIT.search(error):
+        return FailureType.RATE_LIMIT
+    if _RE_AUTH.search(error):
+        return FailureType.AUTH_ERROR
+    if _RE_MODEL.search(error):
+        return FailureType.MODEL_ERROR
+    return FailureType.UNKNOWN
 
 # Module-level logger — all orchestrator events flow through here.
 # Callers can silence orchestrator noise with logging.getLogger("brain.orchestrator").
@@ -69,6 +102,9 @@ class Orchestrator:
         self._total_tokens: int   = 0
         self._total_cost:   float = 0.0
         self._failed_calls: int   = 0
+
+        # Providers that returned an auth error this session — skipped permanently.
+        self._session_disabled: Set[str] = set()
 
         available = self._router.available_providers()
         logger.info(
@@ -124,9 +160,38 @@ class Orchestrator:
         last_result: Optional[TaskResult] = None
         attempt = 0
 
-        for provider_key in provider_order[: self._max_fallbacks]:
+        # Per-request skip set: providers rate-limited this call only.
+        request_skipped: Set[str] = set()
+        # Latency ceiling set on first timeout; providers slower than this are skipped.
+        slow_ceiling_ms: Optional[float] = None
+        # Historical latency cache — loaded once lazily on first timeout.
+        hist_latency: Optional[Dict[str, float]] = None
+
+        for provider_key in provider_order:
+            if attempt >= self._max_fallbacks:
+                break
+
+            # --- Skip checks (do not count toward attempt budget) ---
+            if provider_key in self._session_disabled:
+                logger.debug("Skipping %s — auth-disabled for session.", provider_key)
+                continue
+
+            if provider_key in request_skipped:
+                logger.debug("Skipping %s — rate-limited this request.", provider_key)
+                continue
+
+            if slow_ceiling_ms is not None:
+                avg = (hist_latency or {}).get(provider_key, 0.0)
+                if avg > slow_ceiling_ms:
+                    logger.debug(
+                        "Skipping %s — historically slow (%.0fms > %.0fms ceiling).",
+                        provider_key, avg, slow_ceiling_ms,
+                    )
+                    continue
+
+            # --- Attempt ---
             attempt += 1
-            adapter    = self._registry[provider_key]
+            adapter = self._registry[provider_key]
             task.status = TaskStatus.RUNNING
 
             logger.info(
@@ -144,13 +209,32 @@ class Orchestrator:
                 logger.info("Task %s done.  %s", task.id[:8], result.summary())
                 return result
 
-            # Non-fatal failure — log and try the next provider.
+            # --- Classify failure and update skip state ---
+            failure_type = _classify_failure(result.error or "")
             logger.warning(
-                "Provider %s failed (attempt %d): %s — trying fallback",
-                provider_key,
-                attempt,
-                result.error,
+                "Provider %s failed (attempt %d, type=%s): %s — trying fallback",
+                provider_key, attempt, failure_type.value, result.error,
             )
+
+            if failure_type == FailureType.AUTH_ERROR:
+                self._session_disabled.add(provider_key)
+                logger.warning("Provider %s disabled for this session (auth error).", provider_key)
+
+            elif failure_type == FailureType.RATE_LIMIT:
+                request_skipped.add(provider_key)
+
+            elif failure_type == FailureType.TIMEOUT:
+                # Load historical latencies once, then set a ceiling so that
+                # providers historically slower than this one are skipped.
+                if hist_latency is None:
+                    hist_latency = self._load_provider_latencies()
+                slow_ceiling_ms = result.latency_ms
+                logger.debug(
+                    "Timeout on %s (%.0fms) — skipping providers slower than %.0fms.",
+                    provider_key, result.latency_ms, slow_ceiling_ms,
+                )
+
+            # MODEL_ERROR / UNKNOWN — fall through to next provider normally.
             last_result = result
 
         # Every attempt exhausted.
@@ -221,12 +305,10 @@ class Orchestrator:
 
     def _build_provider_order(self, task: Task) -> List[str]:
         """
-        Return an ordered list of provider keys to attempt for *task*.
+        Return the provider attempt order for *task* as decided by the Router.
 
-        The primary choice comes from the router; the remaining available
-        providers are appended as automatic fallbacks.  This guarantees that
-        even if the router's top pick fails, the orchestrator keeps trying
-        without the caller having to do anything.
+        The Orchestrator does not modify or rebuild this list — all ordering
+        logic lives exclusively in Router.route_ordered().
 
         Parameters
         ----------
@@ -238,15 +320,22 @@ class Orchestrator:
             Provider keys in attempt order.  May be empty if no providers
             are configured.
         """
-        primary   = self._router.route(task)
-        available = self._router.available_providers()
+        return self._router.route_ordered(task)
 
-        if primary is None:
-            # Routing failed entirely — try everything in availability order.
-            return available
+    def _load_provider_latencies(self) -> Dict[str, float]:
+        """
+        Return a snapshot of historical avg latency (ms) per provider from stats.
 
-        # Primary first, then everything else as ordered fallbacks.
-        return [primary] + [p for p in available if p != primary]
+        Called at most once per run() — only when a timeout is first observed.
+        Providers with no recorded calls return 0.0 (treated as fast / unknown).
+        """
+        try:
+            return {
+                key: ps.avg_latency_ms
+                for key, ps in tracker.get().providers.items()
+            }
+        except Exception:  # noqa: BLE001
+            return {}
 
     def _account(self, result: TaskResult, task: Task) -> None:
         """

@@ -129,6 +129,8 @@ class Router:
             key for key, adapter in registry.items()
             if adapter.is_available()
         ]
+        # Set for O(1) membership checks inside _preference_order.
+        self._available_set: set = set(self._available)
         logger.info("Router ready. Available providers: %s", self._available)
 
     # ------------------------------------------------------------------
@@ -137,12 +139,24 @@ class Router:
 
     def route(self, task: Task) -> Optional[str]:
         """
-        Return the provider key that should handle *task*.
+        Return the single best provider key for *task*.
 
-        Decision flow (in order):
-          1. If task.preferred_model is set and available → use it.
-          2. If dynamic routing is enabled → ask Claude.
-          3. Fall back to the static routing table.
+        Delegates to route_ordered() and returns the first entry.
+
+        Returns
+        -------
+        str or None
+            Provider key, or None if no provider is available at all.
+        """
+        ordered = self.route_ordered(task)
+        return ordered[0] if ordered else None
+
+    def route_ordered(self, task: Task) -> List[str]:
+        """
+        Return the full provider fallback chain for *task*, in attempt order.
+
+        Resolves which provider (if any) should be forced to the front, then
+        delegates entirely to _preference_order() for list construction.
 
         Parameters
         ----------
@@ -150,28 +164,11 @@ class Router:
 
         Returns
         -------
-        str or None
-            Provider key, or None if no provider is available at all.
+        list[str]
+            All available providers ordered for this task. Empty only when
+            no providers are configured at all.
         """
-        # Honour explicit caller override first — no routing logic needed.
-        if task.preferred_model:
-            if task.preferred_model in self._available:
-                logger.debug("Using caller-preferred provider: %s", task.preferred_model)
-                return task.preferred_model
-            # Warn but don't raise — fall through to automatic routing.
-            logger.warning(
-                "Preferred provider '%s' unavailable, falling back to routing.",
-                task.preferred_model,
-            )
-
-        # Dynamic routing: Claude reads the content and can override the table.
-        if self._dynamic and "anthropic" in self._available:
-            provider = self._dynamic_route(task)
-            if provider and provider in self._available:
-                logger.info("Dynamic routing selected: %s", provider)
-                return provider
-
-        return self._static_route(task)
+        return self._preference_order(task, top=self._resolve_top(task))
 
     def available_providers(self) -> List[str]:
         """
@@ -200,49 +197,78 @@ class Router:
     # Internal helpers
     # ------------------------------------------------------------------
 
-    def _static_route(self, task: Task) -> Optional[str]:
+    def _resolve_top(self, task: Task) -> Optional[str]:
         """
-        Walk the static preference list and return the first available provider.
+        Return the provider that should be forced to position 0, or None.
 
-        For Priority.LOW tasks we restrict candidates to free-tier providers
-        first, only falling back to paid ones if no free provider is available.
-        This prevents a cheap classification task from accidentally hitting
-        a paid model just because it appears higher in the fallback chain.
+        Checks preferred_model first, then dynamic routing. Does not build
+        the full list — that is _preference_order's job.
+        """
+        if task.preferred_model:
+            if task.preferred_model in self._available_set:
+                logger.debug("Using caller-preferred provider: %s", task.preferred_model)
+                return task.preferred_model
+            logger.warning(
+                "Preferred provider '%s' unavailable, falling back to routing.",
+                task.preferred_model,
+            )
+
+        if self._dynamic and "anthropic" in self._available_set:
+            provider = self._dynamic_route(task)
+            if provider and provider in self._available_set:
+                logger.info("Dynamic routing selected: %s", provider)
+                return provider
+
+        return None
+
+    def _preference_order(self, task: Task, top: Optional[str] = None) -> List[str]:
+        """
+        Build and return the complete ordered provider list for *task*.
+
+        This is the single place where available-provider filtering and
+        ordering logic live. All other methods call this; none re-filter.
+
+        Steps (all in one pass over available providers):
+          1. Routing-table providers first, in table order.
+          2. Any available provider not in the table appended at the end.
+          3. For Priority.LOW tasks, free-tier providers promoted to front.
+          4. If *top* is given, it is moved to position 0.
 
         Parameters
         ----------
         task : Task
+        top  : str or None
+            Provider that must appear first (from preferred_model or dynamic
+            routing). Must already be validated as available by _resolve_top.
 
         Returns
         -------
-        str or None
+        list[str]
         """
         preference_list = STATIC_ROUTING_TABLE.get(task.task_type, [])
+        pref_set        = set(preference_list)
 
-        # LOW priority: only use free providers to minimise cost.
+        # Single filtering pass — each available provider lands in exactly one list.
+        ordered = [p for p in preference_list if p in self._available_set]
+        extras  = [p for p in self._available  if p not in pref_set]
+        full    = ordered + extras
+
+        if not full:
+            logger.warning("No providers available for %s.", task.task_type)
+            return []
+
+        # LOW priority: free-tier providers promoted to front.
         if task.priority == Priority.LOW:
-            free_available = [
-                p for p in preference_list
-                if p in self._available
-                and self._registry[p].TIER == "free"
-            ]
-            if free_available:
-                logger.debug("LOW priority → free provider: %s", free_available[0])
-                return free_available[0]
-            # No free providers found — fall through to full list below.
+            free = [p for p in full if self._registry[p].TIER == "free"]
+            paid = [p for p in full if self._registry[p].TIER != "free"]
+            full = free + paid
 
-        # Normal / HIGH priority: first available in preference order wins.
-        for provider_key in preference_list:
-            if provider_key in self._available:
-                logger.debug("Static routing → %s", provider_key)
-                return provider_key
+        # Promote top to position 0 without re-filtering the rest.
+        if top and top != full[0]:
+            full = [top] + [p for p in full if p != top]
 
-        # Nothing in the preference list is available — use whatever we have.
-        logger.warning(
-            "No preferred provider available for %s; using first available.",
-            task.task_type,
-        )
-        return self._available[0] if self._available else None
+        logger.debug("Routing order for %s: %s", task.task_type, full)
+        return full
 
     def _dynamic_route(self, task: Task) -> Optional[str]:
         """

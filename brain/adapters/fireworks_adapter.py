@@ -8,7 +8,7 @@ Required env var:
     FIREWORKS_API_KEY  — obtain from https://fireworks.ai/
 
 Optional env var:
-    FIREWORKS_MODEL    — defaults to "accounts/fireworks/models/llama-v3p1-70b-instruct"
+    FIREWORKS_MODEL    — defaults to "accounts/fireworks/models/llama-v3p3-70b-instruct"
 """
 
 from __future__ import annotations
@@ -42,7 +42,7 @@ class FireworksAdapter(BaseAdapter):
         TaskType.CLASSIFICATION,
     ]
 
-    DEFAULT_MODEL = "accounts/fireworks/models/llama-v3p1-70b-instruct"
+    DEFAULT_MODEL = "accounts/fireworks/models/llama-v3p3-70b-instruct"
     BASE_URL = "https://api.fireworks.ai/inference/v1"
 
     def __init__(self) -> None:

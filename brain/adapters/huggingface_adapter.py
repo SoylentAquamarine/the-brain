@@ -50,9 +50,9 @@ class HuggingFaceAdapter(BaseAdapter):
         TaskType.CREATIVE,
     ]
 
-    # Meta-Llama-3-8B-Instruct is the most reliable chat model on the free
-    # serverless tier.  Mistral-7B-Instruct-v0.3 is NOT a chat model — avoid it.
-    DEFAULT_MODEL = "meta-llama/Meta-Llama-3-8B-Instruct"
+    # Qwen2.5-72B is openly accessible on the free serverless tier.
+    # Meta-Llama models are gated and may 400 if terms not accepted.
+    DEFAULT_MODEL = "Qwen/Qwen2.5-72B-Instruct"
 
     def __init__(self) -> None:
         """Initialise the HuggingFace client from environment variables."""

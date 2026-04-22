@@ -21,14 +21,14 @@ from brain.adapters.openai_adapter      import OpenAIAdapter
 
 # ── New free-tier adapters (API key required, no CC) ──────────────────────
 from brain.adapters.openrouter_adapter   import OpenRouterAdapter
-from brain.adapters.xai_adapter          import XAIAdapter
 from brain.adapters.sambanova_adapter    import SambaNovaAdapter
 from brain.adapters.fireworks_adapter    import FireworksAdapter
 from brain.adapters.cloudflare_adapter   import CloudflareAdapter
+from brain.adapters.cohere_adapter       import CohereAdapter
 
 # ── Inactive (require CC or paid balance) — import kept for future use ─────
 # from brain.adapters.anthropic_adapter import AnthropicAdapter   # paid API
-# from brain.adapters.cohere_adapter    import CohereAdapter       # broken key
+# from brain.adapters.xai_adapter       import XAIAdapter         # unused / no key
 # from brain.adapters.deepseek_adapter  import DeepSeekAdapter     # needs balance
 # from brain.adapters.together_adapter  import TogetherAdapter     # requires CC
 
@@ -41,10 +41,10 @@ ALL_ADAPTERS = [
     PollinationsAdapter,
     OpenAIAdapter,
     OpenRouterAdapter,
-    XAIAdapter,
     SambaNovaAdapter,
     FireworksAdapter,
     CloudflareAdapter,
+    CohereAdapter,
 ]
 
 REGISTRY: dict = {

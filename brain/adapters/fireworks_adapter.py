@@ -8,7 +8,7 @@ Required env var:
     FIREWORKS_API_KEY  — obtain from https://fireworks.ai/
 
 Optional env var:
-    FIREWORKS_MODEL    — defaults to "accounts/fireworks/models/llama-v3p1-8b-instruct"
+    FIREWORKS_MODEL    — defaults to "accounts/fireworks/models/llama-v3p1-70b-instruct"
 """
 
 from __future__ import annotations
@@ -42,7 +42,7 @@ class FireworksAdapter(BaseAdapter):
         TaskType.CLASSIFICATION,
     ]
 
-    DEFAULT_MODEL = "accounts/fireworks/models/deepseek-v3p1"
+    DEFAULT_MODEL = "accounts/fireworks/models/llama-v3p1-70b-instruct"
     BASE_URL = "https://api.fireworks.ai/inference/v1"
 
     def __init__(self) -> None:
@@ -71,7 +71,10 @@ class FireworksAdapter(BaseAdapter):
             response = self._client.chat.completions.create(
                 model=self._model,
                 max_tokens=task.max_tokens,
-                messages=[{"role": "user", "content": task.full_prompt()}],
+                messages=[
+                    {"role": "system", "content": "Reply concisely and directly. No preamble or explanations unless the task requires them."},
+                    {"role": "user", "content": task.full_prompt()},
+                ],
             )
             choice  = response.choices[0]
             content = choice.message.content or ""

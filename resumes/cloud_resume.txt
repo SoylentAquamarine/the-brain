@@ -1,0 +1,85 @@
+Steve Pleasants
+Charlottesville, VA | 434-409-7172
+stephen.pleasants@gmail.com | linkedin.com/in/stephen-pleasants
+
+PROFESSIONAL SUMMARY
+
+Microsoft 365 Administrator with 10+ years of experience managing enterprise cloud productivity
+platforms and hybrid identity environments. Deep expertise in Entra ID (Azure AD), Exchange
+Online, MFA, Conditional Access, and identity governance across Microsoft 365. Proven ability to
+support large-scale tenants, resolve complex identity and access issues, and maintain highly
+available cloud collaboration systems.
+
+CORE TECHNICAL SKILLS
+
+Cloud & Identity: Microsoft 365 (Exchange Online, Teams, SharePoint, OneDrive, Intune),
+Entra ID (Azure AD), Azure AD Connect, MFA, Conditional Access, RBAC, Identity lifecycle
+management, Hybrid identity synchronization, SSO, SAML-based authentication, ADFS
+
+Security & Compliance: Microsoft Defender for Office 365, Microsoft Purview (compliance,
+audit, retention), Secure Score optimization, Identity protection & access governance
+
+Cloud Operations: M365 tenant administration (1,000-1,500+ users), License management,
+PowerShell automation for M365, Mailbox migration & mail flow troubleshooting
+
+Hybrid Infrastructure Support: Windows Server 2016-2025, Active Directory, DNS, Azure
+integration, VMware vSphere, Veeam, Unitrends
+
+CERTIFICATIONS
+
+Microsoft Cybersecurity Architect Expert | Microsoft Security Operations Analyst (SC-200)
+Azure Fundamentals (AZ-900) | M365 Fundamentals (MS-900) | M365 Teams Administrator
+VMware Certified Professional - Data Center Virtualization (VCP-DCV) 2024
+ISC2 CCSP | ISC2 SSCP | CompTIA Security+ | CySA+ | Network+ | A+ | PenTest+ | Linux+
+Cisco CCNA Cybersecurity | Fortinet Certified Associate | ITIL 4 Foundation
+
+PROFESSIONAL EXPERIENCE
+
+M365 Admin | City of Lynchburg | Lynchburg, VA | February 2025 - November 2025
+
+Managed Microsoft 365 tenant for 1,500+ users including Exchange Online, Teams, and SharePoint
+Managed user provisioning, deprovisioning, and access governance as part of identity lifecycle management
+Implemented Entra ID governance, Conditional Access, and MFA enforcement policies
+Administered Azure AD Connect ensuring stable hybrid identity synchronization including ADFS, SSO, and SAML
+Utilized Microsoft Purview for compliance, audit logging, and FOIA request workflows
+Resolved complex Tier 3 identity and access issues across enterprise environment
+Maintained 99.999% service availability for cloud identity and collaboration systems
+
+Hybrid Cloud Admin | JBT Corporation | Richmond, VA | September 2023 - May 2024
+
+Administered Microsoft 365 services including Exchange Online, Teams, and OneDrive for enterprise users
+Managed Entra ID identity lifecycle, Conditional Access policies, and MFA enforcement
+Supported Azure Virtual Machines and hybrid cloud integrations
+Monitored Azure AD Connect synchronization health and resolved identity sync issues
+Managed Microsoft Defender for Office 365 and tenant security configurations
+Supported Veeam backups for cloud-connected systems and data protection
+Managed device compliance with Microsoft Intune
+
+Systems Engineer | VTX Consulting | Charlottesville, VA | 2012 - Present
+
+Independent consulting practice providing Microsoft 365 administration, cloud identity management,
+and hybrid infrastructure support to SMB clients.
+
+Managed Microsoft 365 tenants including Exchange Online, SharePoint, Teams, and OneDrive
+Administered Entra ID with MFA enforcement, Conditional Access policies, and RBAC governance
+Configured Azure AD Connect for hybrid identity synchronization
+Performed Tier 2/3 cloud identity troubleshooting and end-user support
+Automated administrative tasks using PowerShell for user lifecycle and bulk operations
+
+Systems / Infrastructure Support | Babcock & Wilcox | 2009-2012
+
+Supported Windows Server and Active Directory infrastructure in enterprise environment
+Performed system patching and maintenance using WSUS
+Assisted with enterprise deployment automation using WDS
+Supported infrastructure security and system hardening initiatives
+
+Systems / Infrastructure Support | Virginia DMV | 2007-2008
+
+Supported enterprise Active Directory and Windows Server infrastructure across 75+ locations
+Assisted with VMware ESX infrastructure and SAN storage environments
+Supported identity and access management operations across distributed enterprise systems
+
+EDUCATION
+
+Bachelor of Science, Cybersecurity and Information Assurance | Western Governors University
+Master of Science, Information Technology Management | Western Governors University

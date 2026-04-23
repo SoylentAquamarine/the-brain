@@ -6,7 +6,11 @@ anything about individual SDKs.  Adding a new provider means:
   1. Subclass BaseAdapter
   2. Set the class-level metadata constants
   3. Implement is_available() and complete()
-  4. Register in adapters/__init__.py
+  4. Place adapter.py in a subfolder under brain/adapters/ — auto-discovered.
+
+Extension rules (enforced by convention):
+  - Adapters must not import from each other.
+  - Adapters must not modify router or registry logic.
 """
 
 from __future__ import annotations
@@ -34,6 +38,7 @@ class BaseAdapter(ABC):
     SUPPORTED_TASK_TYPES:   List[TaskType]  = list(TaskType)
     TIER:                   str             = "paid"
     COST_PER_1K_TOKENS:     Optional[float] = None
+    ENABLED:                bool            = True
 
     # ------------------------------------------------------------------
     # Abstract methods — every subclass must implement these
@@ -81,6 +86,23 @@ class BaseAdapter(ABC):
     # ------------------------------------------------------------------
     # Non-abstract helpers — available to all subclasses
     # ------------------------------------------------------------------
+
+    def validate_contract(self) -> bool:
+        """
+        Return True if this adapter satisfies the plugin contract.
+
+        Default implementation always returns True.  Override to add
+        adapter-specific self-checks (e.g. verify required env vars are
+        set, SDK is importable, metadata fields are populated).
+
+        Called by the plugin loader after instantiation; a False return
+        allows the loader to skip registration and log a warning.
+
+        Returns
+        -------
+        bool
+        """
+        return True
 
     def provider_info(self) -> dict:
         """

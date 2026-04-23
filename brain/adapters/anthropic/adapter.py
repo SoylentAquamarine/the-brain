@@ -28,6 +28,7 @@ class AnthropicAdapter(BaseAdapter):
     """Wraps the official `anthropic` Python SDK."""
 
     PROVIDER_KEY = "anthropic"
+    ENABLED = False
     TIER = "paid"
     COST_PER_1K_TOKENS = 0.003   # Sonnet 3.5 blended estimate; varies by model
 

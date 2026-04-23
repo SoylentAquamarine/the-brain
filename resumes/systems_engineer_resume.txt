@@ -1,0 +1,92 @@
+Steve Pleasants
+Charlottesville, VA | 434-409-7172
+stephen.pleasants@gmail.com | linkedin.com/in/stephen-pleasants
+
+PROFESSIONAL SUMMARY
+
+Senior Systems Engineer with 20+ years of experience designing, securing, and managing enterprise
+Windows, VMware, and hybrid cloud infrastructure. Deep expertise in Active Directory, large-scale
+virtualization (150+ nodes), SAN storage, and identity systems. Proven success delivering
+high-availability environments, infrastructure modernization, and enterprise security hardening
+across government and private-sector systems.
+
+CORE TECHNICAL SKILLS
+
+Infrastructure: Windows Server NT4-2025, Active Directory, DNS, DHCP, Group Policy, ADFS/SSO,
+SOC 2/ISO 27001, ServiceNow; Linux+ certified; familiar with Linux CLI in Ubuntu/CentOS
+
+Virtualization: VMware vSphere/ESXi (150+ nodes), Hyper-V, VM lifecycle management, ESXi hardening
+
+Cloud & Identity: Microsoft 365, Azure, Entra ID (Azure AD), Azure AD Connect, hybrid identity
+governance, Conditional Access, RBAC
+
+Storage: SAN/NAS (Dell Unity, HPE, EMC, EqualLogic), iSCSI, Fibre Channel, storage performance
+
+Networking: LAN/WAN, Cisco Meraki, SonicWall, firewalls, VPNs, VLAN segmentation, Wireshark
+
+Security: CIS baseline implementation, system hardening, vulnerability remediation, Zero Trust,
+access control, compliance
+
+Backup & DR: Veeam, Unitrends, enterprise backup architecture, disaster recovery testing
+
+Monitoring: SolarWinds, PRTG, ManageEngine Patch Manager Plus, WSUS, capacity planning
+
+Automation: PowerShell scripting, WDS deployment automation, bulk administration
+
+CERTIFICATIONS
+
+Security & Identity: Microsoft Cybersecurity Architect | Microsoft Security Operations Analyst (SC-200)
+ISC2 CCSP | ISC2 SSCP | CompTIA Security+ | CySA+ | PenTest+
+Infrastructure: VMware Certified Professional - Data Center Virtualization (VCP-DCV) 2024
+Cisco CCNA Cybersecurity | Fortinet Certified Associate | ITIL 4 Foundation
+Cloud: Azure Fundamentals (AZ-900) | M365 Fundamentals (MS-900) | M365 Teams Administrator
+Foundational: CompTIA Network+ | Linux+ | A+ | Project+
+Legacy: MCSE Windows NT4 | MCSE + Security Windows 2003 | Cisco CCNA R&S
+
+PROFESSIONAL EXPERIENCE
+
+Systems Engineer | City of Lynchburg | Lynchburg, VA | February 2025 - November 2025
+
+Engineered a custom HTA interface for Milestone Camera VMS, integrating video process management
+into sysadmin workflows and improving operational visibility
+Managed and optimized 65+ Windows Server (2016-2025) systems including full lifecycle management,
+patching, and performance tuning
+Hardened Active Directory, Group Policy, and Azure AD Connect for 1,500+ users, enforcing MFA
+and Conditional Access policies, VLAN Management
+Implemented structured patch management using ManageEngine for 65+ Windows servers
+Monitored infrastructure using PRTG and SolarWinds, maintaining 99.999% uptime
+
+Systems Engineer | JBT Corporation | Richmond, VA | September 2023 - May 2024
+
+Managed and optimized VMware vSphere clusters supporting enterprise workloads for 800+ users
+Performed ESXi patching, upgrades, and VM lifecycle management; led Hyper-V to VMware migration
+Managed Windows Server environments including CIS-aligned hardening, patching, and Active Directory
+Administered Veeam backup infrastructure and DR processes
+Managed Cisco Meraki switches and wireless, Azure Virtual Machines, Hybrid Cloud
+Microsoft Defender for Endpoint configuration and management
+
+Systems Engineer | VTX Consulting | Charlottesville, VA | 2012 - Present
+
+Designed and implemented Windows Server and VMware ESXi environments for diverse SMB clients
+Engineered secure hybrid Active Directory and Entra ID environments with MFA and privileged access
+Provided Azure and M365 management, patching, networking, upgrades, and workstation support
+
+Systems Engineer | Babcock and Wilcox | Lynchburg, VA | 2009 - 2012
+
+Hardened Windows Server infrastructure using CIS-aligned baselines across 450+ servers
+Automated server provisioning using WDS enabling deployment of up to 15 servers per day
+Designed and deployed Barracuda WAF-330 web application firewall load balancer solution
+Led patch governance initiatives using WSUS, systematically reducing vulnerability exposure
+
+Systems Engineer | Virginia DMV | Richmond, VA | 2007 - 2008
+
+Managed infrastructure across 75+ remote locations responsible for 700+ physical and virtual servers
+Developed internal password management application reducing reset time from 4+ hours to instantaneous
+Administered AD environments; managed 175+ VMware ESX servers and EMC/HP SAN storage
+Served as team interface to change control committee
+Managed two large Windows 2003 AD environments
+
+EDUCATION
+
+Master of Science, Information Technology Management | Western Governors University
+Bachelor of Science, Cybersecurity and Information Assurance | Western Governors University

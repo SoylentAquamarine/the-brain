@@ -1,0 +1,93 @@
+Steve Pleasants
+Charlottesville, VA | 434-409-7172
+stephen.pleasants@gmail.com | linkedin.com/in/stephen-pleasants
+
+PROFESSIONAL SUMMARY
+
+Infrastructure Security Engineer with more than 25 years of experience hardening enterprise
+Windows, Linux, VMware, and hybrid cloud environments. Expert in identity security
+(Entra ID/Active Directory), vulnerability management, and implementing CIS-aligned baselines
+to reduce organizational attack surfaces. Proven track record securing large-scale, multi-site
+infrastructures through structured patch governance, Zero Trust principles, and proactive threat
+mitigation. Holds dual Master's and Bachelor's degrees and an extensive security certification
+portfolio.
+
+CORE TECHNICAL SECURITY COMPETENCIES
+
+Defensive Operations: CIS Baseline Implementation, Infrastructure Hardening (Windows/VMware),
+Vulnerability Remediation, Patch Governance, Audit Preparation, PowerShell for Compliance
+Automation
+
+Identity & Cloud Security: Active Directory Security, Entra ID (M365) Governance, MFA &
+Conditional Access, RBAC, Privileged Access Management, Hybrid Identity Integration, Azure AD
+Connect
+
+Infrastructure & Network Defense: VMware vSphere Hardening, ESXi Patch Management,
+SAN-backed Workload Protection, Firewall Configuration & Segmentation, Cisco Meraki,
+Traffic Analysis (Wireshark)
+
+Resilience & Recovery: Ransomware Recovery Preparedness, Veeam Backup Integrity, Disaster
+Recovery Validation, Immutable Backup Architecture, Unitrends
+
+Monitoring & Compliance: SolarWinds, PRTG, ManageEngine, Microsoft Purview, Microsoft Defender
+for Office 365, Secure Score Optimization, audit logging, Splunk, Microsoft Sentinel (Azure SIEM),
+log analysis, security event monitoring, SOC 2, ISO 27001
+
+CERTIFICATIONS
+
+Security & Identity: Microsoft Cybersecurity Architect | Microsoft Security Operations Analyst (SC-200)
+ISC2 CCSP | ISC2 SSCP | CompTIA Security+ | CySA+ | PenTest+
+Infrastructure: VMware Certified Professional - Data Center Virtualization (VCP-DCV) 2024
+Cisco CCNA Cybersecurity | Fortinet Certified Associate | ITIL 4 Foundation
+Cloud: Azure Fundamentals (AZ-900) | M365 Fundamentals (MS-900) | M365 Teams Administrator
+Foundational: CompTIA Network+ | Linux+ | A+ | Project+
+Legacy: MCSE Windows NT4 | MCSE+Security Windows 2003 | Cisco CCNA R&S
+
+PROFESSIONAL EXPERIENCE
+
+Systems Engineer | City of Lynchburg | Lynchburg, VA | February 2025 - November 2025
+
+Orchestrated Entra ID and Active Directory security controls, enforcing MFA, Conditional Access,
+and RBAC for 1,500+ users
+Implemented structured patch governance via ManageEngine for 65+ Windows servers, eliminating
+critical vulnerability exposure
+Led decommissioning of 20+ legacy systems (2003-2012) to eliminate unsupported, high-risk
+platforms from production
+Enforced CIS-aligned hardening standards across VMware vSphere and Windows Server (2016-2022)
+via Group Policy
+Monitored security posture using SolarWinds and PRTG, validated DR readiness via Unitrends
+Utilized Microsoft Purview for compliance management and FOIA request processing
+
+Systems Engineer | JBT Corporation | Richmond, VA | September 2023 - May 2024
+
+Secured VMware vSphere and Windows Server environments through hardened configuration baselines
+and accelerated vulnerability remediation cycles, achieving 99.999% uptime
+Managed hybrid Active Directory and Entra ID environments with focus on RBAC enforcement and
+privileged access management; endpoint management with Intune and Defender for Endpoint
+Administered Cisco Meraki switches for network segmentation and secure wireless infrastructure
+Orchestrated Veeam backup validation and structured DR testing for ransomware resilience
+
+Systems Engineer | VTX Consulting | Charlottesville, VA | 2012 - Present
+
+Deployed CIS-aligned hardening standards for Windows Server and VMware ESXi environments
+Engineered secure Active Directory and Entra ID environments with MFA enforcement and privileged
+access management
+Performed vulnerability assessments and implemented remediation plans
+Provided security-focused Tier 2/3 support including incident response and patch governance
+
+Systems Engineer | Babcock and Wilcox | Lynchburg, VA | 2009 - 2012
+
+Implemented CIS-aligned hardening standards across 450+ Windows Server systems
+Led patch governance initiatives using WSUS, systematically reducing vulnerability exposure
+Automated server provisioning using WDS, enabling rapid and consistent deployment at scale
+
+Systems Engineer | Virginia DMV | Richmond, VA | 2007 - 2008
+
+Managed infrastructure security across 75+ remote locations
+Developed internal password management application reducing reset time from 4+ hours to instantaneous
+Administered two large Windows 2003 AD environments with responsibility for 700+ servers
+
+EDUCATION
+
+Master of Science, Information Technology Management | Western Governors University
+Bachelor of Science, Cybersecurity and Information Assurance | Western Governors University

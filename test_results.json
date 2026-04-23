@@ -1,0 +1,192 @@
+{
+  "passed": [
+    {
+      "provider": "groq",
+      "model": "llama-3.1-8b-instant",
+      "latency_ms": 1142,
+      "response": "4"
+    },
+    {
+      "provider": "groq",
+      "model": "llama-3.3-70b-versatile",
+      "latency_ms": 1325,
+      "response": "4"
+    },
+    {
+      "provider": "mistral",
+      "model": "mistral-small-latest",
+      "latency_ms": 1330,
+      "response": "4"
+    },
+    {
+      "provider": "mistral",
+      "model": "mistral-large-latest",
+      "latency_ms": 1363,
+      "response": "4"
+    },
+    {
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "latency_ms": 1712,
+      "response": "4"
+    },
+    {
+      "provider": "gemini",
+      "model": "gemini-2.5-flash-lite",
+      "latency_ms": 2726,
+      "response": "4"
+    },
+    {
+      "provider": "cerebras",
+      "model": "llama3.1-8b",
+      "latency_ms": 3804,
+      "response": "4"
+    },
+    {
+      "provider": "openrouter",
+      "model": "meta-llama/llama-3.3-70b-instruct",
+      "latency_ms": 2204,
+      "response": "4"
+    },
+    {
+      "provider": "fireworks",
+      "model": "accounts/fireworks/models/deepseek-v3p1",
+      "latency_ms": 2251,
+      "response": "First, the user asked: \"What is 2+2?\" They specifi"
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "latency_ms": 1759,
+      "response": "4"
+    },
+    {
+      "provider": "pollinations",
+      "model": "mistral",
+      "latency_ms": 806,
+      "response": "4"
+    },
+    {
+      "provider": "pollinations",
+      "model": "openai",
+      "latency_ms": 2039,
+      "response": "4"
+    },
+    {
+      "provider": "pollinations",
+      "model": "llama",
+      "latency_ms": 738,
+      "response": "4"
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4o",
+      "latency_ms": 2546,
+      "response": "4"
+    },
+    {
+      "provider": "fireworks",
+      "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
+      "latency_ms": 4586,
+      "response": "4"
+    },
+    {
+      "provider": "sambanova",
+      "model": "Meta-Llama-3.3-70B-Instruct",
+      "latency_ms": 12128,
+      "response": "4"
+    }
+  ],
+  "failed": [
+    {
+      "provider": "groq",
+      "model": "deepseek-r1-distill-llama-70b",
+      "latency_ms": 1064,
+      "response": "400 Client Error: Bad Request for url: https://api.groq.com/openai/v1/chat/compl"
+    },
+    {
+      "provider": "sambanova",
+      "model": "Meta-Llama-3.1-405B-Instruct",
+      "latency_ms": 639,
+      "response": "410 Client Error: GONE for url: https://api.sambanova.ai/v1/chat/completions"
+    },
+    {
+      "provider": "sambanova",
+      "model": "DeepSeek-R1",
+      "latency_ms": 666,
+      "response": "410 Client Error: GONE for url: https://api.sambanova.ai/v1/chat/completions"
+    },
+    {
+      "provider": "openrouter",
+      "model": "google/gemma-3-27b-it:free",
+      "latency_ms": 703,
+      "response": "429 Client Error: Too Many Requests for url: https://openrouter.ai/api/v1/chat/c"
+    },
+    {
+      "provider": "huggingface",
+      "model": "meta-llama/Llama-3.1-8B-Instruct",
+      "latency_ms": 360,
+      "response": "404 Client Error: Not Found for url: https://api-inference.huggingface.co/v1/cha"
+    },
+    {
+      "provider": "huggingface",
+      "model": "Qwen/Qwen2.5-72B-Instruct",
+      "latency_ms": 429,
+      "response": "404 Client Error: Not Found for url: https://api-inference.huggingface.co/v1/cha"
+    },
+    {
+      "provider": "huggingface",
+      "model": "mistralai/Mistral-7B-Instruct-v0.3",
+      "latency_ms": 408,
+      "response": "404 Client Error: Not Found for url: https://api-inference.huggingface.co/v1/cha"
+    },
+    {
+      "provider": "openrouter",
+      "model": "mistralai/mistral-7b-instruct:free",
+      "latency_ms": 1525,
+      "response": "404 Client Error: Not Found for url: https://openrouter.ai/api/v1/chat/completio"
+    },
+    {
+      "provider": "cohere",
+      "model": "command-r",
+      "latency_ms": 554,
+      "response": "401 Client Error: Unauthorized for url: https://api.cohere.com/compatibility/v1/"
+    },
+    {
+      "provider": "cohere",
+      "model": "command-a-03-2025",
+      "latency_ms": 598,
+      "response": "401 Client Error: Unauthorized for url: https://api.cohere.com/compatibility/v1/"
+    },
+    {
+      "provider": "cerebras",
+      "model": "llama3.1-70b",
+      "latency_ms": 3697,
+      "response": "404 Client Error: Not Found for url: https://api.cerebras.ai/v1/chat/completions"
+    },
+    {
+      "provider": "openrouter",
+      "model": "deepseek/deepseek-chat:free",
+      "latency_ms": 3516,
+      "response": "404 Client Error: Not Found for url: https://openrouter.ai/api/v1/chat/completio"
+    },
+    {
+      "provider": "cohere",
+      "model": "command-r-plus",
+      "latency_ms": 4431,
+      "response": "401 Client Error: Unauthorized for url: https://api.cohere.com/compatibility/v1/"
+    },
+    {
+      "provider": "fireworks",
+      "model": "accounts/fireworks/models/qwen2p5-72b-instruct",
+      "latency_ms": 7349,
+      "response": "404 Client Error: Not Found for url: https://api.fireworks.ai/inference/v1/chat/"
+    },
+    {
+      "provider": "openrouter",
+      "model": "meta-llama/llama-3.2-3b-instruct:free",
+      "latency_ms": 23935,
+      "response": "'choices'"
+    }
+  ]
+}

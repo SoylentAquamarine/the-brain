@@ -1,55 +1,36 @@
-"""
-adapters/__init__.py — Active provider registry for The Brain.
+import importlib
+import inspect
+import logging
+from pathlib import Path
+from brain.adapters.base import BaseAdapter
 
-Only truly free, no-credit-card-required providers are in the REGISTRY.
-Adapter files for paid/CC providers still exist if you want to re-enable them
-later — just move them from the inactive section into ALL_ADAPTERS.
-"""
+logger = logging.getLogger(__name__)
 
-# ── Active free-tier adapters (API key required) ───────────────────────────
-from brain.adapters.groq_adapter        import GroqAdapter
-from brain.adapters.gemini_adapter      import GeminiAdapter
-from brain.adapters.mistral_adapter     import MistralAdapter
-from brain.adapters.cerebras_adapter    import CerebrasAdapter
-from brain.adapters.huggingface_adapter import HuggingFaceAdapter
 
-# ── Active keyless adapters (no sign-up, no key, completely free) ──────────
-from brain.adapters.pollinations_adapter import PollinationsAdapter
+def load_adapters() -> dict:
+    here = Path(__file__).parent
+    registry = {}
+    for plugin_dir in sorted(here.iterdir()):
+        if not plugin_dir.is_dir() or not (plugin_dir / "adapter.py").exists():
+            continue
+        module_path = f"brain.adapters.{plugin_dir.name}.adapter"
+        try:
+            mod = importlib.import_module(module_path)
+        except Exception as e:
+            logger.warning("Failed to import '%s': %s", module_path, e)
+            continue
+        for _, cls in inspect.getmembers(mod, inspect.isclass):
+            if (
+                issubclass(cls, BaseAdapter)
+                and cls is not BaseAdapter
+                and getattr(cls, "ENABLED", True)
+            ):
+                registry[cls.PROVIDER_KEY] = cls()
 
-# ── Active paid adapters (key configured in .env) ─────────────────────────
-from brain.adapters.openai_adapter      import OpenAIAdapter
+    logger.info("Loaded %d adapters: %s", len(registry), sorted(registry.keys()))
+    return registry
 
-# ── New free-tier adapters (API key required, no CC) ──────────────────────
-from brain.adapters.openrouter_adapter   import OpenRouterAdapter
-from brain.adapters.sambanova_adapter    import SambaNovaAdapter
-from brain.adapters.fireworks_adapter    import FireworksAdapter
-from brain.adapters.cloudflare_adapter   import CloudflareAdapter
-from brain.adapters.cohere_adapter       import CohereAdapter
 
-# ── Inactive (require CC or paid balance) — import kept for future use ─────
-# from brain.adapters.anthropic_adapter import AnthropicAdapter   # paid API
-# from brain.adapters.xai_adapter       import XAIAdapter         # unused / no key
-# from brain.adapters.deepseek_adapter  import DeepSeekAdapter     # needs balance
-# from brain.adapters.together_adapter  import TogetherAdapter     # requires CC
-
-ALL_ADAPTERS = [
-    GroqAdapter,
-    GeminiAdapter,
-    MistralAdapter,
-    CerebrasAdapter,
-    HuggingFaceAdapter,
-    PollinationsAdapter,
-    OpenAIAdapter,
-    OpenRouterAdapter,
-    SambaNovaAdapter,
-    FireworksAdapter,
-    CloudflareAdapter,
-    CohereAdapter,
-]
-
-REGISTRY: dict = {
-    cls.PROVIDER_KEY: cls()
-    for cls in ALL_ADAPTERS
-}
-
+REGISTRY = load_adapters()
+ALL_ADAPTERS = [type(v) for v in REGISTRY.values()]
 __all__ = ["REGISTRY", "ALL_ADAPTERS"]

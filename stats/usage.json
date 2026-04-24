@@ -2,10 +2,10 @@
   "providers": {
     "cerebras": {
       "provider": "cerebras",
-      "calls": 5,
-      "tokens": 1278,
+      "calls": 6,
+      "tokens": 1329,
       "cost_usd": 0.0,
-      "total_latency": 1614.2450000043027,
+      "total_latency": 1946.6900000115857,
       "errors": 0
     },
     "gemini": {
@@ -42,19 +42,28 @@
     },
     "groq": {
       "provider": "groq",
-      "calls": 1,
-      "tokens": 541,
+      "calls": 2,
+      "tokens": 631,
       "cost_usd": 0.0,
-      "total_latency": 1145.3888999822084,
+      "total_latency": 1742.3924999602605,
       "errors": 0
     }
   },
-  "total_calls": 15,
-  "total_tokens": 5611,
+  "total_calls": 17,
+  "total_tokens": 5752,
   "total_cost_usd": 1.3349999999999998e-05,
   "claude_calls": 0,
   "claude_tokens": 0,
-  "worker_tokens": 5611,
+  "worker_tokens": 5752,
   "first_call_ts": 1776448625.4107182,
-  "last_call_ts": 1776974185.4249754
+  "last_call_ts": 1777056888.133666,
+  "call_log": [
+    {
+      "ts": 1777056888.133666,
+      "provider": "groq",
+      "type": "factual_qa",
+      "tokens": 90,
+      "ms": 597
+    }
+  ]
 }

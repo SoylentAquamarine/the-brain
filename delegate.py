@@ -34,6 +34,7 @@ load_dotenv()
 
 from brain.adapters import REGISTRY
 from brain.constants import DEFAULT_MAX_TOKENS
+from brain.stats import tracker
 from brain.task import Task, TaskType
 
 
@@ -142,6 +143,7 @@ def main() -> int:
     )
 
     result = adapter.complete(task)
+    tracker.record(result, task)
 
     if not result.succeeded:
         print(f"ERROR: {result.error}", file=sys.stderr)

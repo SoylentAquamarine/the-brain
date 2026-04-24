@@ -42,7 +42,16 @@ class SambaNovaAdapter(BaseAdapter):
         TaskType.EXTRACTION,
     ]
 
+    DESCRIPTION   = "SambaNova RDU — 70B/405B Llama, highest free-tier quality for reasoning"
+    QUALITY_SCORE = 9
+    SPEED_TIER    = "fast"
+
     DEFAULT_MODEL = "Meta-Llama-3.3-70B-Instruct"
+    MODELS = [
+        "Meta-Llama-3.3-70B-Instruct",
+        "Meta-Llama-3.1-405B-Instruct",
+        "Qwen2.5-72B-Instruct",
+    ]
     BASE_URL = "https://api.sambanova.ai/v1"
 
     def __init__(self) -> None:

@@ -42,7 +42,16 @@ class FireworksAdapter(BaseAdapter):
         TaskType.CLASSIFICATION,
     ]
 
+    DESCRIPTION   = "Fireworks AI — DeepSeek V3 and Llama 70B, strong on coding"
+    QUALITY_SCORE = 7
+    SPEED_TIER    = "fast"
+
     DEFAULT_MODEL = "accounts/fireworks/models/llama-v3p3-70b-instruct"
+    MODELS = [
+        "accounts/fireworks/models/llama-v3p3-70b-instruct",
+        "accounts/fireworks/models/deepseek-v3-0324",
+        "accounts/fireworks/models/qwen3-30b-a3b",
+    ]
     BASE_URL = "https://api.fireworks.ai/inference/v1"
 
     def __init__(self) -> None:

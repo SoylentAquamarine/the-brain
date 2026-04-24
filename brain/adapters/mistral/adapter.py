@@ -57,7 +57,16 @@ class MistralAdapter(BaseAdapter):
         TaskType.EXTRACTION,
     ]
 
+    DESCRIPTION   = "Mistral Small — best free quality for coding, creative, and extraction"
+    QUALITY_SCORE = 8
+    SPEED_TIER    = "standard"
+
     DEFAULT_MODEL = "mistral-small-latest"
+    MODELS = [
+        "mistral-small-latest",
+        "open-mistral-7b",
+        "open-mixtral-8x7b",
+    ]
 
     def __init__(self) -> None:
         """Initialise the Mistral client from environment variables."""

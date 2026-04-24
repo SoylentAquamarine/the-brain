@@ -57,7 +57,16 @@ class GeminiAdapter(BaseAdapter):
 
     # gemini-2.5-flash-lite confirmed working on free tier (2026-04-17).
     # gemini-2.0-flash has a zero free-tier quota on new API keys.
+    DESCRIPTION   = "Google Gemini — 1M token context, best for long docs and multilingual"
+    QUALITY_SCORE = 8
+    SPEED_TIER    = "standard"
+
     DEFAULT_MODEL = "gemini-2.5-flash-lite"
+    MODELS = [
+        "gemini-2.5-flash-lite",
+        "gemini-2.5-flash",
+        "gemini-2.0-flash",
+    ]
 
     def __init__(self) -> None:
         """Initialise the Gemini client from environment variables."""

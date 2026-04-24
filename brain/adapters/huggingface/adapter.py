@@ -52,7 +52,16 @@ class HuggingFaceAdapter(BaseAdapter):
 
     # Qwen2.5-72B is openly accessible on the free serverless tier.
     # Meta-Llama models are gated and may 400 if terms not accepted.
+    DESCRIPTION   = "HuggingFace serverless inference — broad model selection, last-resort fallback"
+    QUALITY_SCORE = 5
+    SPEED_TIER    = "slow"
+
     DEFAULT_MODEL = "Qwen/Qwen2.5-72B-Instruct"
+    MODELS = [
+        "Qwen/Qwen2.5-72B-Instruct",
+        "Qwen/Qwen2.5-Coder-32B-Instruct",
+        "meta-llama/Llama-3.1-8B-Instruct",
+    ]
 
     def __init__(self) -> None:
         """Initialise the HuggingFace client from environment variables."""
@@ -61,10 +70,7 @@ class HuggingFaceAdapter(BaseAdapter):
         self._client     = None
 
         if _SDK_AVAILABLE and self._api_key:
-            self._client = InferenceClient(
-                model=self._model_name,
-                token=self._api_key,
-            )
+            self._client = InferenceClient(token=self._api_key)
 
     def is_available(self) -> bool:
         """Return True if the SDK is installed and an API key is configured."""
@@ -91,6 +97,7 @@ class HuggingFaceAdapter(BaseAdapter):
         start = self._start_timer()
         try:
             response = self._client.chat_completion(
+                model=self._model_name,
                 messages=[{"role": "user", "content": task.full_prompt()}],
                 max_tokens=task.max_tokens,
             )

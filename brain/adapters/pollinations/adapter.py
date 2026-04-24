@@ -51,7 +51,12 @@ class PollinationsAdapter(BaseAdapter):
         TaskType.SUMMARIZATION,
     ]
 
+    DESCRIPTION   = "Pollinations.ai — completely keyless, no sign-up; text and image generation"
+    QUALITY_SCORE = 3
+    SPEED_TIER    = "slow"
+
     DEFAULT_MODEL = "openai"   # Pollinations text uses openai-compatible model names
+    MODELS = ["openai"]  # text endpoint; single health-check target
 
     def __init__(self) -> None:
         # No credentials needed — always available if requests is installed.

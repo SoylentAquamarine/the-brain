@@ -23,10 +23,8 @@ DYNAMIC (opt-in)
 
 from __future__ import annotations
 
-import json
 import logging
 import os
-from pathlib import Path
 from typing import Dict, List, Optional
 
 from brain.constants import ROUTING_MAX_TOKENS, ROUTING_PROMPT_SNIPPET_LEN
@@ -34,106 +32,101 @@ from brain.task import Task, TaskType, Priority
 
 logger = logging.getLogger(__name__)
 
-_HEALTH_LOG = Path(__file__).parent.parent / "stats" / "health_log.json"
-
-# Health status tiers used for routing priority.
-# ok/unknown → normal position; degraded → after ok; error → last resort.
-_HEALTH_TIER: Dict[str, int] = {"ok": 0, "degraded": 1, "error": 2, "no_key": 2}
-
-
-def _load_health_snapshot() -> Dict[str, str]:
-    """
-    Read health_log.json and return the most recent status per provider.
-
-    Returns {} if the file is missing or unreadable — callers treat
-    an absent entry as "ok" so routing is unaffected.
-    """
-    if not _HEALTH_LOG.exists():
-        return {}
-    try:
-        entries = json.loads(_HEALTH_LOG.read_text(encoding="utf-8"))
-        snapshot: Dict[str, str] = {}
-        # Entries are appended chronologically; iterate newest-first.
-        for entry in reversed(entries):
-            key = entry.get("provider", "")
-            if key and key not in snapshot:
-                snapshot[key] = entry.get("status", "ok")
-        return snapshot
-    except Exception as exc:
-        logger.warning("Could not load health snapshot: %s", exc)
-        return {}
-
 # ---------------------------------------------------------------------------
-# Static routing table
+# Curated routing table  (single source of expert knowledge)
 # ---------------------------------------------------------------------------
 #
 # Format: { TaskType: [provider_key_in_preference_order] }
 #
 # Design principles encoded here:
-#   - cerebras leads most lists — it is the fastest free model (~1500 tok/s).
-#   - gemini leads summarisation — its 1M-token context window is unique.
+#   - cerebras leads speed-sensitive tasks (~1500 tok/s).
+#   - gemini leads summarisation — unique 1M-token context window.
 #   - mistral leads coding/reasoning — best quality among free models.
-#   - huggingface always anchors the end as a reliable final fallback.
-#   - Priority.LOW tasks skip to the first available provider (see _static_route).
+#   - huggingface and openrouter anchor the end as last-resort fallbacks.
+#
+# This table covers the providers that existed when it was written.
+# Any provider NOT listed here is automatically appended by
+# build_routing_table() based on its SUPPORTED_TASK_TYPES and QUALITY_SCORE.
+# You never need to edit this table when adding a new provider.
 
-STATIC_ROUTING_TABLE: Dict[TaskType, List[str]] = {
-    # Speed-first: cerebras is fastest for quick binary/label tasks.
-    # cloudflare added as a fast edge option after groq.
-    TaskType.CLASSIFICATION: ["cerebras", "groq",       "cloudflare", "mistral",    "gemini",     "openrouter", "huggingface"],
-
-    # Factual Q&A: speed over depth.
-    TaskType.FACTUAL_QA:     ["cerebras", "groq",       "cloudflare", "gemini",     "mistral",    "openrouter", "huggingface"],
-
-    # Gemini's 1M context window makes it ideal for long documents.
-    TaskType.SUMMARIZATION:  ["gemini",   "mistral",    "sambanova",  "cerebras",   "groq",       "openrouter", "huggingface"],
-
-    # Mistral is the strongest free model for structured extraction.
-    TaskType.EXTRACTION:     ["mistral",  "sambanova",  "gemini",     "groq",       "cerebras",   "openrouter", "huggingface"],
-
-    # Gemini handles multilingual best among the free providers.
-    TaskType.TRANSLATION:    ["gemini",   "mistral",    "cerebras",   "groq",       "openrouter", "huggingface"],
-
-    # Fireworks (DeepSeek V3) and SambaNova 70B are strong on code.
-    TaskType.CODING:         ["mistral",  "fireworks",  "sambanova",  "cerebras",   "groq",       "gemini",     "openrouter", "huggingface"],
-
-    # SambaNova's 70B leads on deep reasoning; mistral second.
-    TaskType.REASONING:      ["sambanova","mistral",    "gemini",     "fireworks",  "cerebras",   "groq",       "openrouter", "huggingface"],
-
-    # Creative writing: mistral and sambanova have the most nuance.
-    TaskType.CREATIVE:       ["mistral",  "sambanova",  "gemini",     "huggingface","cerebras",   "groq",       "openrouter"],
-
-    # General catch-all: fast cerebras/groq first, escalate for quality.
-    TaskType.GENERAL:        ["cerebras", "groq",       "cloudflare", "gemini",     "mistral",    "fireworks",  "openrouter", "huggingface"],
+_CURATED_ROUTING_TABLE: Dict[TaskType, List[str]] = {
+    TaskType.CLASSIFICATION: ["cerebras", "groq",      "cloudflare", "mistral",   "gemini",    "openrouter", "huggingface"],
+    TaskType.FACTUAL_QA:     ["cerebras", "groq",      "cloudflare", "gemini",    "mistral",   "openrouter", "huggingface"],
+    TaskType.SUMMARIZATION:  ["gemini",   "mistral",   "sambanova",  "cerebras",  "groq",      "openrouter", "huggingface"],
+    TaskType.EXTRACTION:     ["mistral",  "sambanova", "gemini",     "groq",      "cerebras",  "openrouter", "huggingface"],
+    TaskType.TRANSLATION:    ["gemini",   "mistral",   "cerebras",   "groq",      "openrouter","huggingface"],
+    TaskType.CODING:         ["mistral",  "fireworks", "sambanova",  "cerebras",  "groq",      "gemini",     "openrouter", "huggingface"],
+    TaskType.REASONING:      ["sambanova","mistral",   "gemini",     "fireworks", "cerebras",  "groq",       "openrouter", "huggingface"],
+    TaskType.CREATIVE:       ["mistral",  "sambanova", "gemini",     "huggingface","cerebras", "groq",       "openrouter"],
+    TaskType.GENERAL:        ["cerebras", "groq",      "cloudflare", "gemini",    "mistral",   "fireworks",  "openrouter", "huggingface"],
 }
 
-# ---------------------------------------------------------------------------
-# Dynamic routing prompt
-# ---------------------------------------------------------------------------
-#
-# Sent to Claude when dynamic routing is enabled.  Kept deliberately short
-# to minimise the token cost of the routing decision itself.
-# The model should reply with exactly one provider key word.
+# Providers that anchor the very end of every fallback chain.
+# New providers insert BEFORE these, not after.
+_LAST_RESORT = {"huggingface", "openrouter"}
 
-_ROUTING_PROMPT_TEMPLATE = """\
-You are a routing controller for an AI orchestration system.
-Available providers and their strengths:
-  cerebras    : FREE, ultra-fast (~1500 tok/s)  — classification, short Q&A
-  groq        : FREE, very fast (~400 tok/s)    — classification, factual Q&A
-  cloudflare  : FREE, edge-hosted, fast         — general, classification
-  gemini      : FREE, 1M context window         — long docs, summarisation, translation
-  mistral     : FREE, high quality              — coding, extraction, creative
-  sambanova   : FREE, 70B model, best quality   — reasoning, coding, creative
-  fireworks   : FREE, DeepSeek V3               — coding, general
-  openrouter  : FREE tier available             — general fallback, many models
-  huggingface : FREE, reliable fallback         — general tasks
 
-Task type   : {task_type}
-Priority    : {priority}
-Prompt (first {snippet_len} chars): {prompt_snippet}
+def build_routing_table(registry: dict) -> Dict[TaskType, List[str]]:
+    """
+    Return a complete routing table derived from the curated base plus any
+    providers present in *registry* that are not already listed.
 
-Reply with ONLY the provider key (one lowercase word).
-Choose the cheapest free option that can handle this task adequately.\
-"""
+    New providers are inserted before last-resort fallbacks, ordered by
+    free-tier preference then QUALITY_SCORE descending.  This means you
+    never need to edit _CURATED_ROUTING_TABLE when adding an adapter.
+    """
+    table: Dict[TaskType, List[str]] = {tt: list(v) for tt, v in _CURATED_ROUTING_TABLE.items()}
+
+    curated_all: set = {k for providers in _CURATED_ROUTING_TABLE.values() for k in providers}
+    new_keys = [k for k in registry if k not in curated_all]
+
+    if not new_keys:
+        return table
+
+    _speed_order = {"ultra_fast": 0, "fast": 1, "standard": 2, "slow": 3}
+
+    def _sort_key(k: str):
+        a = registry[k]
+        return (0 if a.TIER == "free" else 1, -a.QUALITY_SCORE, _speed_order.get(a.SPEED_TIER, 2))
+
+    for task_type in TaskType:
+        relevant   = sorted([k for k in new_keys if task_type in registry[k].SUPPORTED_TASK_TYPES], key=_sort_key)
+        irrelevant = sorted([k for k in new_keys if k not in set(relevant)], key=_sort_key)
+
+        existing = table.get(task_type, [])
+        # Insert relevant new providers before last-resort anchors.
+        split = next((i for i, p in enumerate(existing) if p in _LAST_RESORT), len(existing))
+        table[task_type] = existing[:split] + relevant + existing[split:] + irrelevant
+
+    return table
+
+
+def build_routing_prompt_template(registry: dict) -> str:
+    """
+    Build the dynamic routing prompt from registry metadata.
+
+    Called once at Router.__init__ so the prompt always reflects the
+    current provider set without any manual edits.
+    """
+    _speed_label = {"ultra_fast": "ultra-fast", "fast": "fast", "standard": "standard", "slow": "slow"}
+    lines = []
+    for key, adapter in sorted(registry.items(), key=lambda kv: -kv[1].QUALITY_SCORE):
+        tier  = adapter.TIER.upper()
+        speed = _speed_label.get(adapter.SPEED_TIER, adapter.SPEED_TIER)
+        tasks = ", ".join(t.value for t in adapter.SUPPORTED_TASK_TYPES[:4])
+        lines.append(f"  {key:<14}: {tier}, {speed} — {tasks}")
+
+    provider_block = "\n".join(lines)
+    return (
+        "You are a routing controller for an AI orchestration system.\n"
+        "Available providers and their strengths:\n"
+        f"{provider_block}\n\n"
+        "Task type   : {task_type}\n"
+        "Priority    : {priority}\n"
+        "Prompt (first {snippet_len} chars): {prompt_snippet}\n\n"
+        "Reply with ONLY the provider key (one lowercase word).\n"
+        "Choose the cheapest free option that can handle this task adequately."
+    )
 
 
 class Router:
@@ -150,26 +143,18 @@ class Router:
 
     def __init__(self, registry: dict, dynamic: bool = False) -> None:
         self._registry = registry
-        # Allow env var to override the constructor flag so callers don't
-        # need to change code to enable dynamic routing.
         self._dynamic = dynamic or bool(os.getenv("BRAIN_DYNAMIC_ROUTING", ""))
 
-        # Pre-compute which providers are available so route() doesn't
-        # repeatedly call is_available() on every request.
         self._available: List[str] = [
             key for key, adapter in registry.items()
             if adapter.is_available()
         ]
-        # Set for O(1) membership checks inside _preference_order.
         self._available_set: set = set(self._available)
 
-        # Most recent health status per provider from health_log.json.
-        # Loaded once at init; reflects the last manual/CI health check run.
-        self._health: Dict[str, str] = _load_health_snapshot()
-        if self._health:
-            degraded = [k for k, v in self._health.items() if v in ("degraded", "error")]
-            if degraded:
-                logger.info("Health snapshot loaded. Degraded/errored: %s", degraded)
+        # Routing table and prompt are derived from registry metadata so new
+        # providers are picked up automatically without editing this file.
+        self._routing_table: Dict[TaskType, List[str]] = build_routing_table(registry)
+        self._routing_prompt_template: str = build_routing_prompt_template(registry)
 
         logger.info("Router ready. Available providers: %s", self._available)
 
@@ -285,7 +270,7 @@ class Router:
         -------
         list[str]
         """
-        preference_list = STATIC_ROUTING_TABLE.get(task.task_type, [])
+        preference_list = self._routing_table.get(task.task_type, [])
         pref_set        = set(preference_list)
 
         # Single filtering pass — each available provider lands in exactly one list.
@@ -302,21 +287,6 @@ class Router:
             free = [p for p in full if self._registry[p].TIER == "free"]
             paid = [p for p in full if self._registry[p].TIER != "free"]
             full = free + paid
-
-        # Health reordering: bucket by last known status, preserving relative
-        # order within each bucket. Unknown providers treated as "ok".
-        # ok/unknown → degraded → error  (error providers stay as last resort).
-        if self._health:
-            buckets: Dict[int, List[str]] = {0: [], 1: [], 2: []}
-            for p in full:
-                tier = _HEALTH_TIER.get(self._health.get(p, "ok"), 0)
-                buckets[tier].append(p)
-            full = buckets[0] + buckets[1] + buckets[2]
-            if buckets[1] or buckets[2]:
-                logger.debug(
-                    "Health reorder — ok: %s  degraded: %s  error: %s",
-                    buckets[0], buckets[1], buckets[2],
-                )
 
         # Promote top to position 0 without re-filtering the rest.
         if top and top != full[0]:
@@ -345,7 +315,7 @@ class Router:
         try:
             anthropic_adapter = self._registry["anthropic"]
 
-            prompt = _ROUTING_PROMPT_TEMPLATE.format(
+            prompt = self._routing_prompt_template.format(
                 task_type=task.task_type.value,
                 priority=task.priority.value,
                 snippet_len=ROUTING_PROMPT_SNIPPET_LEN,

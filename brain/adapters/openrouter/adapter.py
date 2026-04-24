@@ -42,7 +42,17 @@ class OpenRouterAdapter(BaseAdapter):
 
     SUPPORTED_TASK_TYPES: List[TaskType] = list(TaskType)
 
+    DESCRIPTION   = "OpenRouter — single key for 50+ models, many completely free"
+    QUALITY_SCORE = 5
+    SPEED_TIER    = "standard"
+
     DEFAULT_MODEL = "google/gemma-4-26b-a4b-it:free"
+    MODELS = [
+        "google/gemma-4-26b-a4b-it:free",
+        "meta-llama/llama-3.1-8b-instruct:free",
+        "mistralai/mistral-7b-instruct:free",
+        "microsoft/phi-3-mini-128k-instruct:free",
+    ]
     BASE_URL = "https://openrouter.ai/api/v1"
 
     def __init__(self) -> None:

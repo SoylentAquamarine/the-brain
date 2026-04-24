@@ -32,6 +32,8 @@ class BaseAdapter(ABC):
     SUPPORTED_TASK_TYPES  : Task types this provider handles well — used as routing hints.
     TIER                  : "free" or "paid" — lets the router prefer free models.
     COST_PER_1K_TOKENS    : Approximate USD per 1 000 tokens; None for free/unknown.
+    MODELS                : All models this provider exposes. Health check cycles through
+                            each one. If empty, falls back to DEFAULT_MODEL.
     """
 
     PROVIDER_KEY:           str             = "base"
@@ -39,6 +41,15 @@ class BaseAdapter(ABC):
     TIER:                   str             = "paid"
     COST_PER_1K_TOKENS:     Optional[float] = None
     ENABLED:                bool            = True
+    MODELS:                 List[str]       = []
+    # ------------------------------------------------------------------
+    # Plugin metadata — read by sync_docs.py and the router to derive
+    # routing tables and regenerate CLAUDE.md automatically.
+    # Every adapter MUST set these three fields.
+    # ------------------------------------------------------------------
+    DESCRIPTION:    str = ""         # One-line summary for docs and routing prompt
+    QUALITY_SCORE:  int = 5          # 1–10: relative output quality (10 = best)
+    SPEED_TIER:     str = "standard" # "ultra_fast" | "fast" | "standard" | "slow"
 
     # ------------------------------------------------------------------
     # Abstract methods — every subclass must implement these
@@ -87,6 +98,29 @@ class BaseAdapter(ABC):
     # Non-abstract helpers — available to all subclasses
     # ------------------------------------------------------------------
 
+    def list_models(self) -> List[str]:
+        """
+        Return the list of models this provider supports.
+
+        Falls back to DEFAULT_MODEL (if defined on the subclass) when MODELS
+        is empty so existing adapters work without changes.
+        """
+        if self.MODELS:
+            return list(self.MODELS)
+        default = getattr(self, "DEFAULT_MODEL", None)
+        return [default] if default else []
+
+    def _get_active_model(self) -> str:
+        """Return the model string currently configured on this adapter instance."""
+        return getattr(self, "_model_name", None) or getattr(self, "_model", "")
+
+    def _set_active_model(self, model: str) -> None:
+        """Override the active model on this adapter instance."""
+        if hasattr(self, "_model_name"):
+            self._model_name = model
+        else:
+            self._model = model
+
     def validate_contract(self) -> bool:
         """
         Return True if this adapter satisfies the plugin contract.
@@ -116,11 +150,15 @@ class BaseAdapter(ABC):
         dict
         """
         return {
-            "provider":    self.PROVIDER_KEY,
-            "tier":        self.TIER,
-            "cost_per_1k": self.COST_PER_1K_TOKENS,
-            "task_types":  [t.value for t in self.SUPPORTED_TASK_TYPES],
-            "available":   self.is_available(),
+            "provider":      self.PROVIDER_KEY,
+            "tier":          self.TIER,
+            "cost_per_1k":   self.COST_PER_1K_TOKENS,
+            "task_types":    [t.value for t in self.SUPPORTED_TASK_TYPES],
+            "models":        self.list_models(),
+            "description":   self.DESCRIPTION,
+            "quality_score": self.QUALITY_SCORE,
+            "speed_tier":    self.SPEED_TIER,
+            "available":     self.is_available(),
         }
 
     @staticmethod

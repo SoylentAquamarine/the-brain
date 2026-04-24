@@ -50,7 +50,7 @@ class FailureType(Enum):
 _RE_TIMEOUT     = re.compile(r"timeout|timed.?out|connection.?reset|read.?error", re.I)
 _RE_RATE_LIMIT  = re.compile(r"429|rate.?limit|quota|too.?many.?request", re.I)
 _RE_AUTH        = re.compile(r"401|403|invalid.?api.?key|unauthorized|authentication failed|invalid.?key", re.I)
-_RE_MODEL       = re.compile(r"400|invalid.?request|context.?length|max.?token|model.?not.?found", re.I)
+_RE_MODEL       = re.compile(r"400|404|invalid.?request|context.?length|max.?token|model.?not.?found", re.I)
 
 
 def _classify_failure(error: str) -> FailureType:
@@ -103,8 +103,9 @@ class Orchestrator:
         self._total_cost:   float = 0.0
         self._failed_calls: int   = 0
 
-        # Providers that returned an auth error this session — skipped permanently.
+        # Providers disabled this session: {provider: reason}
         self._session_disabled: Set[str] = set()
+        self._session_disabled_reasons: Dict[str, str] = {}
 
         available = self._router.available_providers()
         logger.info(
@@ -218,10 +219,18 @@ class Orchestrator:
 
             if failure_type == FailureType.AUTH_ERROR:
                 self._session_disabled.add(provider_key)
+                self._session_disabled_reasons[provider_key] = f"auth error: {result.error}"
                 logger.warning("Provider %s disabled for this session (auth error).", provider_key)
 
             elif failure_type == FailureType.RATE_LIMIT:
-                request_skipped.add(provider_key)
+                self._session_disabled.add(provider_key)
+                self._session_disabled_reasons[provider_key] = f"rate limit: {result.error}"
+                logger.warning("Provider %s disabled for this session (rate limit).", provider_key)
+
+            elif failure_type == FailureType.MODEL_ERROR:
+                self._session_disabled.add(provider_key)
+                self._session_disabled_reasons[provider_key] = f"model/request error: {result.error}"
+                logger.warning("Provider %s disabled for this session (model error).", provider_key)
 
             elif failure_type == FailureType.TIMEOUT:
                 # Load historical latencies once, then set a ceiling so that
@@ -298,6 +307,20 @@ class Orchestrator:
         directly.
         """
         return self._router.status()
+
+    def provider_report(self) -> str:
+        """Return a human-readable session provider health report."""
+        available = self._router.available_providers()
+        lines = ["Provider Report", "=" * 40]
+        ok = [p for p in available if p not in self._session_disabled]
+        lines.append(f"Active ({len(ok)}): {', '.join(ok) or 'none'}")
+        if self._session_disabled_reasons:
+            lines.append(f"\nDisabled ({len(self._session_disabled_reasons)}):")
+            for p, reason in self._session_disabled_reasons.items():
+                lines.append(f"  {p}: {reason}")
+        else:
+            lines.append("No providers disabled this session.")
+        return "\n".join(lines)
 
     # ------------------------------------------------------------------
     # Internal helpers

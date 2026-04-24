@@ -53,7 +53,16 @@ class GroqAdapter(BaseAdapter):
 
     # llama-3.1-8b-instant replaced the decommissioned llama3-8b-8192.
     # Use GROQ_MODEL env var to switch to llama-3.3-70b-versatile for higher quality.
+    DESCRIPTION   = "Very fast Llama/Gemma inference on LPU hardware (~400 tok/s)"
+    QUALITY_SCORE = 6
+    SPEED_TIER    = "fast"
+
     DEFAULT_MODEL = "llama-3.1-8b-instant"
+    MODELS = [
+        "llama-3.1-8b-instant",
+        "llama-3.3-70b-versatile",
+        "gemma2-9b-it",
+    ]
 
     def __init__(self) -> None:
         """Initialise the Groq client from environment variables."""

@@ -44,7 +44,16 @@ class CloudflareAdapter(BaseAdapter):
         TaskType.EXTRACTION,
     ]
 
+    DESCRIPTION   = "Edge-hosted open models on Cloudflare's global network, no credit card"
+    QUALITY_SCORE = 5
+    SPEED_TIER    = "fast"
+
     DEFAULT_MODEL = "@cf/meta/llama-3.1-8b-instruct"
+    MODELS = [
+        "@cf/meta/llama-3.1-8b-instruct",
+        "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+        "@cf/google/gemma-3-12b-it",
+    ]
 
     def __init__(self) -> None:
         raw_key = os.getenv("CLOUDFLARE_API_KEY", "")

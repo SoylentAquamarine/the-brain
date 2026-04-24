@@ -43,7 +43,15 @@ class CohereAdapter(BaseAdapter):
         TaskType.GENERAL,
     ]
 
+    DESCRIPTION   = "Command-R — specialized in retrieval, extraction, and structured tasks"
+    QUALITY_SCORE = 6
+    SPEED_TIER    = "standard"
+
     DEFAULT_MODEL = "command-r-08-2024"
+    MODELS = [
+        "command-r-08-2024",
+        "command-r-plus-08-2024",
+    ]
 
     def __init__(self) -> None:
         self._api_key = os.getenv("COHERE_API_KEY", "")

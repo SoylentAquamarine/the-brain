@@ -58,7 +58,16 @@ class CerebrasAdapter(BaseAdapter):
 
     # llama3.1-8b is the default — switch to llama3.1-70b via env var for
     # tasks that need more reasoning depth at the cost of speed.
+    DESCRIPTION   = "Ultra-fast Llama on custom silicon (~1500 tok/s) — fastest free provider"
+    QUALITY_SCORE = 6
+    SPEED_TIER    = "ultra_fast"
+
     DEFAULT_MODEL = "llama3.1-8b"
+    MODELS = [
+        "llama3.1-8b",
+        "llama-3.3-70b",
+        "qwen-3-32b",
+    ]
 
     def __init__(self) -> None:
         """Initialise the Cerebras client from environment variables."""

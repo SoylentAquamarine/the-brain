@@ -47,7 +47,16 @@ class OpenAIAdapter(BaseAdapter):
     ]
 
     # Use the mini model by default to conserve credits.
+    DESCRIPTION   = "GPT-4o-mini — strong all-rounder, reliable instruction following"
+    QUALITY_SCORE = 7
+    SPEED_TIER    = "standard"
+
     DEFAULT_MODEL = "gpt-4o-mini"
+    MODELS = [
+        "gpt-4o-mini",
+        "gpt-4o",
+        "o4-mini",
+    ]
 
     def __init__(self) -> None:
         self._api_key = os.getenv("OPENAI_API_KEY", "")

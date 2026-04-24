@@ -31,7 +31,7 @@ You → Orchestrator (Claude) → Router
                                  ↓
                          stats/usage.json
                                  ↓
-                    Nightly GitHub Action → README update
+                    stats/usage.json → run update_readme_stats.py to refresh
 ```
 
 ---
@@ -254,19 +254,19 @@ the-brain/
 │   ├── stats.py             # Persistent usage tracking
 │   └── adapters/            # One file per provider
 ├── stats/usage.json         # Running usage log (auto-created)
-├── assets/brain.png
-└── .github/workflows/
-    └── nightly-stats.yml    # Midnight UTC — updates this README automatically
+└── assets/brain.png
 ```
 
 ---
 
-## Nightly stats update
+## Usage stats
 
-A GitHub Actions workflow runs every night at midnight UTC. It reads
-`stats/usage.json`, updates the stats block below, and commits back to
-the repo automatically. Push your local `stats/usage.json` after each
-session so the report stays current.
+Run this to update the stats below and push to GitHub:
+
+```bash
+python update_readme_stats.py
+git add stats/usage.json README.md && git commit -m "chore: update stats" && git push
+```
 
 ---
 
@@ -413,35 +413,15 @@ python delegate.py --provider groq --type factual_qa --prompt "What is 2+2?"
 
 ---
 
-### Step 5 — Push stats so the nightly report captures your usage
+### Step 5 — Update the README with your usage stats
 
-Every `delegate.py` call writes to `stats/usage.json` locally. Push it to
-GitHub so the nightly action picks it up:
+Every `delegate.py` call writes to `stats/usage.json` locally. To publish your
+stats to GitHub:
 
 ```bash
-git add stats/usage.json
-git diff --staged --quiet || git commit -m "chore: session stats"
-git push
+python update_readme_stats.py
+git add stats/usage.json README.md && git commit -m "chore: update stats" && git push
 ```
-
-Add this to the end of any workflow or script that calls `delegate.py` to keep
-stats current automatically.
-
----
-
-### Step 6 — Enable the nightly GitHub Actions report (optional)
-
-The repo includes `.github/workflows/nightly-stats.yml` which runs at midnight
-UTC every day. It reads `stats/usage.json`, updates the README stats block, and
-commits back automatically.
-
-To enable it on your own fork:
-1. Fork the repo on GitHub
-2. Go to **Actions** tab → enable workflows if prompted
-3. Add your API keys as GitHub Secrets if you want the workflow to call
-   providers directly (not required — it only reads the stats file)
-4. Push any `stats/usage.json` changes and the next midnight run will
-   update your README automatically
 
 ---
 

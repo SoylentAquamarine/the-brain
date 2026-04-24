@@ -27,37 +27,57 @@ python delegate.py --provider <name> --type <type> --prompt "<prompt>"
 
 Read the result and relay it to the user. That's it.
 
+<!-- SYNC:routing:start -->
 ## Routing guide — which worker for which task
 
-| Task | Use | Why |
+| Task | Best provider | Why |
 |---|---|---|
-| Classify, label, yes/no | `cerebras` | Fastest (~1500 tok/s), free |
-| Quick factual Q&A | `cerebras` or `groq` | Fast, free |
-| Summarise long text | `gemini` | 1M token context, free |
-| Code generation | `mistral` | Best free coding model |
-| Translation | `gemini` | Strongest multilingual |
-| Creative writing / drafting | `mistral` | Best quality output |
-| Explanation / general | `groq` | Fast, reliable, free |
-| Reasoning / analysis | `sambanova` | Free 70B model, highest quality |
-| Extraction | `mistral` | Best instruction following |
-| Image generation | `pollinations` | Keyless, free, FLUX model |
-| Fallback if above fail | `fireworks` | DeepSeek V3, free |
+| Classify / label / yes-no | `cerebras` | fastest free provider |
+| Quick factual Q&A | `cerebras` | fastest free provider |
+| Summarise long text | `gemini` | 1M token context, best for long docs and multilingual |
+| Extract structured data | `mistral` | best free quality for coding, creative, and extraction |
+| Translation | `gemini` | 1M token context, best for long docs and multilingual |
+| Code generation | `mistral` | best free quality for coding, creative, and extraction |
+| Reasoning / analysis | `sambanova` | 70B/405B Llama, highest free-tier quality for reasoning |
+| Creative writing / drafting | `mistral` | best free quality for coding, creative, and extraction |
+| General / explanation | `cerebras` | fastest free provider |
+| Image generation | `pollinations` | Keyless, no sign-up, FLUX model |
 | Anything conversational | **You (Claude)** | No offload needed |
 | Planning which provider to use | **You (Claude)** | Orchestration is your job |
 
-## Available providers (all free)
+**Full fallback chains** (first available wins):
 
-| Key | Default Model | Best for |
-|---|---|---|
-| `cerebras` | llama3.1-8b | Fastest — classification, scoring |
-| `groq` | llama-3.1-8b-instant | Fast — Q&A, general |
-| `gemini` | gemini-2.5-flash-lite | Long context — summarisation, translation |
-| `mistral` | mistral-small-latest | Quality — coding, creative, extraction |
-| `sambanova` | Meta-Llama-3.3-70B-Instruct | Best quality — reasoning, analysis |
-| `fireworks` | deepseek-v3p1 | Fallback — general |
-| `huggingface` | Meta-Llama-3-8B-Instruct | Last resort fallback |
-| `openai` | gpt-4o-mini | Strong all-rounder — free tier |
-| `pollinations` | openai-compat | Images, keyless text |
+- `classification`: `cerebras` → `groq` → `cloudflare` → `mistral` → `gemini` → `openai` → `cohere` → `openrouter` → `huggingface` → `pollinations`
+- `factual_qa`: `cerebras` → `groq` → `cloudflare` → `gemini` → `mistral` → `openai` → `cohere` → `pollinations` → `openrouter` → `huggingface`
+- `summarization`: `gemini` → `mistral` → `sambanova` → `cerebras` → `groq` → `openai` → `cohere` → `pollinations` → `openrouter` → `huggingface`
+- `extraction`: `mistral` → `sambanova` → `gemini` → `groq` → `cerebras` → `openai` → `cohere` → `openrouter` → `huggingface` → `pollinations`
+- `translation`: `gemini` → `mistral` → `cerebras` → `groq` → `openai` → `openrouter` → `huggingface` → `cohere` → `pollinations`
+- `coding`: `mistral` → `fireworks` → `sambanova` → `cerebras` → `groq` → `gemini` → `openai` → `openrouter` → `huggingface` → `cohere` → `pollinations`
+- `reasoning`: `sambanova` → `mistral` → `gemini` → `fireworks` → `cerebras` → `groq` → `openai` → `openrouter` → `huggingface` → `cohere` → `pollinations`
+- `creative`: `mistral` → `sambanova` → `gemini` → `pollinations` → `huggingface` → `cerebras` → `groq` → `openrouter` → `openai` → `cohere`
+- `general`: `cerebras` → `groq` → `cloudflare` → `gemini` → `mistral` → `fireworks` → `openai` → `cohere` → `pollinations` → `openrouter` → `huggingface`
+
+<!-- SYNC:routing:end -->
+
+<!-- SYNC:providers:start -->
+## Available providers
+
+| Key | Default model | Speed | Quality | Description |
+|---|---|---|---|---|
+| `sambanova` | Meta-Llama-3.3-70B-Instruct | fast | 9/10 | SambaNova RDU — 70B/405B Llama, highest free-tier quality for reasoning |
+| `gemini` | gemini-2.5-flash-lite | standard | 8/10 | Google Gemini — 1M token context, best for long docs and multilingual |
+| `mistral` | mistral-small-latest | standard | 8/10 | Mistral Small — best free quality for coding, creative, and extraction |
+| `fireworks` | accounts/fireworks/models/llama-v3p3-70b-instruct | fast | 7/10 | Fireworks AI — DeepSeek V3 and Llama 70B, strong on coding |
+| `openai` | gpt-4o-mini | standard | 7/10 | GPT-4o-mini — strong all-rounder, reliable instruction following |
+| `cerebras` | llama3.1-8b | ultra-fast | 6/10 | Ultra-fast Llama on custom silicon (~1500 tok/s) — fastest free provider |
+| `cohere` | command-r-08-2024 | standard | 6/10 | Command-R — specialized in retrieval, extraction, and structured tasks |
+| `groq` | llama-3.1-8b-instant | fast | 6/10 | Very fast Llama/Gemma inference on LPU hardware (~400 tok/s) |
+| `cloudflare` | @cf/meta/llama-3.1-8b-instruct | fast | 5/10 | Edge-hosted open models on Cloudflare's global network, no credit card |
+| `huggingface` | Qwen/Qwen2.5-72B-Instruct | slow | 5/10 | HuggingFace serverless inference — broad model selection, last-resort fallback |
+| `openrouter` | google/gemma-4-26b-a4b-it:free | standard | 5/10 | OpenRouter — single key for 50+ models, many completely free |
+| `pollinations` | openai | slow | 3/10 | Pollinations.ai — completely keyless, no sign-up; text and image generation |
+
+<!-- SYNC:providers:end -->
 
 ## Task types for --type flag
 
@@ -121,19 +141,6 @@ the-brain/
 ```
 
 ---
-
-## Session startup — always do this first
-
-At the start of every new session, run:
-
-```bash
-cd C:\Claude\git\the-brain && python session_start.py
-```
-
-This reads `stats/health_log.json` and prints a heads-up on how each
-provider has been performing in the last 24 hours — which are slow,
-which had errors, which are healthy. Use this to inform routing decisions
-for the session (e.g. avoid a provider that has been failing).
 
 ## Status command
 

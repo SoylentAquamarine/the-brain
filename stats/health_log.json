@@ -72,7 +72,7 @@
     "status": "averaged",
     "latency_ms": 2220.0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 1,
     "rollup": "6h"
   },
@@ -94,7 +94,7 @@
     "status": "averaged",
     "latency_ms": 0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 7,
     "rollup": "6h"
   },
@@ -138,7 +138,7 @@
     "status": "averaged",
     "latency_ms": 1594.5,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 2,
     "rollup": "6h"
   },
@@ -237,7 +237,7 @@
     "status": "averaged",
     "latency_ms": 0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 6,
     "rollup": "6h"
   },
@@ -270,7 +270,7 @@
     "status": "averaged",
     "latency_ms": 1859.0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 1,
     "rollup": "6h"
   },
@@ -358,7 +358,7 @@
     "status": "averaged",
     "latency_ms": 1671.5,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 2,
     "rollup": "6h"
   },
@@ -369,7 +369,7 @@
     "status": "averaged",
     "latency_ms": 0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 2,
     "rollup": "6h"
   },
@@ -424,7 +424,7 @@
     "status": "averaged",
     "latency_ms": 4238.6,
     "quality": 0.8,
-    "uptime": 0.8,
+    "uptime": 1.0,
     "sample_count": 5,
     "rollup": "6h"
   },
@@ -490,7 +490,7 @@
     "status": "averaged",
     "latency_ms": 0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 5,
     "rollup": "6h"
   },
@@ -611,7 +611,7 @@
     "status": "averaged",
     "latency_ms": 0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 6,
     "rollup": "6h"
   },
@@ -644,7 +644,7 @@
     "status": "averaged",
     "latency_ms": 1867.4,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 5,
     "rollup": "6h"
   },
@@ -677,7 +677,7 @@
     "status": "averaged",
     "latency_ms": 757.5,
     "quality": 0.833,
-    "uptime": 0.833,
+    "uptime": 1.0,
     "sample_count": 6,
     "rollup": "6h"
   },
@@ -743,7 +743,7 @@
     "status": "averaged",
     "latency_ms": 0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 6,
     "rollup": "6h"
   },
@@ -853,7 +853,7 @@
     "status": "averaged",
     "latency_ms": 2207.0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 2,
     "rollup": "6h"
   },
@@ -864,7 +864,7 @@
     "status": "averaged",
     "latency_ms": 0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 2,
     "rollup": "6h"
   },
@@ -974,7 +974,7 @@
     "status": "averaged",
     "latency_ms": 1770.5,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 2,
     "rollup": "6h"
   },
@@ -985,7 +985,7 @@
     "status": "averaged",
     "latency_ms": 0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 2,
     "rollup": "6h"
   },
@@ -1029,7 +1029,7 @@
     "status": "averaged",
     "latency_ms": 2227.5,
     "quality": 0.75,
-    "uptime": 0.75,
+    "uptime": 1.0,
     "sample_count": 4,
     "rollup": "6h"
   },
@@ -1095,7 +1095,7 @@
     "status": "averaged",
     "latency_ms": 2059.0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 1,
     "rollup": "6h"
   },
@@ -1106,7 +1106,7 @@
     "status": "averaged",
     "latency_ms": 0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 4,
     "rollup": "6h"
   },
@@ -1238,7 +1238,7 @@
     "status": "averaged",
     "latency_ms": 0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 5,
     "rollup": "6h"
   },
@@ -1271,7 +1271,7 @@
     "status": "averaged",
     "latency_ms": 2127.3,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 3,
     "rollup": "6h"
   },
@@ -1359,7 +1359,7 @@
     "status": "averaged",
     "latency_ms": 1759.0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 2,
     "rollup": "6h"
   },
@@ -1370,7 +1370,7 @@
     "status": "averaged",
     "latency_ms": 0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 2,
     "rollup": "6h"
   },
@@ -1425,7 +1425,7 @@
     "status": "averaged",
     "latency_ms": 1585.0,
     "quality": 0.667,
-    "uptime": 0.667,
+    "uptime": 1.0,
     "sample_count": 3,
     "rollup": "6h"
   },
@@ -1491,7 +1491,7 @@
     "status": "averaged",
     "latency_ms": 0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 3,
     "rollup": "6h"
   },
@@ -1601,7 +1601,7 @@
     "status": "averaged",
     "latency_ms": 2055.0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 1,
     "rollup": "6h"
   },
@@ -1612,7 +1612,7 @@
     "status": "averaged",
     "latency_ms": 0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 3,
     "rollup": "6h"
   },
@@ -1733,7 +1733,7 @@
     "status": "averaged",
     "latency_ms": 1955.7,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 3,
     "rollup": "6h"
   },
@@ -1744,7 +1744,7 @@
     "status": "averaged",
     "latency_ms": 0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 5,
     "rollup": "6h"
   },
@@ -1788,7 +1788,7 @@
     "status": "averaged",
     "latency_ms": 0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 3,
     "rollup": "6h"
   },
@@ -1843,7 +1843,7 @@
     "status": "averaged",
     "latency_ms": 529.0,
     "quality": 0.5,
-    "uptime": 0.5,
+    "uptime": 1.0,
     "sample_count": 2,
     "rollup": "6h"
   },
@@ -1876,7 +1876,7 @@
     "status": "averaged",
     "latency_ms": 1677.5,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 2,
     "rollup": "6h"
   },
@@ -1887,7 +1887,7 @@
     "status": "averaged",
     "latency_ms": 0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 2,
     "rollup": "6h"
   },
@@ -1920,7 +1920,7 @@
     "status": "averaged",
     "latency_ms": 0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 2,
     "rollup": "6h"
   },
@@ -2008,7 +2008,7 @@
     "status": "averaged",
     "latency_ms": 2284.5,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 2,
     "rollup": "6h"
   },
@@ -2019,7 +2019,7 @@
     "status": "averaged",
     "latency_ms": 0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 3,
     "rollup": "6h"
   },
@@ -2052,7 +2052,7 @@
     "status": "averaged",
     "latency_ms": 0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 3,
     "rollup": "6h"
   },
@@ -2151,7 +2151,7 @@
     "status": "averaged",
     "latency_ms": 1764.0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 1,
     "rollup": "6h"
   },
@@ -2162,7 +2162,7 @@
     "status": "averaged",
     "latency_ms": 0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 3,
     "rollup": "6h"
   },
@@ -2195,7 +2195,7 @@
     "status": "averaged",
     "latency_ms": 0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 3,
     "rollup": "6h"
   },
@@ -2305,7 +2305,7 @@
     "status": "averaged",
     "latency_ms": 0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 4,
     "rollup": "6h"
   },
@@ -2338,7 +2338,7 @@
     "status": "averaged",
     "latency_ms": 0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 3,
     "rollup": "6h"
   },
@@ -2481,7 +2481,7 @@
     "status": "averaged",
     "latency_ms": 1829.0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 1,
     "rollup": "6h"
   },
@@ -2525,7 +2525,7 @@
     "status": "averaged",
     "latency_ms": 113.0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 1,
     "rollup": "6h"
   },
@@ -2536,7 +2536,7 @@
     "status": "averaged",
     "latency_ms": 62.0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 1,
     "rollup": "6h"
   },
@@ -2558,7 +2558,7 @@
     "status": "averaged",
     "latency_ms": 0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 1,
     "rollup": "6h"
   },
@@ -2613,7 +2613,7 @@
     "status": "averaged",
     "latency_ms": 33.0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 1,
     "rollup": "6h"
   },
@@ -2624,7 +2624,7 @@
     "status": "averaged",
     "latency_ms": 45.0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 1,
     "rollup": "6h"
   },
@@ -2657,7 +2657,7 @@
     "status": "averaged",
     "latency_ms": 101.0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 1,
     "rollup": "6h"
   },
@@ -2690,7 +2690,7 @@
     "status": "averaged",
     "latency_ms": 60.0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 1,
     "rollup": "6h"
   },
@@ -2701,7 +2701,7 @@
     "status": "averaged",
     "latency_ms": 414.0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 1,
     "rollup": "6h"
   },
@@ -2789,7 +2789,7 @@
     "status": "averaged",
     "latency_ms": 452.0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 1,
     "rollup": "6h"
   },
@@ -2811,7 +2811,7 @@
     "status": "averaged",
     "latency_ms": 36.0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 1,
     "rollup": "6h"
   },
@@ -2822,7 +2822,7 @@
     "status": "averaged",
     "latency_ms": 35.0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 1,
     "rollup": "6h"
   },
@@ -2833,7 +2833,7 @@
     "status": "averaged",
     "latency_ms": 41.0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 1,
     "rollup": "6h"
   },
@@ -2888,7 +2888,7 @@
     "status": "averaged",
     "latency_ms": 179.0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 1,
     "rollup": "6h"
   },
@@ -2899,7 +2899,7 @@
     "status": "averaged",
     "latency_ms": 178.0,
     "quality": 0.0,
-    "uptime": 0.0,
+    "uptime": 1.0,
     "sample_count": 1,
     "rollup": "6h"
   },
@@ -3449,6 +3449,249 @@
     "model": "Llama-4-Maverick-17B-128E-Instruct",
     "status": "ok",
     "latency_ms": 779,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-25T04:32:29Z",
+    "provider": "cerebras",
+    "model": "llama3.1-8b",
+    "status": "ok",
+    "latency_ms": 448,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-25T04:32:38Z",
+    "provider": "cloudflare",
+    "model": "@cf/meta/llama-3.1-8b-instruct",
+    "status": "ok",
+    "latency_ms": 9091,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-25T04:32:38Z",
+    "provider": "cloudflare",
+    "model": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+    "status": "error",
+    "latency_ms": 0,
+    "quality": 0.0,
+    "response": "'int' object has no attribute 'strip'"
+  },
+  {
+    "timestamp": "2026-04-25T04:32:39Z",
+    "provider": "cloudflare",
+    "model": "@cf/google/gemma-3-12b-it",
+    "status": "ok",
+    "latency_ms": 149,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-25T04:32:39Z",
+    "provider": "cohere",
+    "model": "command-r-08-2024",
+    "status": "ok",
+    "latency_ms": 204,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-25T04:32:39Z",
+    "provider": "cohere",
+    "model": "command-r-plus-08-2024",
+    "status": "ok",
+    "latency_ms": 192,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-25T04:32:39Z",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
+    "status": "ok",
+    "latency_ms": 173,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-25T04:32:41Z",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/deepseek-v3p1",
+    "status": "degraded",
+    "latency_ms": 2009,
+    "quality": 0.5,
+    "response": "First, the user says: \"What is "
+  },
+  {
+    "timestamp": "2026-04-25T04:32:43Z",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/deepseek-v3p2",
+    "status": "degraded",
+    "latency_ms": 1376,
+    "quality": 0.5,
+    "response": "First, the user asks: \"What is "
+  },
+  {
+    "timestamp": "2026-04-25T04:32:43Z",
+    "provider": "gemini",
+    "model": "gemini-2.5-flash-lite",
+    "status": "ok",
+    "latency_ms": 441,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-25T04:32:43Z",
+    "provider": "gemini",
+    "model": "gemini-2.5-flash",
+    "status": "degraded",
+    "latency_ms": 496,
+    "quality": 0.0,
+    "response": ""
+  },
+  {
+    "timestamp": "2026-04-25T04:32:44Z",
+    "provider": "gemini",
+    "model": "gemini-2.0-flash",
+    "status": "error",
+    "latency_ms": 110,
+    "quality": 0.0,
+    "response": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your cu"
+  },
+  {
+    "timestamp": "2026-04-25T04:32:44Z",
+    "provider": "groq",
+    "model": "llama-3.1-8b-instant",
+    "status": "ok",
+    "latency_ms": 840,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-25T04:32:45Z",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "status": "ok",
+    "latency_ms": 134,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-25T04:32:47Z",
+    "provider": "huggingface",
+    "model": "Qwen/Qwen2.5-72B-Instruct",
+    "status": "ok",
+    "latency_ms": 2000,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-25T04:32:47Z",
+    "provider": "huggingface",
+    "model": "Qwen/Qwen2.5-Coder-32B-Instruct",
+    "status": "ok",
+    "latency_ms": 509,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-25T04:32:47Z",
+    "provider": "huggingface",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "status": "ok",
+    "latency_ms": 200,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-25T04:32:48Z",
+    "provider": "mistral",
+    "model": "mistral-small-latest",
+    "status": "ok",
+    "latency_ms": 1051,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-25T04:32:49Z",
+    "provider": "mistral",
+    "model": "open-mistral-7b",
+    "status": "ok",
+    "latency_ms": 250,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-25T04:32:49Z",
+    "provider": "mistral",
+    "model": "open-mixtral-8x7b",
+    "status": "ok",
+    "latency_ms": 562,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-25T04:32:50Z",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "status": "ok",
+    "latency_ms": 621,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-25T04:32:51Z",
+    "provider": "openai",
+    "model": "gpt-4o",
+    "status": "ok",
+    "latency_ms": 1225,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-25T04:32:52Z",
+    "provider": "openai",
+    "model": "o4-mini",
+    "status": "degraded",
+    "latency_ms": 901,
+    "quality": 0.0,
+    "response": ""
+  },
+  {
+    "timestamp": "2026-04-25T04:32:54Z",
+    "provider": "openrouter",
+    "model": "google/gemma-4-26b-a4b-it:free",
+    "status": "error",
+    "latency_ms": 1924,
+    "quality": 0.0,
+    "response": "Error code: 429 - {'error': {'message': 'Provider returned error', 'code': 429, "
+  },
+  {
+    "timestamp": "2026-04-25T04:32:55Z",
+    "provider": "pollinations",
+    "model": "openai",
+    "status": "ok",
+    "latency_ms": 1314,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-25T04:32:56Z",
+    "provider": "sambanova",
+    "model": "Meta-Llama-3.3-70B-Instruct",
+    "status": "ok",
+    "latency_ms": 623,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-25T04:32:57Z",
+    "provider": "sambanova",
+    "model": "Llama-4-Maverick-17B-128E-Instruct",
+    "status": "ok",
+    "latency_ms": 785,
     "quality": 1.0,
     "response": "4"
   }

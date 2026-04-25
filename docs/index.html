@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Brain — AI Orchestration for Claude</title>
+  <style>
+    :root {
+      --bg: #0d0d14;
+      --surface: #12121e;
+      --surface2: #1a1a2e;
+      --accent: #4ecdc4;
+      --accent2: #ff6b6b;
+      --text: #e0e0e0;
+      --dim: #777;
+      --border: #222236;
+      --code-bg: #080810;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.65; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    header {
+      text-align: center;
+      padding: 80px 20px 60px;
+      background: linear-gradient(180deg, #08080f 0%, var(--bg) 100%);
+      border-bottom: 1px solid var(--border);
+    }
+    .brain-img { width: 110px; height: 110px; border-radius: 50%; margin-bottom: 24px; object-fit: cover; border: 2px solid var(--border); }
+    header h1 { font-size: 2.8rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 10px; }
+    header h1 span { color: var(--accent); }
+    header .quote { font-size: 1rem; color: var(--dim); font-style: italic; margin-bottom: 28px; }
+    .badge-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .badge { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 8px 16px; font-size: 0.82rem; color: var(--text); }
+    .badge strong { color: var(--accent); }
+
+    .divider { border: none; border-top: 1px solid var(--border); }
+    section { max-width: 880px; margin: 0 auto; padding: 56px 20px; }
+    h2 { font-size: 1.45rem; font-weight: 700; margin-bottom: 20px; }
+    h2 span { color: var(--accent); }
+
+    .routing-box {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 24px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.82rem;
+      color: #ccc;
+      overflow-x: auto;
+      line-height: 1.8;
+    }
+    .routing-box .hl { color: var(--accent); }
+    .routing-box .dim { color: var(--dim); }
+
+    .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+    .why-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; }
+    .why-card .icon { font-size: 1.6rem; margin-bottom: 10px; }
+    .why-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
+    .why-card p { font-size: 0.83rem; color: var(--dim); }
+
+    .provider-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    .provider-table th { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--dim); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .provider-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); }
+    .provider-table tr:last-child td { border-bottom: none; }
+    .provider-table tr:hover td { background: var(--surface); }
+    .free-tag { color: var(--accent); font-size: 0.7rem; font-weight: 700; background: rgba(78,205,196,0.1); padding: 1px 6px; border-radius: 4px; }
+    .speed { color: var(--dim); font-size: 0.8rem; }
+
+    .install-steps { display: flex; flex-direction: column; gap: 14px; }
+    .step { display: flex; gap: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px; }
+    .step-num { width: 28px; height: 28px; background: var(--accent); color: #000; border-radius: 50%; font-weight: 800; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .step-body h3 { font-size: 0.9rem; font-weight: 700; margin-bottom: 4px; }
+    .step-body p { font-size: 0.83rem; color: var(--dim); }
+    pre.code { background: var(--code-bg); border-radius: 6px; padding: 10px 14px; font-size: 0.8rem; color: var(--accent); margin-top: 8px; overflow-x: auto; }
+
+    .route-examples { display: flex; flex-direction: column; gap: 8px; }
+    .route-row { display: flex; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; font-size: 0.85rem; }
+    .route-type { width: 130px; color: var(--dim); flex-shrink: 0; }
+    .route-arrow { color: var(--border); flex-shrink: 0; }
+    .route-target { color: var(--accent); font-weight: 600; }
+    .route-note { color: var(--dim); font-size: 0.75rem; margin-left: auto; }
+
+    footer { text-align: center; padding: 40px 20px; border-top: 1px solid var(--border); color: var(--dim); font-size: 0.83rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <img class="brain-img" src="https://raw.githubusercontent.com/SoylentAquamarine/the-brain/main/assets/brain.png" alt="The Brain" onerror="this.style.display='none'">
+  <h1>The <span>Brain</span></h1>
+  <p class="quote">"Claude orchestrates. Free AI does the heavy lifting. Git remembers everything."</p>
+  <div class="badge-row">
+    <div class="badge">🐍 Python</div>
+    <div class="badge">💰 <strong>Saves Claude tokens</strong></div>
+    <div class="badge">🔀 8 free providers</div>
+    <div class="badge">📊 Usage logging</div>
+  </div>
+</header>
+
+<hr class="divider">
+
+<section>
+  <h2>How it <span>works</span></h2>
+  <p style="color:var(--dim);font-size:0.9rem;margin-bottom:20px;">Every AI task gets routed to the cheapest capable provider. Claude only handles what only Claude can do.</p>
+  <div class="routing-box">
+    <span class="dim">You → Orchestrator (Claude) → Router</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+    ┌────────────────────────────────────────────────────┐<br>
+    │ &nbsp;classification / yes-no &nbsp;→ &nbsp;<span class="hl">Cerebras</span> &nbsp;&nbsp;<span class="dim">(FREE, ~284ms)</span> │<br>
+    │ &nbsp;factual Q&amp;A / general &nbsp;&nbsp;&nbsp;→ &nbsp;<span class="hl">Groq</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dim">(FREE, ~366ms)</span> │<br>
+    │ &nbsp;summarisation / long text→ &nbsp;<span class="hl">Gemini</span> &nbsp;&nbsp;&nbsp;&nbsp;<span class="dim">(FREE, 1M ctx) </span>│<br>
+    │ &nbsp;code generation &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ &nbsp;<span class="hl">Mistral</span> &nbsp;&nbsp;&nbsp;<span class="dim">(FREE)        </span>│<br>
+    │ &nbsp;translation &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ &nbsp;<span class="hl">Gemini</span> &nbsp;&nbsp;&nbsp;&nbsp;<span class="dim">(FREE)        </span>│<br>
+    │ &nbsp;deep reasoning / analysis→ &nbsp;<span class="hl">SambaNova</span> &nbsp;<span class="dim">(FREE, 70B)   </span>│<br>
+    │ &nbsp;creative writing &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ &nbsp;<span class="hl">Mistral</span> &nbsp;&nbsp;&nbsp;<span class="dim">(FREE)        </span>│<br>
+    │ &nbsp;image generation &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ &nbsp;<span class="hl">Pollinations</span><span class="dim"> (no key)     </span>│<br>
+    └────────────────────────────────────────────────────┘<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+    <span class="dim">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stats/usage.json (every call logged)</span>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section>
+  <h2>Why it <span>exists</span></h2>
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="icon">💸</div>
+      <h3>Claude tokens are expensive</h3>
+      <p>Simple tasks like classification, summarisation, and Q&A don't need Claude's intelligence — route them to free providers instead.</p>
+    </div>
+    <div class="why-card">
+      <div class="icon">🎯</div>
+      <h3>Different AIs excel at different tasks</h3>
+      <p>Cerebras is the fastest. Gemini handles million-token contexts. SambaNova runs the biggest open models. Use each for what it does best.</p>
+    </div>
+    <div class="why-card">
+      <div class="icon">📋</div>
+      <h3>Every call is logged</h3>
+      <p>All usage goes to <code>stats/usage.json</code>. A nightly report shows how many tokens were saved vs. the cost of running everything through Claude.</p>
+    </div>
+    <div class="why-card">
+      <div class="icon">🔌</div>
+      <h3>Drop-in for Claude Code</h3>
+      <p>Lives in your global <code>CLAUDE.md</code>. Claude reads the routing table and delegates automatically — no extra steps.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section>
+  <h2>Free <span>Providers</span></h2>
+  <table class="provider-table">
+    <thead>
+      <tr>
+        <th>Provider</th>
+        <th>Model</th>
+        <th>Best for</th>
+        <th>Speed</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Cerebras</strong> <span class="free-tag">FREE</span></td><td>Llama 3.1 8B</td><td>Classification, scoring, yes/no</td><td class="speed">~284ms</td></tr>
+      <tr><td><strong>Groq</strong> <span class="free-tag">FREE</span></td><td>Llama 3.1 8B</td><td>Factual Q&amp;A, general</td><td class="speed">~366ms</td></tr>
+      <tr><td><strong>Gemini</strong> <span class="free-tag">FREE</span></td><td>2.5 Flash Lite</td><td>Summarisation, translation, 1M context</td><td class="speed">~541ms</td></tr>
+      <tr><td><strong>Mistral</strong> <span class="free-tag">FREE</span></td><td>Mistral Small</td><td>Coding, creative writing</td><td class="speed">~1172ms</td></tr>
+      <tr><td><strong>SambaNova</strong> <span class="free-tag">FREE</span></td><td>Llama 3.3 70B</td><td>Deep reasoning, analysis</td><td class="speed">~1.4s</td></tr>
+      <tr><td><strong>HuggingFace</strong> <span class="free-tag">FREE</span></td><td>Llama 3 8B</td><td>Open-source fallback</td><td class="speed">~924ms</td></tr>
+      <tr><td><strong>Pollinations</strong> <span class="free-tag">NO KEY</span></td><td>Flux</td><td>Image generation</td><td class="speed">varies</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<hr class="divider">
+
+<section>
+  <h2>Get <span>Started</span></h2>
+  <div class="install-steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h3>Clone the repo</h3>
+        <pre class="code">git clone https://github.com/SoylentAquamarine/the-brain.git
+cd the-brain && pip install -r requirements.txt</pre>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h3>Add your API keys</h3>
+        <p>Copy <code>config/keys.example.json</code> to <code>config/keys.json</code> and add free keys from Cerebras, Groq, Gemini, Mistral, and SambaNova.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h3>Add to your global CLAUDE.md</h3>
+        <pre class="code">python delegate.py --provider cerebras --type classification --prompt "Is this a question?"</pre>
+        <p style="margin-top:8px">Claude reads your CLAUDE.md routing table and delegates automatically.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Built by <a href="https://github.com/SoylentAquamarine">Steve Pleasants</a> · <a href="https://github.com/SoylentAquamarine/the-brain">GitHub</a> · MIT</p>
+  <p style="margin-top:6px">Stop burning Claude tokens on things any free model can do.</p>
+</footer>
+
+</body>
+</html>

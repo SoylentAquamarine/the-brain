@@ -497,7 +497,15 @@ Claude's default behaviour for that window. The offloading rules in this repo's
 ## Changelog
 
 <!-- BRAIN_CHANGELOG_START -->
-### 2026-04-25
+### 2026-04-25 (session 2)
+- **Adapter model audit & fixes** — parallel health test across all 12 providers / 30 models; pruned dead models, fixed broken ones.
+- **OpenAI o-series fix** — `o4-mini` now uses `max_completion_tokens` with 1024 minimum so reasoning tokens don't exhaust the budget and return empty content.
+- **Groq cleanup** — removed decommissioned `gemma2-9b-it` model.
+- **Cerebras cleanup** — removed `llama3.1-70b` (404); single confirmed-live model `llama3.1-8b` remains.
+- **SambaNova cleanup** — removed unavailable `DeepSeek-V3-0324`; `Llama-4-Maverick-17B-128E-Instruct` confirmed live.
+- **Unicode fix in `delegate.py`** — all stdout now UTF-8 encoded; fixes crash on Windows cp1252 when provider responses contain arrows or emoji.
+
+### 2026-04-25 (session 1)
 - **Live README health dashboard** — `update_readme_stats.py` injects a 24h provider health table with uptime/latency; `health_check.py` auto-pushes to GitHub every hour.
 - **MRTG-style health log rollup** (`brain/health_rollup.py`) — keeps last 24h at full resolution, 6h bucket averages for 24h–7d, 24h buckets for 7d+. Reduces 879 entries to ~300, stays small forever. Fully dynamic — no hardcoded provider list.
 - **Phase 4: Prompt cache layer** (`brain/cache.py`) — SHA-256 keyed on prompt+provider+type, 24h TTL, 500-entry LRU eviction. 0ms / 0 tokens on cache hits. `--no-cache` flag to bypass.

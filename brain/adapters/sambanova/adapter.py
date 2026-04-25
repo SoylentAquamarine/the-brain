@@ -50,7 +50,6 @@ class SambaNovaAdapter(BaseAdapter):
     MODELS = [
         "Meta-Llama-3.3-70B-Instruct",
         "Llama-4-Maverick-17B-128E-Instruct",
-        "DeepSeek-V3-0324",
     ]
     BASE_URL = "https://api.sambanova.ai/v1"
 

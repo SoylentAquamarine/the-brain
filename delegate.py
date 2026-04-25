@@ -32,9 +32,8 @@ from dotenv import load_dotenv
 # Load .env BEFORE importing brain modules so adapters pick up API keys.
 load_dotenv()
 
-from brain.adapters import REGISTRY
 from brain.constants import DEFAULT_MAX_TOKENS
-from brain.stats import tracker
+from brain.orchestrator import Orchestrator
 from brain.task import Task, TaskType
 
 
@@ -71,6 +70,14 @@ def parse_args() -> argparse.Namespace:
     p.add_argument(
         "--tokens", type=int, default=DEFAULT_MAX_TOKENS,
         help=f"Maximum output tokens (default: {DEFAULT_MAX_TOKENS}).",
+    )
+    p.add_argument(
+        "--parallel", type=int, default=0, metavar="N",
+        help="Race N providers in parallel and return the first success (default: off).",
+    )
+    p.add_argument(
+        "--no-cache", action="store_true",
+        help="Bypass the prompt cache and always call the provider.",
     )
     return p.parse_args()
 
@@ -113,25 +120,6 @@ def main() -> int:
     """
     args = parse_args()
 
-    # Validate the requested provider is registered.
-    adapter = REGISTRY.get(args.provider)
-    if not adapter:
-        print(
-            f"ERROR: Unknown provider '{args.provider}'. "
-            f"Available: {list(REGISTRY.keys())}",
-            file=sys.stderr,
-        )
-        return 1
-
-    # Check the provider has valid credentials.
-    if not adapter.is_available():
-        print(
-            f"ERROR: Provider '{args.provider}' is not available. "
-            "Check the corresponding API key in .env",
-            file=sys.stderr,
-        )
-        return 1
-
     task_type = resolve_task_type(args.task_type)
 
     task = Task(
@@ -142,22 +130,27 @@ def main() -> int:
         preferred_model=args.provider,
     )
 
-    result = adapter.complete(task)
-    tracker.record(result, task)
+    orchestrator = Orchestrator(use_cache=not args.no_cache)
+
+    if args.parallel and args.parallel > 1:
+        result = orchestrator.run_parallel(task, n=args.parallel)
+    else:
+        result = orchestrator.run(task)
 
     if not result.succeeded:
         print(f"ERROR: {result.error}", file=sys.stderr)
         return 1
 
-    # Print a metadata header so Claude can log the provider/model/cost,
-    # then the actual content on the lines that follow.
+    def _out(text: str) -> None:
+        sys.stdout.buffer.write((text + "\n").encode("utf-8", errors="replace"))
+
     cost_str = f"${result.cost_usd:.6f}" if result.cost_usd else "free"
-    print(
+    _out(
         f"[{result.provider} / {result.model} | "
         f"{result.tokens_used} tokens | "
         f"{result.latency_ms:.0f}ms | {cost_str}]"
     )
-    print(result.content)
+    _out(result.content)
     return 0
 
 

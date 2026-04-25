@@ -82,9 +82,17 @@ class OpenAIAdapter(BaseAdapter):
 
         start = self._start_timer()
         try:
+            # o-series reasoning models: use max_completion_tokens and allow
+            # at least 1024 tokens so reasoning doesn't exhaust the budget
+            is_o_series = self._model.startswith("o")
+            extra = {}
+            if is_o_series:
+                extra["max_completion_tokens"] = max(task.max_tokens, 1024)
+            else:
+                extra["max_tokens"] = task.max_tokens
             response = self._client.chat.completions.create(
                 model=self._model,
-                max_tokens=task.max_tokens,
+                **extra,
                 messages=[{"role": "user", "content": task.full_prompt()}],
             )
             choice  = response.choices[0]

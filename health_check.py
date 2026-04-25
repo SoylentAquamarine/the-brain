@@ -25,7 +25,10 @@ from pathlib import Path
 from dotenv import load_dotenv
 load_dotenv()
 
+import subprocess
+
 from brain.adapters import REGISTRY
+from brain.health_rollup import rollup
 from brain.task import Task, TaskType
 
 HEALTH_LOG = Path(__file__).parent / "stats" / "health_log.json"
@@ -98,8 +101,8 @@ def load_log() -> list:
 
 def save_log(entries: list) -> None:
     HEALTH_LOG.parent.mkdir(parents=True, exist_ok=True)
-    trimmed = entries[-_max_log_entries():]
-    HEALTH_LOG.write_text(json.dumps(trimmed, indent=2), encoding="utf-8")
+    compacted = rollup(entries)
+    HEALTH_LOG.write_text(json.dumps(compacted, indent=2), encoding="utf-8")
 
 
 def main() -> None:
@@ -152,7 +155,18 @@ def main() -> None:
 
     log.extend(new_entries)
     save_log(log)
-    print(f"\n  Logged {len(new_entries)} entries to {HEALTH_LOG}\n")
+    print(f"\n  Logged {len(new_entries)} entries to {HEALTH_LOG}")
+
+    print("  Updating README and pushing to GitHub...")
+    result = subprocess.run(
+        [sys.executable, "update_readme_stats.py", "--push"],
+        cwd=Path(__file__).parent,
+        capture_output=True, text=True,
+    )
+    print(result.stdout.strip() or "  Done.")
+    if result.returncode != 0:
+        print(f"  Warning: README update failed: {result.stderr.strip()}")
+    print()
 
 
 if __name__ == "__main__":

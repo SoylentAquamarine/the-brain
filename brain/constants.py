@@ -59,6 +59,20 @@ REPORT_BAR_SCALE: int = 2
 STATS_FILE_PATH: str = "stats/usage.json"
 
 # ---------------------------------------------------------------------------
+# Cache
+# ---------------------------------------------------------------------------
+
+# Path relative to the project root where the prompt cache is stored.
+CACHE_FILE_PATH: str = "stats/cache.json"
+
+# How long a cached result is considered fresh (seconds). Default: 24 hours.
+CACHE_TTL_SECONDS: int = 86_400
+
+# Maximum number of entries to keep in the cache file.
+# Oldest entries are evicted when this is exceeded.
+CACHE_MAX_ENTRIES: int = 500
+
+# ---------------------------------------------------------------------------
 # Git
 # ---------------------------------------------------------------------------
 

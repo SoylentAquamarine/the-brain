@@ -1,20 +1,23 @@
 """
-update_readme_stats.py — Auto-updates the README with live usage stats.
+update_readme_stats.py — Auto-updates the README with live usage stats and provider health.
 
-Reads stats/usage.json, builds a usage table, and writes it into README.md
-between marker comments.  Then git-commits and optionally pushes.
+Injects two auto-managed blocks into README.md:
+  <!-- BRAIN_STATS_START / END -->   — usage stats from stats/usage.json
+  <!-- BRAIN_HEALTH_START / END -->  — 24h provider health from stats/health_log.json
+
+Provider tiers are read dynamically from the adapter REGISTRY — no hardcoded list.
 
 Run manually:
     python update_readme_stats.py
     python update_readme_stats.py --push
 
-Or let Claude Code call this automatically after any delegation.
-The README will always reflect real numbers from the stats file.
+Called automatically by health_check.py after every hourly ping.
 """
 
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import subprocess
 import sys
@@ -24,26 +27,34 @@ from pathlib import Path
 from dotenv import load_dotenv
 load_dotenv()
 
+from brain.adapters import REGISTRY
 from brain.stats import tracker
 
-_README = Path(__file__).parent / "README.md"
+_README     = Path(__file__).parent / "README.md"
+_HEALTH_LOG = Path(__file__).parent / "stats" / "health_log.json"
 
-# Markers in README.md that wrap the auto-generated stats block.
-_START = "<!-- BRAIN_STATS_START -->"
-_END   = "<!-- BRAIN_STATS_END -->"
+_STATS_START  = "<!-- BRAIN_STATS_START -->"
+_STATS_END    = "<!-- BRAIN_STATS_END -->"
+_HEALTH_START = "<!-- BRAIN_HEALTH_START -->"
+_HEALTH_END   = "<!-- BRAIN_HEALTH_END -->"
 
-_TIERS = {
-    "groq":         "FREE",
-    "gemini":       "FREE",
-    "mistral":      "FREE",
-    "cerebras":     "FREE",
-    "huggingface":  "FREE",
-    "pollinations": "FREE",
-}
 
+def _tier(provider_key: str) -> str:
+    """Tier label from REGISTRY — no hardcoded list."""
+    adapter = REGISTRY.get(provider_key)
+    if not adapter:
+        return "?"
+    if adapter.TIER == "free":
+        return "FREE"
+    cost = adapter.COST_PER_1K_TOKENS
+    return f"PAID (${cost}/1k)" if cost else "PAID"
+
+
+# ---------------------------------------------------------------------------
+# Stats block
+# ---------------------------------------------------------------------------
 
 def build_stats_block(stats) -> str:
-    """Build the markdown block that gets injected into README.md."""
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
     lines = [
@@ -58,29 +69,25 @@ def build_stats_block(stats) -> str:
     if not stats.providers:
         lines.append("| — | — | 0 | 0 | — | — |")
     else:
-        sorted_providers = sorted(stats.providers.items(), key=lambda x: -x[1].tokens)
-        for key, ps in sorted_providers:
-            tier     = _TIERS.get(key, "?")
+        for key, ps in sorted(stats.providers.items(), key=lambda x: -x[1].tokens):
             cost_str = f"${ps.cost_usd:.4f}" if ps.cost_usd else "free"
             lines.append(
-                f"| **{key}** | {tier} | {ps.calls:,} | {ps.tokens:,} "
-                f"| {ps.avg_latency_ms:.0f}ms | {cost_str} |"
+                f"| **{key}** | {_tier(key)} | {ps.calls:,} | {ps.tokens:,}"
+                f" | {ps.avg_latency_ms:.0f}ms | {cost_str} |"
             )
 
-    total_tokens  = stats.total_tokens
-    saved_tokens  = stats.claude_tokens_saved
-    saved_usd     = stats.estimated_savings_usd
-    total_pct     = (saved_tokens / total_tokens * 100) if total_tokens else 0
-    free_calls    = sum(
-        v.calls for k, v in stats.providers.items() if k != "anthropic"
-    )
+    saved_tokens = stats.claude_tokens_saved
+    saved_usd    = stats.estimated_savings_usd
+    total_tokens = stats.total_tokens
+    total_pct    = (saved_tokens / total_tokens * 100) if total_tokens else 0
+    free_calls   = sum(v.calls for k, v in stats.providers.items() if k != "anthropic")
 
     lines += [
         "",
         "### Token Savings",
         "",
-        f"| Metric | Value |",
-        f"|---|---|",
+        "| Metric | Value |",
+        "|---|---|",
         f"| Total calls | {stats.total_calls:,} |",
         f"| Calls handled by free workers | {free_calls:,} |",
         f"| Tokens offloaded from Claude | {saved_tokens:,} |",
@@ -90,79 +97,165 @@ def build_stats_block(stats) -> str:
     ]
 
     if total_tokens and stats.providers:
-        lines += [
-            "",
-            "### Token Distribution",
-            "",
-            "```",
-        ]
+        lines += ["", "### Token Distribution", "", "```"]
         for key, ps in sorted(stats.providers.items(), key=lambda x: -x[1].tokens):
             pct = ps.tokens / total_tokens * 100
             bar = "█" * int(pct / 2)
-            tier = _TIERS.get(key, "?")
-            lines.append(f"{key:<12} [{tier}]  {bar:<50} {pct:5.1f}%")
+            lines.append(f"{key:<12} [{_tier(key):<4}]  {bar:<50} {pct:5.1f}%")
         lines.append("```")
+
+    if stats.call_log:
+        lines += [
+            "",
+            "### Recent Activity",
+            "",
+            "| When (UTC) | Provider | Task | Tokens | Latency |",
+            "|---|---|---|---|---|",
+        ]
+        for entry in reversed(stats.call_log[-15:]):
+            when = datetime.fromtimestamp(entry["ts"], tz=timezone.utc).strftime("%Y-%m-%d %H:%M")
+            lines.append(
+                f"| {when} | **{entry['provider']}** | {entry['type']}"
+                f" | {entry['tokens']:,} | {entry['ms']}ms |"
+            )
 
     return "\n".join(lines)
 
 
-def update_readme(stats_block: str) -> bool:
-    """Inject stats_block into README.md between the marker comments."""
+# ---------------------------------------------------------------------------
+# Health block
+# ---------------------------------------------------------------------------
+
+def build_health_block() -> str:
+    now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+
+    if not _HEALTH_LOG.exists():
+        return "*Health log not found — run `python health_check.py` to generate it.*"
+
+    try:
+        entries = json.loads(_HEALTH_LOG.read_text(encoding="utf-8"))
+    except Exception as exc:
+        return f"*Health log unreadable: {exc}*"
+
+    from brain.health_rollup import recent_provider_health
+    health = recent_provider_health(entries, window_hours=24)
+
+    if not health:
+        return "*No health data in the last 24 hours.*"
+
+    def _icon(uptime: float) -> str:
+        if uptime >= 0.90: return "✅"
+        if uptime >= 0.60: return "⚠️"
+        return "❌"
+
+    lines = [
+        f"*Last checked: {now} — updated hourly by automated health checks*",
+        "",
+        "## Provider Health (Last 24h)",
+        "",
+        "| Provider | Status | Uptime | Avg Latency | Samples |",
+        "|---|---|---|---|---|",
+    ]
+
+    for provider, h in sorted(
+        health.items(),
+        key=lambda kv: (-kv[1]["uptime"], kv[1]["avg_latency_ms"])
+    ):
+        icon    = _icon(h["uptime"])
+        uptime  = f"{h['uptime'] * 100:.0f}%"
+        latency = f"{h['avg_latency_ms']:.0f}ms" if h["avg_latency_ms"] else "—"
+        lines.append(f"| **{provider}** | {icon} | {uptime} | {latency} | {h['sample_count']} |")
+
+    lines += [
+        "",
+        "*✅ ≥90% uptime · ⚠️ 60–89% · ❌ <60% — checks run hourly via Windows Task Scheduler*",
+    ]
+
+    return "\n".join(lines)
+
+
+# ---------------------------------------------------------------------------
+# README injection
+# ---------------------------------------------------------------------------
+
+def _inject(content: str, start: str, end: str, block: str) -> str:
+    if start not in content:
+        content += f"\n\n{start}\n{block}\n{end}\n"
+    else:
+        pattern = re.compile(rf"{re.escape(start)}.*?{re.escape(end)}", re.DOTALL)
+        content = pattern.sub(f"{start}\n{block}\n{end}", content)
+    return content
+
+
+def update_readme(stats_block: str, health_block: str) -> bool:
     if not _README.exists():
         print("README.md not found.")
         return False
-
     content = _README.read_text(encoding="utf-8")
-
-    if _START not in content:
-        # Append markers + block at the end of the file.
-        content += f"\n\n{_START}\n{stats_block}\n{_END}\n"
-    else:
-        # Replace existing block.
-        pattern = re.compile(
-            rf"{re.escape(_START)}.*?{re.escape(_END)}",
-            flags=re.DOTALL,
-        )
-        content = pattern.sub(f"{_START}\n{stats_block}\n{_END}", content)
-
+    content = _inject(content, _STATS_START,  _STATS_END,  stats_block)
+    content = _inject(content, _HEALTH_START, _HEALTH_END, health_block)
     _README.write_text(content, encoding="utf-8")
     return True
 
 
+# ---------------------------------------------------------------------------
+# Git
+# ---------------------------------------------------------------------------
+
 def git_commit_and_push(push: bool = False) -> None:
     repo = Path(__file__).parent
 
-    subprocess.run(["git", "add", "README.md", "stats/usage.json"], cwd=repo)
+    files = ["README.md", "stats/usage.json"]
+    if _HEALTH_LOG.exists():
+        files.append("stats/health_log.json")
+    if (repo / "stats" / "cache.json").exists():
+        files.append("stats/cache.json")
+
+    subprocess.run(["git", "add"] + files, cwd=repo)
     result = subprocess.run(
         ["git", "commit", "-m",
-         "chore: auto-update README with live usage stats\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"],
-        cwd=repo, capture_output=True, text=True
+         "chore: auto-update README stats and health\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"],
+        cwd=repo, capture_output=True, text=True,
     )
     if "nothing to commit" in result.stdout + result.stderr:
         print("No changes to commit.")
         return
 
-    print("Committed stats update to README.md")
+    print("Committed README update.")
     if push:
-        subprocess.run(["git", "push"], cwd=repo)
-        print("Pushed to GitHub.")
+        push_result = subprocess.run(["git", "push"], cwd=repo, capture_output=True, text=True)
+        if push_result.returncode == 0:
+            print("Pushed to GitHub.")
+        else:
+            print(f"Push failed: {push_result.stderr.strip()}")
 
+
+# ---------------------------------------------------------------------------
+# Entry point
+# ---------------------------------------------------------------------------
 
 def main() -> None:
-    p = argparse.ArgumentParser(description="Update README with live usage stats")
-    p.add_argument("--push", action="store_true", help="Push to GitHub after committing")
-    p.add_argument("--dry-run", action="store_true", help="Print block without writing")
+    p = argparse.ArgumentParser(description="Update README with live stats and health")
+    p.add_argument("--push",    action="store_true", help="Push to GitHub after committing")
+    p.add_argument("--dry-run", action="store_true", help="Print blocks without writing")
     args = p.parse_args()
 
-    stats = tracker.get()
-    block = build_stats_block(stats)
+    stats        = tracker.get()
+    stats_block  = build_stats_block(stats)
+    health_block = build_health_block()
 
     if args.dry_run:
-        print(block)
+        out = sys.stdout.buffer if hasattr(sys.stdout, "buffer") else sys.stdout
+        def _safe_print(text: str) -> None:
+            out.write((text + "\n").encode("utf-8", errors="replace"))
+        _safe_print("=== STATS ===")
+        _safe_print(stats_block)
+        _safe_print("\n=== HEALTH ===")
+        _safe_print(health_block)
         return
 
-    if update_readme(block):
-        print("README.md updated with latest stats.")
+    if update_readme(stats_block, health_block):
+        print("README.md updated.")
         git_commit_and_push(push=args.push)
     else:
         sys.exit(1)

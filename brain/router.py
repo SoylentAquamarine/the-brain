@@ -222,6 +222,62 @@ class Router:
     # Internal helpers
     # ------------------------------------------------------------------
 
+    # Providers below this 24h uptime are demoted to end of chain.
+    _DEGRADED_UPTIME_THRESHOLD = 0.60
+    # Need at least this many health-check samples to trust the signal.
+    _MIN_HEALTH_SAMPLES = 3
+
+    def _load_health_snapshot(self) -> dict:
+        """
+        Load the last 24h of health data from health_log.json.
+
+        Returns a dict keyed by provider — dynamically derived from whatever
+        providers appear in the log, no hardcoded list needed.
+        Returns {} silently if the log is missing or unreadable.
+        """
+        try:
+            from pathlib import Path
+            import json
+            from brain.health_rollup import recent_provider_health
+            log_path = Path(__file__).parent.parent / "stats" / "health_log.json"
+            if not log_path.exists():
+                return {}
+            entries = json.loads(log_path.read_text(encoding="utf-8"))
+            return recent_provider_health(entries, window_hours=24)
+        except Exception as exc:
+            logger.debug("Health snapshot unavailable: %s", exc)
+            return {}
+
+    def _reorder_by_health(self, providers: List[str]) -> List[str]:
+        """
+        Move degraded providers (low 24h uptime) to the end, preserving relative order.
+
+        Uses health_log.json as the signal source — covers all providers
+        continuously, not just ones that have been called recently.
+        Falls back gracefully to the original order if the log is unavailable.
+        """
+        snapshot = self._load_health_snapshot()
+        if not snapshot:
+            return providers
+
+        healthy, degraded = [], []
+        for p in providers:
+            h = snapshot.get(p)
+            if (
+                h
+                and h["sample_count"] >= self._MIN_HEALTH_SAMPLES
+                and h["uptime"] < self._DEGRADED_UPTIME_THRESHOLD
+            ):
+                degraded.append(p)
+                logger.debug(
+                    "Health reorder: %s demoted (%.0f%% uptime, %d samples)",
+                    p, h["uptime"] * 100, h["sample_count"],
+                )
+            else:
+                healthy.append(p)
+
+        return healthy + degraded
+
     def _resolve_top(self, task: Task) -> Optional[str]:
         """
         Return the provider that should be forced to position 0, or None.
@@ -287,6 +343,9 @@ class Router:
             free = [p for p in full if self._registry[p].TIER == "free"]
             paid = [p for p in full if self._registry[p].TIER != "free"]
             full = free + paid
+
+        # Demote historically degraded providers to the end.
+        full = self._reorder_by_health(full)
 
         # Promote top to position 0 without re-filtering the rest.
         if top and top != full[0]:

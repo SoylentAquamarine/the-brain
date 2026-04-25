@@ -20,7 +20,7 @@ import logging
 import time
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 
 from brain.constants import CLAUDE_COST_PER_1K_TOKENS, STATS_FILE_PATH
 from brain.task import TaskResult, Task
@@ -102,6 +102,7 @@ class UsageStats:
     worker_tokens:  int   = 0
     first_call_ts:  float = field(default_factory=time.time)
     last_call_ts:   float = field(default_factory=time.time)
+    call_log:       List[dict] = field(default_factory=list)
 
     @property
     def claude_tokens_saved(self) -> int:
@@ -190,6 +191,17 @@ class StatsTracker:
 
         self._stats.total_tokens += result.tokens_used
 
+        # Append a timestamped entry to the activity log (keep last 100).
+        self._stats.call_log.append({
+            "ts":       self._stats.last_call_ts,
+            "provider": provider,
+            "type":     task.task_type.value,
+            "tokens":   result.tokens_used,
+            "ms":       int(result.latency_ms),
+        })
+        if len(self._stats.call_log) > 100:
+            self._stats.call_log = self._stats.call_log[-100:]
+
         # Track Claude vs free-worker token split for the savings metric.
         if provider == "anthropic":
             self._stats.claude_calls  += 1
@@ -246,6 +258,7 @@ class StatsTracker:
                 for k, v in raw.get("providers", {}).items()
             }
             raw["providers"] = providers
+            raw.setdefault("call_log", [])
             return UsageStats(**raw)
 
         except (json.JSONDecodeError, TypeError, KeyError) as exc:
@@ -275,6 +288,7 @@ class StatsTracker:
             "worker_tokens":  self._stats.worker_tokens,
             "first_call_ts":  self._stats.first_call_ts,
             "last_call_ts":   self._stats.last_call_ts,
+            "call_log":       self._stats.call_log,
         }
         self._path.write_text(json.dumps(data, indent=2), encoding="utf-8")
 

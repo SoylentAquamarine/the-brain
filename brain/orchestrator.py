@@ -25,10 +25,13 @@ from __future__ import annotations
 
 import logging
 import re
+import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from enum import Enum
 from typing import Dict, List, Optional, Set
 
 from brain.adapters import REGISTRY
+from brain.cache import cache
 from brain.constants import DEFAULT_MAX_FALLBACKS
 from brain.router import Router
 from brain.stats import tracker
@@ -92,10 +95,13 @@ class Orchestrator:
         self,
         dynamic_routing: bool = False,
         max_fallbacks: int = DEFAULT_MAX_FALLBACKS,
+        use_cache: bool = True,
     ) -> None:
         self._registry      = REGISTRY
         self._router        = Router(self._registry, dynamic=dynamic_routing)
         self._max_fallbacks = max_fallbacks
+
+        self._use_cache = use_cache
 
         # Session-level accounting — resets when the object is recreated.
         self._total_calls:  int   = 0
@@ -103,9 +109,13 @@ class Orchestrator:
         self._total_cost:   float = 0.0
         self._failed_calls: int   = 0
 
-        # Providers disabled this session: {provider: reason}
+        # Auth-failed providers — disabled for the entire session (bad key won't fix itself).
         self._session_disabled: Set[str] = set()
         self._session_disabled_reasons: Dict[str, str] = {}
+
+        # Time-based cooldowns: {provider: monotonic re-enable time}
+        self._cooldown: Dict[str, float] = {}
+        self._cooldown_reasons: Dict[str, str] = {}
 
         available = self._router.available_providers()
         logger.info(
@@ -117,6 +127,29 @@ class Orchestrator:
     # ------------------------------------------------------------------
     # Primary public API
     # ------------------------------------------------------------------
+
+    # Cooldown durations per failure type (seconds).
+    _COOLDOWN_RATE_LIMIT  = 300   # 5 min — wait for quota to reset
+    _COOLDOWN_TIMEOUT     = 180   # 3 min — may just be a blip
+    _COOLDOWN_MODEL_ERROR = 120   # 2 min — bad request, retry after a pause
+
+    def _is_on_cooldown(self, provider_key: str) -> bool:
+        until = self._cooldown.get(provider_key)
+        if until is None:
+            return False
+        if time.monotonic() >= until:
+            self._cooldown.pop(provider_key, None)
+            self._cooldown_reasons.pop(provider_key, None)
+            logger.info("Provider %s cooldown expired — re-enabled.", provider_key)
+            return False
+        return True
+
+    def _set_cooldown(self, provider_key: str, seconds: float, reason: str) -> None:
+        self._cooldown[provider_key] = time.monotonic() + seconds
+        self._cooldown_reasons[provider_key] = reason
+        logger.warning(
+            "Provider %s cooling down for %.0fs: %s", provider_key, seconds, reason
+        )
 
     def run(self, task: Task) -> TaskResult:
         """
@@ -144,6 +177,12 @@ class Orchestrator:
             task.task_type.value,
             task.priority.value,
         )
+
+        if self._use_cache:
+            cached = cache.get(task)
+            if cached:
+                task.status = TaskStatus.COMPLETED
+                return cached
 
         provider_order = self._build_provider_order(task)
 
@@ -177,6 +216,10 @@ class Orchestrator:
                 logger.debug("Skipping %s — auth-disabled for session.", provider_key)
                 continue
 
+            if self._is_on_cooldown(provider_key):
+                logger.debug("Skipping %s — on cooldown.", provider_key)
+                continue
+
             if provider_key in request_skipped:
                 logger.debug("Skipping %s — rate-limited this request.", provider_key)
                 continue
@@ -208,6 +251,8 @@ class Orchestrator:
             if result.succeeded:
                 task.status = TaskStatus.COMPLETED
                 logger.info("Task %s done.  %s", task.id[:8], result.summary())
+                if self._use_cache:
+                    cache.put(task, result)
                 return result
 
             # --- Classify failure and update skip state ---
@@ -218,23 +263,20 @@ class Orchestrator:
             )
 
             if failure_type == FailureType.AUTH_ERROR:
+                # Auth failures are permanent — a bad key won't fix itself this session.
                 self._session_disabled.add(provider_key)
                 self._session_disabled_reasons[provider_key] = f"auth error: {result.error}"
-                logger.warning("Provider %s disabled for this session (auth error).", provider_key)
+                logger.warning("Provider %s disabled for session (auth error).", provider_key)
 
             elif failure_type == FailureType.RATE_LIMIT:
-                self._session_disabled.add(provider_key)
-                self._session_disabled_reasons[provider_key] = f"rate limit: {result.error}"
-                logger.warning("Provider %s disabled for this session (rate limit).", provider_key)
+                self._set_cooldown(provider_key, self._COOLDOWN_RATE_LIMIT, f"rate limit: {result.error}")
 
             elif failure_type == FailureType.MODEL_ERROR:
-                self._session_disabled.add(provider_key)
-                self._session_disabled_reasons[provider_key] = f"model/request error: {result.error}"
-                logger.warning("Provider %s disabled for this session (model error).", provider_key)
+                self._set_cooldown(provider_key, self._COOLDOWN_MODEL_ERROR, f"model error: {result.error}")
 
             elif failure_type == FailureType.TIMEOUT:
-                # Load historical latencies once, then set a ceiling so that
-                # providers historically slower than this one are skipped.
+                self._set_cooldown(provider_key, self._COOLDOWN_TIMEOUT, f"timeout: {result.error}")
+                # Also skip historically slow providers for the rest of this request.
                 if hist_latency is None:
                     hist_latency = self._load_provider_latencies()
                 slow_ceiling_ms = result.latency_ms
@@ -279,6 +321,85 @@ class Orchestrator:
         """
         return [self.run(task) for task in tasks]
 
+    def run_parallel(self, task: Task, n: int = 3) -> TaskResult:
+        """
+        Race *n* providers simultaneously and return the first successful result.
+
+        All candidates fire at once via a thread pool.  The winner is returned
+        immediately; the rest are abandoned (shutdown(wait=False)).  Falls back
+        to sequential run() when fewer than 2 providers are available.
+
+        Parameters
+        ----------
+        task : Task
+        n    : int
+            Maximum number of providers to race (default 3).
+
+        Returns
+        -------
+        TaskResult
+        """
+        provider_order = self._build_provider_order(task)
+        candidates = [
+            p for p in provider_order
+            if p not in self._session_disabled and not self._is_on_cooldown(p)
+        ][:n]
+
+        if len(candidates) < 2:
+            logger.info("Parallel: only %d provider(s) available, running sequentially.", len(candidates))
+            return self.run(task)
+
+        logger.info("Parallel race (%d providers): %s", len(candidates), candidates)
+        task.status = TaskStatus.RUNNING
+
+        executor = ThreadPoolExecutor(max_workers=len(candidates))
+        futures = {executor.submit(self._registry[p].complete, task): p for p in candidates}
+
+        last_error: Optional[str] = None
+        for future in as_completed(futures):
+            provider_key = futures[future]
+            try:
+                result = future.result()
+            except Exception as exc:
+                logger.warning("Parallel provider %s raised: %s", provider_key, exc)
+                last_error = str(exc)
+                continue
+
+            self._account(result, task)
+
+            if result.succeeded:
+                task.status = TaskStatus.COMPLETED
+                logger.info(
+                    "Parallel winner: %s (%.0fms)", provider_key, result.latency_ms
+                )
+                executor.shutdown(wait=False)
+                return result
+
+            # Record failure state so cooldowns propagate.
+            failure_type = _classify_failure(result.error or "")
+            if failure_type == FailureType.AUTH_ERROR:
+                self._session_disabled.add(provider_key)
+                self._session_disabled_reasons[provider_key] = f"auth error: {result.error}"
+            elif failure_type == FailureType.RATE_LIMIT:
+                self._set_cooldown(provider_key, self._COOLDOWN_RATE_LIMIT, result.error or "rate limit")
+            elif failure_type == FailureType.MODEL_ERROR:
+                self._set_cooldown(provider_key, self._COOLDOWN_MODEL_ERROR, result.error or "model error")
+            elif failure_type == FailureType.TIMEOUT:
+                self._set_cooldown(provider_key, self._COOLDOWN_TIMEOUT, result.error or "timeout")
+
+            last_error = result.error
+
+        executor.shutdown(wait=False)
+        task.status = TaskStatus.FAILED
+        self._failed_calls += 1
+        return TaskResult(
+            task_id=task.id,
+            provider="none",
+            model="none",
+            content="",
+            error=last_error or "All parallel providers failed.",
+        )
+
     # ------------------------------------------------------------------
     # Introspection
     # ------------------------------------------------------------------
@@ -311,15 +432,23 @@ class Orchestrator:
     def provider_report(self) -> str:
         """Return a human-readable session provider health report."""
         available = self._router.available_providers()
+        now = time.monotonic()
         lines = ["Provider Report", "=" * 40]
-        ok = [p for p in available if p not in self._session_disabled]
+        ok = [p for p in available if p not in self._session_disabled and not self._is_on_cooldown(p)]
         lines.append(f"Active ({len(ok)}): {', '.join(ok) or 'none'}")
         if self._session_disabled_reasons:
-            lines.append(f"\nDisabled ({len(self._session_disabled_reasons)}):")
+            lines.append(f"\nAuth-disabled ({len(self._session_disabled_reasons)}):")
             for p, reason in self._session_disabled_reasons.items():
                 lines.append(f"  {p}: {reason}")
+        active_cooldowns = {p: t for p, t in self._cooldown.items() if t > now}
+        if active_cooldowns:
+            lines.append(f"\nCooling down ({len(active_cooldowns)}):")
+            for p, until in active_cooldowns.items():
+                secs_left = int(until - now)
+                reason = self._cooldown_reasons.get(p, "")
+                lines.append(f"  {p}: {secs_left}s remaining — {reason}")
         else:
-            lines.append("No providers disabled this session.")
+            lines.append("No providers on cooldown.")
         return "\n".join(lines)
 
     # ------------------------------------------------------------------

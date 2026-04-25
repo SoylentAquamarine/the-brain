@@ -2,10 +2,10 @@
   "providers": {
     "cerebras": {
       "provider": "cerebras",
-      "calls": 12,
-      "tokens": 1987,
+      "calls": 13,
+      "tokens": 2037,
       "cost_usd": 0.0,
-      "total_latency": 3877.086699998472,
+      "total_latency": 4393.465700006345,
       "errors": 0
     },
     "gemini": {
@@ -26,45 +26,53 @@
     },
     "openai": {
       "provider": "openai",
-      "calls": 1,
-      "tokens": 89,
+      "calls": 2,
+      "tokens": 110,
       "cost_usd": 1.3349999999999998e-05,
-      "total_latency": 2779.5198000094388,
+      "total_latency": 7259.925899998052,
       "errors": 0
     },
     "mistral": {
       "provider": "mistral",
-      "calls": 5,
-      "tokens": 3478,
+      "calls": 6,
+      "tokens": 4823,
       "cost_usd": 0.0,
-      "total_latency": 9131.451200024458,
+      "total_latency": 16031.405000016093,
       "errors": 0
     },
     "groq": {
       "provider": "groq",
-      "calls": 2,
-      "tokens": 631,
+      "calls": 3,
+      "tokens": 681,
       "cost_usd": 0.0,
-      "total_latency": 1742.3924999602605,
+      "total_latency": 2475.0245999603067,
       "errors": 0
     },
     "sambanova": {
       "provider": "sambanova",
-      "calls": 1,
-      "tokens": 1251,
+      "calls": 2,
+      "tokens": 2402,
       "cost_usd": 0.0,
-      "total_latency": 5361.416900006589,
+      "total_latency": 9506.495600013295,
+      "errors": 0
+    },
+    "huggingface": {
+      "provider": "huggingface",
+      "calls": 1,
+      "tokens": 613,
+      "cost_usd": 0.0,
+      "total_latency": 20055.194999993546,
       "errors": 0
     }
   },
-  "total_calls": 25,
-  "total_tokens": 8544,
+  "total_calls": 31,
+  "total_tokens": 11774,
   "total_cost_usd": 1.3349999999999998e-05,
   "claude_calls": 0,
   "claude_tokens": 0,
-  "worker_tokens": 8544,
+  "worker_tokens": 11774,
   "first_call_ts": 1776448625.4107182,
-  "last_call_ts": 1777087727.4282823,
+  "last_call_ts": 1777091257.2779443,
   "call_log": [
     {
       "ts": 1777056888.133666,
@@ -128,6 +136,48 @@
       "type": "general",
       "tokens": 374,
       "ms": 414
+    },
+    {
+      "ts": 1777088450.801446,
+      "provider": "huggingface",
+      "type": "factual_qa",
+      "tokens": 613,
+      "ms": 20055
+    },
+    {
+      "ts": 1777088503.5213082,
+      "provider": "sambanova",
+      "type": "reasoning",
+      "tokens": 1151,
+      "ms": 4145
+    },
+    {
+      "ts": 1777090894.2391992,
+      "provider": "mistral",
+      "type": "factual_qa",
+      "tokens": 1345,
+      "ms": 6899
+    },
+    {
+      "ts": 1777091158.650871,
+      "provider": "cerebras",
+      "type": "factual_qa",
+      "tokens": 50,
+      "ms": 516
+    },
+    {
+      "ts": 1777091213.633881,
+      "provider": "groq",
+      "type": "factual_qa",
+      "tokens": 50,
+      "ms": 732
+    },
+    {
+      "ts": 1777091257.2779443,
+      "provider": "openai",
+      "type": "factual_qa",
+      "tokens": 21,
+      "ms": 4480
     }
   ]
 }

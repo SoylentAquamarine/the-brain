@@ -7173,2379 +7173,741 @@
     "response": "4"
   },
   {
-    "timestamp": "2026-04-23T02:25:39Z",
+    "timestamp": "2026-04-23T03:44:43Z",
     "provider": "cerebras",
     "model": "llama3.1-8b",
     "status": "ok",
-    "latency_ms": 196,
+    "latency_ms": 179,
     "quality": 1.0,
     "response": "4"
   },
   {
-    "timestamp": "2026-04-23T02:25:39Z",
+    "timestamp": "2026-04-23T03:44:57Z",
     "provider": "cloudflare",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
+    "model": "@cf/meta/llama-3.1-8b-instruct",
+    "status": "ok",
+    "latency_ms": 14259,
+    "quality": 1.0,
+    "response": "4"
   },
   {
-    "timestamp": "2026-04-23T02:25:39Z",
+    "timestamp": "2026-04-23T03:44:57Z",
     "provider": "cohere",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
+    "model": "command-r-08-2024",
+    "status": "ok",
+    "latency_ms": 275,
+    "quality": 1.0,
+    "response": "4"
   },
   {
-    "timestamp": "2026-04-23T02:25:39Z",
+    "timestamp": "2026-04-23T03:44:58Z",
     "provider": "fireworks",
     "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
     "status": "ok",
-    "latency_ms": 590,
+    "latency_ms": 263,
     "quality": 1.0,
     "response": "4"
   },
   {
-    "timestamp": "2026-04-23T02:25:40Z",
+    "timestamp": "2026-04-23T03:44:58Z",
     "provider": "gemini",
     "model": "gemini-2.5-flash-lite",
     "status": "ok",
-    "latency_ms": 467,
+    "latency_ms": 421,
     "quality": 1.0,
     "response": "4"
   },
   {
-    "timestamp": "2026-04-23T02:25:40Z",
+    "timestamp": "2026-04-23T03:44:58Z",
     "provider": "groq",
     "model": "llama-3.1-8b-instant",
     "status": "ok",
-    "latency_ms": 218,
+    "latency_ms": 350,
     "quality": 1.0,
     "response": "4"
   },
   {
-    "timestamp": "2026-04-23T02:25:41Z",
+    "timestamp": "2026-04-23T03:44:59Z",
     "provider": "huggingface",
     "model": "Qwen/Qwen2.5-72B-Instruct",
     "status": "ok",
-    "latency_ms": 1391,
+    "latency_ms": 1141,
     "quality": 1.0,
     "response": "4"
   },
   {
-    "timestamp": "2026-04-23T02:25:42Z",
+    "timestamp": "2026-04-23T03:45:00Z",
     "provider": "mistral",
     "model": "mistral-small-latest",
     "status": "ok",
-    "latency_ms": 382,
+    "latency_ms": 607,
     "quality": 1.0,
     "response": "4"
   },
   {
-    "timestamp": "2026-04-23T02:25:43Z",
+    "timestamp": "2026-04-23T03:45:01Z",
     "provider": "openai",
     "model": "gpt-4o-mini-2024-07-18",
     "status": "ok",
-    "latency_ms": 1617,
+    "latency_ms": 1018,
     "quality": 1.0,
     "response": "4"
   },
   {
-    "timestamp": "2026-04-23T02:25:45Z",
+    "timestamp": "2026-04-23T03:45:03Z",
     "provider": "openrouter",
     "model": "google/gemma-4-26b-a4b-it:free",
     "status": "error",
-    "latency_ms": 1654,
+    "latency_ms": 1829,
     "quality": 0.0,
     "response": "Error code: 429 - {'error': {'message': 'Provider returned error', 'code': 429, "
   },
   {
-    "timestamp": "2026-04-23T02:25:45Z",
+    "timestamp": "2026-04-23T03:45:03Z",
     "provider": "pollinations",
     "model": "openai",
     "status": "ok",
-    "latency_ms": 264,
+    "latency_ms": 457,
     "quality": 1.0,
     "response": "4"
   },
   {
-    "timestamp": "2026-04-23T02:25:56Z",
+    "timestamp": "2026-04-23T03:45:05Z",
     "provider": "sambanova",
     "model": "Meta-Llama-3.3-70B-Instruct",
     "status": "ok",
-    "latency_ms": 10306,
+    "latency_ms": 1545,
     "quality": 1.0,
     "response": "4"
   },
   {
-    "timestamp": "2026-04-23T05:28:11Z",
+    "timestamp": "2026-04-23T13:49:04Z",
     "provider": "cerebras",
     "model": "llama3.1-8b",
     "status": "ok",
-    "latency_ms": 6223,
+    "latency_ms": 240,
     "quality": 1.0,
     "response": "4"
   },
   {
-    "timestamp": "2026-04-23T05:28:11Z",
-    "provider": "cloudflare",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-23T05:28:11Z",
-    "provider": "cohere",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-23T05:28:11Z",
-    "provider": "fireworks",
-    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
-    "status": "ok",
-    "latency_ms": 518,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T05:28:12Z",
-    "provider": "gemini",
-    "model": "gemini-2.5-flash-lite",
-    "status": "ok",
-    "latency_ms": 888,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T05:28:12Z",
-    "provider": "groq",
-    "model": "llama-3.1-8b-instant",
-    "status": "ok",
-    "latency_ms": 124,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T05:28:13Z",
-    "provider": "huggingface",
-    "model": "Qwen/Qwen2.5-72B-Instruct",
-    "status": "ok",
-    "latency_ms": 1036,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T05:28:14Z",
-    "provider": "mistral",
-    "model": "mistral-small-latest",
-    "status": "ok",
-    "latency_ms": 404,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T05:28:15Z",
-    "provider": "openai",
-    "model": "gpt-4o-mini-2024-07-18",
-    "status": "ok",
-    "latency_ms": 1318,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T05:28:17Z",
-    "provider": "openrouter",
-    "model": "google/gemma-4-26b-a4b-it:free",
+    "timestamp": "2026-04-23T13:49:04Z",
+    "provider": "cerebras",
+    "model": "llama-3.3-70b",
     "status": "error",
-    "latency_ms": 1714,
+    "latency_ms": 113,
     "quality": 0.0,
-    "response": "Error code: 429 - {'error': {'message': 'Provider returned error', 'code': 429, "
+    "response": "Error code: 404 - {'message': 'Model llama-3.3-70b does not exist or you do not "
   },
   {
-    "timestamp": "2026-04-23T05:28:17Z",
-    "provider": "pollinations",
-    "model": "openai",
-    "status": "ok",
-    "latency_ms": 239,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T05:28:18Z",
-    "provider": "sambanova",
-    "model": "Meta-Llama-3.3-70B-Instruct",
-    "status": "ok",
-    "latency_ms": 682,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T07:47:42Z",
+    "timestamp": "2026-04-23T13:49:04Z",
     "provider": "cerebras",
-    "model": "llama3.1-8b",
-    "status": "ok",
-    "latency_ms": 114,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T07:47:42Z",
-    "provider": "cloudflare",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-23T07:47:42Z",
-    "provider": "cohere",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-23T07:47:42Z",
-    "provider": "fireworks",
-    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
-    "status": "ok",
-    "latency_ms": 507,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T07:47:43Z",
-    "provider": "gemini",
-    "model": "gemini-2.5-flash-lite",
-    "status": "ok",
-    "latency_ms": 789,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T07:47:43Z",
-    "provider": "groq",
-    "model": "llama-3.1-8b-instant",
-    "status": "ok",
-    "latency_ms": 125,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T07:47:49Z",
-    "provider": "huggingface",
-    "model": "Qwen/Qwen2.5-72B-Instruct",
-    "status": "ok",
-    "latency_ms": 5557,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T07:47:50Z",
-    "provider": "mistral",
-    "model": "mistral-small-latest",
-    "status": "ok",
-    "latency_ms": 768,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T07:47:52Z",
-    "provider": "openai",
-    "model": "gpt-4o-mini-2024-07-18",
-    "status": "ok",
-    "latency_ms": 1862,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T07:47:53Z",
-    "provider": "openrouter",
-    "model": "google/gemma-4-26b-a4b-it:free",
+    "model": "qwen-3-32b",
     "status": "error",
-    "latency_ms": 1598,
+    "latency_ms": 62,
     "quality": 0.0,
-    "response": "Error code: 429 - {'error': {'message': 'Provider returned error', 'code': 429, "
+    "response": "Error code: 404 - {'message': 'Model qwen-3-32b does not exist or you do not hav"
   },
   {
-    "timestamp": "2026-04-23T07:47:53Z",
-    "provider": "pollinations",
-    "model": "openai",
-    "status": "ok",
-    "latency_ms": 212,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T07:47:54Z",
-    "provider": "sambanova",
-    "model": "Meta-Llama-3.3-70B-Instruct",
-    "status": "ok",
-    "latency_ms": 625,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T09:25:25Z",
-    "provider": "cerebras",
-    "model": "llama3.1-8b",
-    "status": "ok",
-    "latency_ms": 193,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T09:25:25Z",
+    "timestamp": "2026-04-23T13:49:05Z",
     "provider": "cloudflare",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
+    "model": "@cf/meta/llama-3.1-8b-instruct",
+    "status": "ok",
+    "latency_ms": 1199,
+    "quality": 1.0,
+    "response": "4"
   },
   {
-    "timestamp": "2026-04-23T09:25:25Z",
+    "timestamp": "2026-04-23T13:49:06Z",
+    "provider": "cloudflare",
+    "model": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+    "status": "error",
+    "latency_ms": 0,
+    "quality": 0.0,
+    "response": "'int' object has no attribute 'strip'"
+  },
+  {
+    "timestamp": "2026-04-23T13:49:06Z",
+    "provider": "cloudflare",
+    "model": "@cf/google/gemma-3-12b-it",
+    "status": "ok",
+    "latency_ms": 280,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-23T13:49:07Z",
     "provider": "cohere",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
+    "model": "command-r-08-2024",
+    "status": "ok",
+    "latency_ms": 381,
+    "quality": 1.0,
+    "response": "4"
   },
   {
-    "timestamp": "2026-04-23T09:25:25Z",
+    "timestamp": "2026-04-23T13:49:07Z",
+    "provider": "cohere",
+    "model": "command-r-plus-08-2024",
+    "status": "ok",
+    "latency_ms": 177,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-23T13:49:07Z",
     "provider": "fireworks",
     "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
     "status": "ok",
-    "latency_ms": 595,
+    "latency_ms": 282,
     "quality": 1.0,
     "response": "4"
   },
   {
-    "timestamp": "2026-04-23T09:25:26Z",
-    "provider": "gemini",
-    "model": "gemini-2.5-flash-lite",
-    "status": "ok",
-    "latency_ms": 529,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T09:25:26Z",
-    "provider": "groq",
-    "model": "llama-3.1-8b-instant",
-    "status": "ok",
-    "latency_ms": 163,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T09:25:27Z",
-    "provider": "huggingface",
-    "model": "Qwen/Qwen2.5-72B-Instruct",
-    "status": "ok",
-    "latency_ms": 1094,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T09:25:28Z",
-    "provider": "mistral",
-    "model": "mistral-small-latest",
-    "status": "ok",
-    "latency_ms": 695,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T09:25:30Z",
-    "provider": "openai",
-    "model": "gpt-4o-mini-2024-07-18",
-    "status": "ok",
-    "latency_ms": 1724,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T09:25:30Z",
-    "provider": "openrouter",
-    "model": "google/gemma-4-26b-a4b-it-20260403:free",
-    "status": "ok",
-    "latency_ms": 601,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T09:25:31Z",
-    "provider": "pollinations",
-    "model": "openai",
-    "status": "ok",
-    "latency_ms": 255,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T09:25:33Z",
-    "provider": "sambanova",
-    "model": "Meta-Llama-3.3-70B-Instruct",
-    "status": "ok",
-    "latency_ms": 2401,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T11:05:40Z",
-    "provider": "cerebras",
-    "model": "llama3.1-8b",
-    "status": "ok",
-    "latency_ms": 194,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T11:05:40Z",
-    "provider": "cloudflare",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-23T11:05:40Z",
-    "provider": "cohere",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-23T11:05:40Z",
+    "timestamp": "2026-04-23T13:49:07Z",
     "provider": "fireworks",
-    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
-    "status": "ok",
-    "latency_ms": 514,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T11:05:41Z",
-    "provider": "gemini",
-    "model": "gemini-2.5-flash-lite",
-    "status": "ok",
-    "latency_ms": 755,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T11:05:41Z",
-    "provider": "groq",
-    "model": "llama-3.1-8b-instant",
-    "status": "ok",
-    "latency_ms": 86,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T11:05:42Z",
-    "provider": "huggingface",
-    "model": "Qwen/Qwen2.5-72B-Instruct",
-    "status": "ok",
-    "latency_ms": 994,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T11:05:42Z",
-    "provider": "mistral",
-    "model": "mistral-small-latest",
-    "status": "ok",
-    "latency_ms": 394,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T11:05:44Z",
-    "provider": "openai",
-    "model": "gpt-4o-mini-2024-07-18",
-    "status": "ok",
-    "latency_ms": 1609,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T11:05:45Z",
-    "provider": "openrouter",
-    "model": "google/gemma-4-26b-a4b-it-20260403:free",
-    "status": "ok",
-    "latency_ms": 1185,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T11:05:45Z",
-    "provider": "pollinations",
-    "model": "openai",
-    "status": "ok",
-    "latency_ms": 213,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T11:05:57Z",
-    "provider": "sambanova",
-    "model": "Meta-Llama-3.3-70B-Instruct",
-    "status": "ok",
-    "latency_ms": 11622,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T13:23:00Z",
-    "provider": "cerebras",
-    "model": "llama3.1-8b",
-    "status": "ok",
-    "latency_ms": 293,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T13:23:00Z",
-    "provider": "cloudflare",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
+    "model": "accounts/fireworks/models/deepseek-v3-0324",
+    "status": "error",
+    "latency_ms": 33,
     "quality": 0.0,
-    "response": "API key not configured"
+    "response": "Error code: 404 - {'error': {'message': 'Model not found, inaccessible, and/or n"
   },
   {
-    "timestamp": "2026-04-23T13:23:00Z",
-    "provider": "cohere",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-23T13:23:00Z",
+    "timestamp": "2026-04-23T13:49:07Z",
     "provider": "fireworks",
-    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
-    "status": "ok",
-    "latency_ms": 675,
-    "quality": 1.0,
-    "response": "4"
+    "model": "accounts/fireworks/models/qwen3-30b-a3b",
+    "status": "error",
+    "latency_ms": 45,
+    "quality": 0.0,
+    "response": "Error code: 404 - {'error': {'message': 'Model not found, inaccessible, and/or n"
   },
   {
-    "timestamp": "2026-04-23T13:23:02Z",
+    "timestamp": "2026-04-23T13:49:10Z",
     "provider": "gemini",
     "model": "gemini-2.5-flash-lite",
     "status": "ok",
-    "latency_ms": 1336,
+    "latency_ms": 2952,
     "quality": 1.0,
     "response": "4"
   },
   {
-    "timestamp": "2026-04-23T13:23:02Z",
-    "provider": "groq",
-    "model": "llama-3.1-8b-instant",
-    "status": "ok",
-    "latency_ms": 188,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T13:23:03Z",
-    "provider": "huggingface",
-    "model": "Qwen/Qwen2.5-72B-Instruct",
-    "status": "ok",
-    "latency_ms": 1058,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T13:23:03Z",
-    "provider": "mistral",
-    "model": "mistral-small-latest",
-    "status": "ok",
-    "latency_ms": 481,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T13:23:04Z",
-    "provider": "openai",
-    "model": "gpt-4o-mini-2024-07-18",
-    "status": "ok",
-    "latency_ms": 1011,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T13:23:05Z",
-    "provider": "openrouter",
-    "model": "google/gemma-4-26b-a4b-it-20260403:free",
-    "status": "ok",
-    "latency_ms": 738,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T13:23:05Z",
-    "provider": "pollinations",
-    "model": "openai",
-    "status": "ok",
-    "latency_ms": 227,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T13:23:07Z",
-    "provider": "sambanova",
-    "model": "Meta-Llama-3.3-70B-Instruct",
-    "status": "ok",
-    "latency_ms": 1186,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T15:50:50Z",
-    "provider": "cerebras",
-    "model": "llama3.1-8b",
-    "status": "ok",
-    "latency_ms": 222,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T15:50:50Z",
-    "provider": "cloudflare",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-23T15:50:50Z",
-    "provider": "cohere",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-23T15:50:51Z",
-    "provider": "fireworks",
-    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
-    "status": "ok",
-    "latency_ms": 656,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T15:50:52Z",
+    "timestamp": "2026-04-23T13:49:11Z",
     "provider": "gemini",
-    "model": "gemini-2.5-flash-lite",
-    "status": "ok",
-    "latency_ms": 1366,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T15:50:53Z",
-    "provider": "groq",
-    "model": "llama-3.1-8b-instant",
-    "status": "ok",
-    "latency_ms": 246,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T15:50:54Z",
-    "provider": "huggingface",
-    "model": "Qwen/Qwen2.5-72B-Instruct",
-    "status": "ok",
-    "latency_ms": 1090,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T15:50:54Z",
-    "provider": "mistral",
-    "model": "mistral-small-latest",
-    "status": "ok",
-    "latency_ms": 474,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T15:50:55Z",
-    "provider": "openai",
-    "model": "gpt-4o-mini-2024-07-18",
-    "status": "ok",
-    "latency_ms": 905,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T15:50:56Z",
-    "provider": "openrouter",
-    "model": "google/gemma-4-26b-a4b-it-20260403:free",
-    "status": "ok",
-    "latency_ms": 763,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T15:50:56Z",
-    "provider": "pollinations",
-    "model": "openai",
-    "status": "ok",
-    "latency_ms": 470,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T15:50:59Z",
-    "provider": "sambanova",
-    "model": "Meta-Llama-3.3-70B-Instruct",
-    "status": "ok",
-    "latency_ms": 2191,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T17:17:32Z",
-    "provider": "cerebras",
-    "model": "llama3.1-8b",
-    "status": "ok",
-    "latency_ms": 287,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T17:17:32Z",
-    "provider": "cloudflare",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
+    "model": "gemini-2.5-flash",
+    "status": "degraded",
+    "latency_ms": 589,
     "quality": 0.0,
-    "response": "API key not configured"
+    "response": ""
   },
   {
-    "timestamp": "2026-04-23T17:17:32Z",
-    "provider": "cohere",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-23T17:17:32Z",
-    "provider": "fireworks",
-    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
-    "status": "ok",
-    "latency_ms": 553,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T17:17:33Z",
+    "timestamp": "2026-04-23T13:49:11Z",
     "provider": "gemini",
-    "model": "gemini-2.5-flash-lite",
-    "status": "ok",
-    "latency_ms": 302,
-    "quality": 1.0,
-    "response": "4"
+    "model": "gemini-2.0-flash",
+    "status": "error",
+    "latency_ms": 101,
+    "quality": 0.0,
+    "response": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your cu"
   },
   {
-    "timestamp": "2026-04-23T17:17:33Z",
+    "timestamp": "2026-04-23T13:49:11Z",
     "provider": "groq",
     "model": "llama-3.1-8b-instant",
     "status": "ok",
-    "latency_ms": 233,
+    "latency_ms": 466,
     "quality": 1.0,
     "response": "4"
   },
   {
-    "timestamp": "2026-04-23T17:17:34Z",
+    "timestamp": "2026-04-23T13:49:12Z",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "status": "ok",
+    "latency_ms": 305,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-23T13:49:12Z",
+    "provider": "groq",
+    "model": "gemma2-9b-it",
+    "status": "error",
+    "latency_ms": 60,
+    "quality": 0.0,
+    "response": "Error code: 400 - {'error': {'message': 'The model `gemma2-9b-it` has been decom"
+  },
+  {
+    "timestamp": "2026-04-23T13:49:12Z",
     "provider": "huggingface",
     "model": "Qwen/Qwen2.5-72B-Instruct",
-    "status": "ok",
-    "latency_ms": 731,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T17:17:34Z",
-    "provider": "mistral",
-    "model": "mistral-small-latest",
-    "status": "ok",
+    "status": "error",
     "latency_ms": 414,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T17:17:35Z",
-    "provider": "openai",
-    "model": "gpt-4o-mini-2024-07-18",
-    "status": "ok",
-    "latency_ms": 1501,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T17:17:36Z",
-    "provider": "openrouter",
-    "model": "google/gemma-4-26b-a4b-it-20260403:free",
-    "status": "ok",
-    "latency_ms": 786,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T17:17:36Z",
-    "provider": "pollinations",
-    "model": "openai",
-    "status": "ok",
-    "latency_ms": 220,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T17:17:45Z",
-    "provider": "sambanova",
-    "model": "Meta-Llama-3.3-70B-Instruct",
-    "status": "ok",
-    "latency_ms": 8088,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T19:04:28Z",
-    "provider": "cerebras",
-    "model": "llama3.1-8b",
-    "status": "ok",
-    "latency_ms": 158,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T19:04:28Z",
-    "provider": "cloudflare",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
     "quality": 0.0,
-    "response": "API key not configured"
+    "response": "(Request ID: Root=1-69ea235c-15633bf37e622e7d21cc88e1;35c088c4-0443-4576-8dae-96"
   },
   {
-    "timestamp": "2026-04-23T19:04:28Z",
-    "provider": "cohere",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-23T19:04:34Z",
-    "provider": "fireworks",
-    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
-    "status": "ok",
-    "latency_ms": 6088,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T19:04:38Z",
-    "provider": "gemini",
-    "model": "gemini-2.5-flash-lite",
-    "status": "ok",
-    "latency_ms": 3687,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T19:04:38Z",
-    "provider": "groq",
-    "model": "llama-3.1-8b-instant",
-    "status": "ok",
-    "latency_ms": 361,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T19:04:39Z",
+    "timestamp": "2026-04-23T13:49:12Z",
     "provider": "huggingface",
-    "model": "Qwen/Qwen2.5-72B-Instruct",
+    "model": "Qwen/Qwen2.5-Coder-32B-Instruct",
     "status": "ok",
-    "latency_ms": 1086,
+    "latency_ms": 432,
     "quality": 1.0,
     "response": "4"
   },
   {
-    "timestamp": "2026-04-23T19:04:40Z",
+    "timestamp": "2026-04-23T13:49:13Z",
+    "provider": "huggingface",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "status": "ok",
+    "latency_ms": 266,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-23T13:49:13Z",
     "provider": "mistral",
     "model": "mistral-small-latest",
     "status": "ok",
-    "latency_ms": 516,
+    "latency_ms": 597,
     "quality": 1.0,
     "response": "4"
   },
   {
-    "timestamp": "2026-04-23T19:04:41Z",
-    "provider": "openai",
-    "model": "gpt-4o-mini-2024-07-18",
+    "timestamp": "2026-04-23T13:49:14Z",
+    "provider": "mistral",
+    "model": "open-mistral-7b",
     "status": "ok",
-    "latency_ms": 865,
+    "latency_ms": 244,
     "quality": 1.0,
     "response": "4"
   },
   {
-    "timestamp": "2026-04-23T19:04:42Z",
+    "timestamp": "2026-04-23T13:49:14Z",
+    "provider": "mistral",
+    "model": "open-mixtral-8x7b",
+    "status": "ok",
+    "latency_ms": 363,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-23T13:49:15Z",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "status": "ok",
+    "latency_ms": 927,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-23T13:49:16Z",
+    "provider": "openai",
+    "model": "gpt-4o",
+    "status": "ok",
+    "latency_ms": 1075,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-23T13:49:16Z",
+    "provider": "openai",
+    "model": "o4-mini",
+    "status": "error",
+    "latency_ms": 452,
+    "quality": 0.0,
+    "response": "Error code: 400 - {'error': {'message': \"Unsupported parameter: 'max_tokens' is "
+  },
+  {
+    "timestamp": "2026-04-23T13:49:18Z",
     "provider": "openrouter",
     "model": "google/gemma-4-26b-a4b-it:free",
-    "status": "error",
-    "latency_ms": 1930,
-    "quality": 0.0,
-    "response": "Error code: 429 - {'error': {'message': 'Rate limit exceeded: free-models-per-da"
-  },
-  {
-    "timestamp": "2026-04-23T19:04:43Z",
-    "provider": "pollinations",
-    "model": "openai",
     "status": "ok",
-    "latency_ms": 323,
+    "latency_ms": 1403,
     "quality": 1.0,
     "response": "4"
   },
   {
-    "timestamp": "2026-04-23T19:04:45Z",
+    "timestamp": "2026-04-23T13:49:18Z",
+    "provider": "openrouter",
+    "model": "meta-llama/llama-3.1-8b-instruct:free",
+    "status": "error",
+    "latency_ms": 36,
+    "quality": 0.0,
+    "response": "Error code: 404 - {'error': {'message': 'No endpoints found for meta-llama/llama"
+  },
+  {
+    "timestamp": "2026-04-23T13:49:18Z",
+    "provider": "openrouter",
+    "model": "mistralai/mistral-7b-instruct:free",
+    "status": "error",
+    "latency_ms": 35,
+    "quality": 0.0,
+    "response": "Error code: 404 - {'error': {'message': 'No endpoints found for mistralai/mistra"
+  },
+  {
+    "timestamp": "2026-04-23T13:49:18Z",
+    "provider": "openrouter",
+    "model": "microsoft/phi-3-mini-128k-instruct:free",
+    "status": "error",
+    "latency_ms": 41,
+    "quality": 0.0,
+    "response": "Error code: 404 - {'error': {'message': 'No endpoints found for microsoft/phi-3-"
+  },
+  {
+    "timestamp": "2026-04-23T13:49:19Z",
+    "provider": "pollinations",
+    "model": "openai",
+    "status": "ok",
+    "latency_ms": 567,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-23T13:49:19Z",
+    "provider": "pollinations",
+    "model": "mistral",
+    "status": "ok",
+    "latency_ms": 480,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-23T13:49:19Z",
+    "provider": "pollinations",
+    "model": "gemini",
+    "status": "ok",
+    "latency_ms": 508,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-23T13:49:26Z",
     "provider": "sambanova",
     "model": "Meta-Llama-3.3-70B-Instruct",
     "status": "ok",
-    "latency_ms": 2072,
+    "latency_ms": 6458,
     "quality": 1.0,
     "response": "4"
   },
   {
-    "timestamp": "2026-04-23T20:49:50Z",
-    "provider": "cerebras",
-    "model": "llama3.1-8b",
-    "status": "ok",
-    "latency_ms": 160,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T20:49:50Z",
-    "provider": "cloudflare",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-23T20:49:50Z",
-    "provider": "cohere",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-23T20:49:51Z",
-    "provider": "fireworks",
-    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
-    "status": "ok",
-    "latency_ms": 528,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T20:49:51Z",
-    "provider": "gemini",
-    "model": "gemini-2.5-flash-lite",
-    "status": "ok",
-    "latency_ms": 377,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T20:49:52Z",
-    "provider": "groq",
-    "model": "llama-3.1-8b-instant",
-    "status": "ok",
-    "latency_ms": 219,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T20:49:52Z",
-    "provider": "huggingface",
-    "model": "Qwen/Qwen2.5-72B-Instruct",
-    "status": "ok",
-    "latency_ms": 867,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T20:49:53Z",
-    "provider": "mistral",
-    "model": "mistral-small-latest",
-    "status": "ok",
-    "latency_ms": 985,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T20:49:56Z",
-    "provider": "openai",
-    "model": "gpt-4o-mini-2024-07-18",
-    "status": "ok",
-    "latency_ms": 2170,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T20:49:57Z",
-    "provider": "openrouter",
-    "model": "google/gemma-4-26b-a4b-it:free",
-    "status": "error",
-    "latency_ms": 1457,
-    "quality": 0.0,
-    "response": "Error code: 429 - {'error': {'message': 'Rate limit exceeded: free-models-per-da"
-  },
-  {
-    "timestamp": "2026-04-23T20:49:57Z",
-    "provider": "pollinations",
-    "model": "openai",
-    "status": "ok",
-    "latency_ms": 227,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T20:49:58Z",
+    "timestamp": "2026-04-23T13:49:26Z",
     "provider": "sambanova",
-    "model": "Meta-Llama-3.3-70B-Instruct",
-    "status": "ok",
-    "latency_ms": 770,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T21:43:17Z",
-    "provider": "cerebras",
-    "model": "llama3.1-8b",
-    "status": "ok",
-    "latency_ms": 123,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T21:43:17Z",
-    "provider": "cloudflare",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-23T21:43:17Z",
-    "provider": "cohere",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-23T21:43:22Z",
-    "provider": "fireworks",
-    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
-    "status": "ok",
-    "latency_ms": 5356,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T21:43:23Z",
-    "provider": "gemini",
-    "model": "gemini-2.5-flash-lite",
-    "status": "ok",
-    "latency_ms": 972,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T21:43:23Z",
-    "provider": "groq",
-    "model": "llama-3.1-8b-instant",
-    "status": "ok",
-    "latency_ms": 189,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T21:43:24Z",
-    "provider": "huggingface",
-    "model": "Qwen/Qwen2.5-72B-Instruct",
-    "status": "ok",
-    "latency_ms": 1001,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T21:43:25Z",
-    "provider": "mistral",
-    "model": "mistral-small-latest",
-    "status": "ok",
-    "latency_ms": 872,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T21:43:27Z",
-    "provider": "openai",
-    "model": "gpt-4o-mini-2024-07-18",
-    "status": "ok",
-    "latency_ms": 1671,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T21:43:28Z",
-    "provider": "openrouter",
-    "model": "google/gemma-4-26b-a4b-it:free",
+    "model": "Meta-Llama-3.1-405B-Instruct",
     "status": "error",
-    "latency_ms": 1537,
+    "latency_ms": 179,
     "quality": 0.0,
-    "response": "Error code: 429 - {'error': {'message': 'Rate limit exceeded: free-models-per-da"
+    "response": "The requested model (Meta-Llama-3.1-405B-Instruct) is not available on SambaNova"
   },
   {
-    "timestamp": "2026-04-23T21:43:29Z",
-    "provider": "pollinations",
-    "model": "openai",
-    "status": "ok",
-    "latency_ms": 234,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T21:43:30Z",
+    "timestamp": "2026-04-23T13:49:26Z",
     "provider": "sambanova",
-    "model": "Meta-Llama-3.3-70B-Instruct",
-    "status": "ok",
-    "latency_ms": 998,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T22:41:09Z",
-    "provider": "cerebras",
-    "model": "llama3.1-8b",
-    "status": "ok",
-    "latency_ms": 145,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T22:41:09Z",
-    "provider": "cloudflare",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-23T22:41:09Z",
-    "provider": "cohere",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-23T22:41:10Z",
-    "provider": "fireworks",
-    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
-    "status": "ok",
-    "latency_ms": 762,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T22:41:10Z",
-    "provider": "gemini",
-    "model": "gemini-2.5-flash-lite",
-    "status": "ok",
-    "latency_ms": 473,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T22:41:11Z",
-    "provider": "groq",
-    "model": "llama-3.1-8b-instant",
-    "status": "ok",
-    "latency_ms": 261,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T22:41:12Z",
-    "provider": "huggingface",
-    "model": "Qwen/Qwen2.5-72B-Instruct",
-    "status": "ok",
-    "latency_ms": 1094,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T22:41:12Z",
-    "provider": "mistral",
-    "model": "mistral-small-latest",
-    "status": "ok",
-    "latency_ms": 433,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T22:41:13Z",
-    "provider": "openai",
-    "model": "gpt-4o-mini-2024-07-18",
-    "status": "ok",
-    "latency_ms": 1218,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T22:41:15Z",
-    "provider": "openrouter",
-    "model": "google/gemma-4-26b-a4b-it:free",
+    "model": "Qwen2.5-72B-Instruct",
     "status": "error",
-    "latency_ms": 1407,
+    "latency_ms": 178,
     "quality": 0.0,
-    "response": "Error code: 429 - {'error': {'message': 'Rate limit exceeded: free-models-per-da"
+    "response": "The requested model (Qwen2.5-72B-Instruct) is not available on SambaNova Cloud. "
   },
   {
-    "timestamp": "2026-04-23T22:41:15Z",
-    "provider": "pollinations",
-    "model": "openai",
-    "status": "ok",
-    "latency_ms": 269,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T22:41:16Z",
-    "provider": "sambanova",
-    "model": "Meta-Llama-3.3-70B-Instruct",
-    "status": "ok",
-    "latency_ms": 700,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T23:42:37Z",
+    "timestamp": "2026-04-25T03:24:33Z",
     "provider": "cerebras",
     "model": "llama3.1-8b",
     "status": "ok",
-    "latency_ms": 329,
+    "latency_ms": 247,
     "quality": 1.0,
     "response": "4"
   },
   {
-    "timestamp": "2026-04-23T23:42:37Z",
-    "provider": "cloudflare",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-23T23:42:37Z",
-    "provider": "cohere",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-23T23:42:38Z",
-    "provider": "fireworks",
-    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
-    "status": "ok",
-    "latency_ms": 644,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T23:42:39Z",
-    "provider": "gemini",
-    "model": "gemini-2.5-flash-lite",
-    "status": "ok",
-    "latency_ms": 559,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T23:42:39Z",
-    "provider": "groq",
-    "model": "llama-3.1-8b-instant",
-    "status": "ok",
-    "latency_ms": 215,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T23:42:40Z",
-    "provider": "huggingface",
-    "model": "Qwen/Qwen2.5-72B-Instruct",
-    "status": "ok",
-    "latency_ms": 1230,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T23:42:41Z",
-    "provider": "mistral",
-    "model": "mistral-small-latest",
-    "status": "ok",
-    "latency_ms": 510,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T23:42:42Z",
-    "provider": "openai",
-    "model": "gpt-4o-mini-2024-07-18",
-    "status": "ok",
-    "latency_ms": 1578,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T23:42:44Z",
-    "provider": "openrouter",
-    "model": "google/gemma-4-26b-a4b-it:free",
+    "timestamp": "2026-04-25T03:24:33Z",
+    "provider": "cerebras",
+    "model": "llama-3.3-70b",
     "status": "error",
-    "latency_ms": 2255,
+    "latency_ms": 66,
     "quality": 0.0,
-    "response": "Error code: 429 - {'error': {'message': 'Rate limit exceeded: free-models-per-da"
+    "response": "Error code: 404 - {'message': 'Model llama-3.3-70b does not exist or you do not "
   },
   {
-    "timestamp": "2026-04-23T23:42:45Z",
-    "provider": "pollinations",
-    "model": "openai",
-    "status": "ok",
-    "latency_ms": 318,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-23T23:42:45Z",
-    "provider": "sambanova",
-    "model": "Meta-Llama-3.3-70B-Instruct",
-    "status": "ok",
-    "latency_ms": 529,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T02:26:17Z",
+    "timestamp": "2026-04-25T03:24:33Z",
     "provider": "cerebras",
-    "model": "llama3.1-8b",
-    "status": "ok",
-    "latency_ms": 159,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T02:26:17Z",
-    "provider": "cloudflare",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-24T02:26:17Z",
-    "provider": "cohere",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-24T02:26:18Z",
-    "provider": "fireworks",
-    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
-    "status": "ok",
-    "latency_ms": 506,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T02:26:18Z",
-    "provider": "gemini",
-    "model": "gemini-2.5-flash-lite",
-    "status": "ok",
-    "latency_ms": 451,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T02:26:19Z",
-    "provider": "groq",
-    "model": "llama-3.1-8b-instant",
-    "status": "ok",
-    "latency_ms": 214,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T02:26:20Z",
-    "provider": "huggingface",
-    "model": "Qwen/Qwen2.5-72B-Instruct",
-    "status": "ok",
-    "latency_ms": 947,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T02:26:20Z",
-    "provider": "mistral",
-    "model": "mistral-small-latest",
-    "status": "ok",
-    "latency_ms": 453,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T02:26:22Z",
-    "provider": "openai",
-    "model": "gpt-4o-mini-2024-07-18",
-    "status": "ok",
-    "latency_ms": 1530,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T02:26:24Z",
-    "provider": "openrouter",
-    "model": "google/gemma-4-26b-a4b-it:free",
+    "model": "qwen-3-32b",
     "status": "error",
-    "latency_ms": 2015,
+    "latency_ms": 65,
     "quality": 0.0,
-    "response": "Error code: 429 - {'error': {'message': 'Provider returned error', 'code': 429, "
+    "response": "Error code: 404 - {'message': 'Model qwen-3-32b does not exist or you do not hav"
   },
   {
-    "timestamp": "2026-04-24T02:26:24Z",
-    "provider": "pollinations",
-    "model": "openai",
-    "status": "ok",
-    "latency_ms": 453,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T02:26:25Z",
-    "provider": "sambanova",
-    "model": "Meta-Llama-3.3-70B-Instruct",
-    "status": "ok",
-    "latency_ms": 601,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T05:33:01Z",
-    "provider": "cerebras",
-    "model": "llama3.1-8b",
-    "status": "ok",
-    "latency_ms": 156,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T05:33:01Z",
+    "timestamp": "2026-04-25T03:24:45Z",
     "provider": "cloudflare",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-24T05:33:01Z",
-    "provider": "cohere",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-24T05:33:01Z",
-    "provider": "fireworks",
-    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
+    "model": "@cf/meta/llama-3.1-8b-instruct",
     "status": "ok",
-    "latency_ms": 663,
+    "latency_ms": 12033,
     "quality": 1.0,
     "response": "4"
   },
   {
-    "timestamp": "2026-04-24T05:33:02Z",
-    "provider": "gemini",
-    "model": "gemini-2.5-flash-lite",
-    "status": "ok",
-    "latency_ms": 462,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T05:33:02Z",
-    "provider": "groq",
-    "model": "llama-3.1-8b-instant",
-    "status": "ok",
-    "latency_ms": 95,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T05:33:03Z",
-    "provider": "huggingface",
-    "model": "Qwen/Qwen2.5-72B-Instruct",
-    "status": "ok",
-    "latency_ms": 1212,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T05:33:04Z",
-    "provider": "mistral",
-    "model": "mistral-small-latest",
-    "status": "ok",
-    "latency_ms": 464,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T05:33:05Z",
-    "provider": "openai",
-    "model": "gpt-4o-mini-2024-07-18",
-    "status": "ok",
-    "latency_ms": 1619,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T05:33:07Z",
-    "provider": "openrouter",
-    "model": "google/gemma-4-26b-a4b-it:free",
+    "timestamp": "2026-04-25T03:24:46Z",
+    "provider": "cloudflare",
+    "model": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
     "status": "error",
-    "latency_ms": 1747,
+    "latency_ms": 0,
     "quality": 0.0,
-    "response": "Error code: 429 - {'error': {'message': 'Provider returned error', 'code': 429, "
+    "response": "'int' object has no attribute 'strip'"
   },
   {
-    "timestamp": "2026-04-24T05:33:07Z",
-    "provider": "pollinations",
-    "model": "openai",
-    "status": "ok",
-    "latency_ms": 467,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T05:33:09Z",
-    "provider": "sambanova",
-    "model": "Meta-Llama-3.3-70B-Instruct",
-    "status": "ok",
-    "latency_ms": 1537,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T07:59:29Z",
-    "provider": "cerebras",
-    "model": "llama3.1-8b",
-    "status": "ok",
-    "latency_ms": 214,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T07:59:29Z",
+    "timestamp": "2026-04-25T03:24:46Z",
     "provider": "cloudflare",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
+    "model": "@cf/google/gemma-3-12b-it",
+    "status": "ok",
+    "latency_ms": 154,
+    "quality": 1.0,
+    "response": "4"
   },
   {
-    "timestamp": "2026-04-24T07:59:29Z",
+    "timestamp": "2026-04-25T03:24:46Z",
     "provider": "cohere",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-24T07:59:29Z",
-    "provider": "fireworks",
-    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
-    "status": "ok",
-    "latency_ms": 492,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T07:59:30Z",
-    "provider": "gemini",
-    "model": "gemini-2.5-flash-lite",
-    "status": "ok",
-    "latency_ms": 417,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T07:59:30Z",
-    "provider": "groq",
-    "model": "llama-3.1-8b-instant",
-    "status": "ok",
-    "latency_ms": 216,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T07:59:31Z",
-    "provider": "huggingface",
-    "model": "Qwen/Qwen2.5-72B-Instruct",
-    "status": "ok",
-    "latency_ms": 1164,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T07:59:32Z",
-    "provider": "mistral",
-    "model": "mistral-small-latest",
-    "status": "ok",
-    "latency_ms": 602,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T07:59:34Z",
-    "provider": "openai",
-    "model": "gpt-4o-mini-2024-07-18",
-    "status": "ok",
-    "latency_ms": 1719,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T07:59:35Z",
-    "provider": "openrouter",
-    "model": "google/gemma-4-26b-a4b-it:free",
-    "status": "error",
-    "latency_ms": 1704,
-    "quality": 0.0,
-    "response": "Error code: 429 - {'error': {'message': 'Provider returned error', 'code': 429, "
-  },
-  {
-    "timestamp": "2026-04-24T07:59:35Z",
-    "provider": "pollinations",
-    "model": "openai",
-    "status": "ok",
-    "latency_ms": 208,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T07:59:38Z",
-    "provider": "sambanova",
-    "model": "Meta-Llama-3.3-70B-Instruct",
-    "status": "ok",
-    "latency_ms": 2439,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T09:51:20Z",
-    "provider": "cerebras",
-    "model": "llama3.1-8b",
-    "status": "ok",
-    "latency_ms": 215,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T09:51:20Z",
-    "provider": "cloudflare",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-24T09:51:20Z",
-    "provider": "cohere",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-24T09:51:20Z",
-    "provider": "fireworks",
-    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
-    "status": "ok",
-    "latency_ms": 619,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T09:51:22Z",
-    "provider": "gemini",
-    "model": "gemini-2.5-flash-lite",
-    "status": "ok",
-    "latency_ms": 1564,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T09:51:22Z",
-    "provider": "groq",
-    "model": "llama-3.1-8b-instant",
-    "status": "ok",
-    "latency_ms": 167,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T09:51:23Z",
-    "provider": "huggingface",
-    "model": "Qwen/Qwen2.5-72B-Instruct",
-    "status": "ok",
-    "latency_ms": 1078,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T09:51:24Z",
-    "provider": "mistral",
-    "model": "mistral-small-latest",
-    "status": "ok",
-    "latency_ms": 587,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T09:51:26Z",
-    "provider": "openai",
-    "model": "gpt-4o-mini-2024-07-18",
-    "status": "ok",
-    "latency_ms": 1858,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T09:51:27Z",
-    "provider": "openrouter",
-    "model": "google/gemma-4-26b-a4b-it:free",
-    "status": "error",
-    "latency_ms": 1700,
-    "quality": 0.0,
-    "response": "Error code: 429 - {'error': {'message': 'Provider returned error', 'code': 429, "
-  },
-  {
-    "timestamp": "2026-04-24T09:51:28Z",
-    "provider": "pollinations",
-    "model": "openai",
-    "status": "ok",
-    "latency_ms": 185,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T09:51:29Z",
-    "provider": "sambanova",
-    "model": "Meta-Llama-3.3-70B-Instruct",
-    "status": "ok",
-    "latency_ms": 1363,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T11:04:36Z",
-    "provider": "cerebras",
-    "model": "llama3.1-8b",
-    "status": "ok",
-    "latency_ms": 374,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T11:04:36Z",
-    "provider": "cloudflare",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-24T11:04:36Z",
-    "provider": "cohere",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-24T11:04:37Z",
-    "provider": "fireworks",
-    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
-    "status": "ok",
-    "latency_ms": 704,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T11:04:37Z",
-    "provider": "gemini",
-    "model": "gemini-2.5-flash-lite",
-    "status": "ok",
-    "latency_ms": 364,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T11:04:38Z",
-    "provider": "groq",
-    "model": "llama-3.1-8b-instant",
-    "status": "ok",
-    "latency_ms": 290,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T11:04:39Z",
-    "provider": "huggingface",
-    "model": "Qwen/Qwen2.5-72B-Instruct",
-    "status": "ok",
-    "latency_ms": 1211,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T11:04:41Z",
-    "provider": "mistral",
-    "model": "mistral-small-latest",
-    "status": "ok",
-    "latency_ms": 1963,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T11:04:43Z",
-    "provider": "openai",
-    "model": "gpt-4o-mini-2024-07-18",
-    "status": "ok",
-    "latency_ms": 1824,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T11:04:45Z",
-    "provider": "openrouter",
-    "model": "google/gemma-4-26b-a4b-it:free",
-    "status": "error",
-    "latency_ms": 2445,
-    "quality": 0.0,
-    "response": "Error code: 429 - {'error': {'message': 'Provider returned error', 'code': 429, "
-  },
-  {
-    "timestamp": "2026-04-24T11:04:46Z",
-    "provider": "pollinations",
-    "model": "openai",
-    "status": "ok",
-    "latency_ms": 515,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T11:04:46Z",
-    "provider": "sambanova",
-    "model": "Meta-Llama-3.3-70B-Instruct",
-    "status": "ok",
-    "latency_ms": 238,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T13:18:14Z",
-    "provider": "cerebras",
-    "model": "llama3.1-8b",
-    "status": "ok",
-    "latency_ms": 216,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T13:18:14Z",
-    "provider": "cloudflare",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-24T13:18:14Z",
-    "provider": "cohere",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-24T13:18:15Z",
-    "provider": "fireworks",
-    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
-    "status": "ok",
-    "latency_ms": 636,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T13:18:17Z",
-    "provider": "gemini",
-    "model": "gemini-2.5-flash-lite",
-    "status": "ok",
-    "latency_ms": 1548,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T13:18:17Z",
-    "provider": "groq",
-    "model": "llama-3.1-8b-instant",
-    "status": "ok",
-    "latency_ms": 169,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T13:18:17Z",
-    "provider": "huggingface",
-    "model": "Qwen/Qwen2.5-72B-Instruct",
-    "status": "ok",
-    "latency_ms": 750,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T13:18:18Z",
-    "provider": "mistral",
-    "model": "mistral-small-latest",
-    "status": "ok",
-    "latency_ms": 805,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T13:18:20Z",
-    "provider": "openai",
-    "model": "gpt-4o-mini-2024-07-18",
-    "status": "ok",
-    "latency_ms": 1480,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T13:18:23Z",
-    "provider": "openrouter",
-    "model": "google/gemma-4-26b-a4b-it-20260403:free",
-    "status": "ok",
-    "latency_ms": 2963,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T13:18:23Z",
-    "provider": "pollinations",
-    "model": "openai",
+    "model": "command-r-08-2024",
     "status": "ok",
     "latency_ms": 298,
     "quality": 1.0,
     "response": "4"
   },
   {
-    "timestamp": "2026-04-24T13:18:23Z",
-    "provider": "sambanova",
-    "model": "Meta-Llama-3.3-70B-Instruct",
-    "status": "ok",
-    "latency_ms": 438,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T15:06:21Z",
-    "provider": "cerebras",
-    "model": "llama3.1-8b",
-    "status": "ok",
-    "latency_ms": 150,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T15:06:21Z",
-    "provider": "cloudflare",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-24T15:06:21Z",
+    "timestamp": "2026-04-25T03:24:46Z",
     "provider": "cohere",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
+    "model": "command-r-plus-08-2024",
+    "status": "ok",
+    "latency_ms": 171,
+    "quality": 1.0,
+    "response": "4"
   },
   {
-    "timestamp": "2026-04-24T15:06:21Z",
+    "timestamp": "2026-04-25T03:24:46Z",
     "provider": "fireworks",
     "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
-    "status": "ok",
-    "latency_ms": 608,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T15:06:26Z",
-    "provider": "gemini",
-    "model": "gemini-2.5-flash-lite",
-    "status": "ok",
-    "latency_ms": 4643,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T15:06:26Z",
-    "provider": "groq",
-    "model": "llama-3.1-8b-instant",
-    "status": "ok",
-    "latency_ms": 204,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T15:06:37Z",
-    "provider": "huggingface",
-    "model": "Qwen/Qwen2.5-72B-Instruct",
-    "status": "ok",
-    "latency_ms": 11282,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T15:06:38Z",
-    "provider": "mistral",
-    "model": "mistral-small-latest",
-    "status": "ok",
-    "latency_ms": 541,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T15:06:39Z",
-    "provider": "openai",
-    "model": "gpt-4o-mini-2024-07-18",
-    "status": "ok",
-    "latency_ms": 766,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T15:06:40Z",
-    "provider": "openrouter",
-    "model": "google/gemma-4-26b-a4b-it:free",
-    "status": "error",
-    "latency_ms": 1790,
-    "quality": 0.0,
-    "response": "Error code: 429 - {'error': {'message': 'Provider returned error', 'code': 429, "
-  },
-  {
-    "timestamp": "2026-04-24T15:06:41Z",
-    "provider": "pollinations",
-    "model": "openai",
-    "status": "ok",
-    "latency_ms": 239,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T15:06:42Z",
-    "provider": "sambanova",
-    "model": "Meta-Llama-3.3-70B-Instruct",
-    "status": "ok",
-    "latency_ms": 1234,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T16:53:33Z",
-    "provider": "cerebras",
-    "model": "llama3.1-8b",
-    "status": "ok",
-    "latency_ms": 153,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T16:53:33Z",
-    "provider": "cloudflare",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-24T16:53:33Z",
-    "provider": "cohere",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-24T16:53:34Z",
-    "provider": "fireworks",
-    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
-    "status": "ok",
-    "latency_ms": 578,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T16:53:34Z",
-    "provider": "gemini",
-    "model": "gemini-2.5-flash-lite",
-    "status": "ok",
-    "latency_ms": 383,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T16:53:35Z",
-    "provider": "groq",
-    "model": "llama-3.1-8b-instant",
-    "status": "ok",
-    "latency_ms": 246,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T16:53:36Z",
-    "provider": "huggingface",
-    "model": "Qwen/Qwen2.5-72B-Instruct",
-    "status": "ok",
-    "latency_ms": 1108,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T16:54:06Z",
-    "provider": "mistral",
-    "model": "mistral-small-latest",
-    "status": "error",
-    "latency_ms": 30108,
-    "quality": 0.0,
-    "response": "The read operation timed out"
-  },
-  {
-    "timestamp": "2026-04-24T16:54:07Z",
-    "provider": "openai",
-    "model": "gpt-4o-mini-2024-07-18",
-    "status": "ok",
-    "latency_ms": 1691,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T16:54:09Z",
-    "provider": "openrouter",
-    "model": "google/gemma-4-26b-a4b-it-20260403:free",
-    "status": "ok",
-    "latency_ms": 1435,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T16:54:09Z",
-    "provider": "pollinations",
-    "model": "openai",
-    "status": "ok",
-    "latency_ms": 316,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T16:54:10Z",
-    "provider": "sambanova",
-    "model": "Meta-Llama-3.3-70B-Instruct",
-    "status": "ok",
-    "latency_ms": 535,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T17:48:50Z",
-    "provider": "cerebras",
-    "model": "llama3.1-8b",
-    "status": "ok",
-    "latency_ms": 250,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T17:48:50Z",
-    "provider": "cloudflare",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-24T17:48:50Z",
-    "provider": "cohere",
-    "model": "n/a",
-    "status": "no_key",
-    "latency_ms": 0,
-    "quality": 0.0,
-    "response": "API key not configured"
-  },
-  {
-    "timestamp": "2026-04-24T17:48:51Z",
-    "provider": "fireworks",
-    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
-    "status": "ok",
-    "latency_ms": 583,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T17:48:51Z",
-    "provider": "gemini",
-    "model": "gemini-2.5-flash-lite",
-    "status": "ok",
-    "latency_ms": 473,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T17:48:51Z",
-    "provider": "groq",
-    "model": "llama-3.1-8b-instant",
-    "status": "ok",
-    "latency_ms": 164,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T17:48:52Z",
-    "provider": "huggingface",
-    "model": "Qwen/Qwen2.5-72B-Instruct",
-    "status": "ok",
-    "latency_ms": 1005,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T17:48:57Z",
-    "provider": "mistral",
-    "model": "mistral-small-latest",
-    "status": "ok",
-    "latency_ms": 4392,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T17:48:58Z",
-    "provider": "openai",
-    "model": "gpt-4o-mini-2024-07-18",
-    "status": "ok",
-    "latency_ms": 1554,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T17:49:01Z",
-    "provider": "openrouter",
-    "model": "google/gemma-4-26b-a4b-it-20260403:free",
-    "status": "ok",
-    "latency_ms": 2448,
-    "quality": 1.0,
-    "response": "4"
-  },
-  {
-    "timestamp": "2026-04-24T17:49:01Z",
-    "provider": "pollinations",
-    "model": "openai",
     "status": "ok",
     "latency_ms": 276,
     "quality": 1.0,
     "response": "4"
   },
   {
-    "timestamp": "2026-04-24T17:49:01Z",
+    "timestamp": "2026-04-25T03:24:46Z",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/deepseek-v3-0324",
+    "status": "error",
+    "latency_ms": 33,
+    "quality": 0.0,
+    "response": "Error code: 404 - {'error': {'message': 'Model not found, inaccessible, and/or n"
+  },
+  {
+    "timestamp": "2026-04-25T03:24:47Z",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/qwen3-30b-a3b",
+    "status": "error",
+    "latency_ms": 50,
+    "quality": 0.0,
+    "response": "Error code: 404 - {'error': {'message': 'Model not found, inaccessible, and/or n"
+  },
+  {
+    "timestamp": "2026-04-25T03:24:47Z",
+    "provider": "gemini",
+    "model": "gemini-2.5-flash-lite",
+    "status": "ok",
+    "latency_ms": 453,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-25T03:24:47Z",
+    "provider": "gemini",
+    "model": "gemini-2.5-flash",
+    "status": "degraded",
+    "latency_ms": 522,
+    "quality": 0.0,
+    "response": ""
+  },
+  {
+    "timestamp": "2026-04-25T03:24:48Z",
+    "provider": "gemini",
+    "model": "gemini-2.0-flash",
+    "status": "error",
+    "latency_ms": 95,
+    "quality": 0.0,
+    "response": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your cu"
+  },
+  {
+    "timestamp": "2026-04-25T03:24:48Z",
+    "provider": "groq",
+    "model": "llama-3.1-8b-instant",
+    "status": "ok",
+    "latency_ms": 400,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-25T03:24:49Z",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "status": "ok",
+    "latency_ms": 797,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-25T03:24:49Z",
+    "provider": "groq",
+    "model": "gemma2-9b-it",
+    "status": "error",
+    "latency_ms": 99,
+    "quality": 0.0,
+    "response": "Error code: 400 - {'error': {'message': 'The model `gemma2-9b-it` has been decom"
+  },
+  {
+    "timestamp": "2026-04-25T03:24:50Z",
+    "provider": "huggingface",
+    "model": "Qwen/Qwen2.5-72B-Instruct",
+    "status": "ok",
+    "latency_ms": 970,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-25T03:24:50Z",
+    "provider": "huggingface",
+    "model": "Qwen/Qwen2.5-Coder-32B-Instruct",
+    "status": "ok",
+    "latency_ms": 398,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-25T03:24:50Z",
+    "provider": "huggingface",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "status": "ok",
+    "latency_ms": 249,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-25T03:24:51Z",
+    "provider": "mistral",
+    "model": "mistral-small-latest",
+    "status": "ok",
+    "latency_ms": 952,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-25T03:24:52Z",
+    "provider": "mistral",
+    "model": "open-mistral-7b",
+    "status": "ok",
+    "latency_ms": 834,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-25T03:24:53Z",
+    "provider": "mistral",
+    "model": "open-mixtral-8x7b",
+    "status": "ok",
+    "latency_ms": 587,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-25T03:24:54Z",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "status": "ok",
+    "latency_ms": 1558,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-25T03:24:55Z",
+    "provider": "openai",
+    "model": "gpt-4o",
+    "status": "ok",
+    "latency_ms": 628,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-25T03:24:56Z",
+    "provider": "openai",
+    "model": "o4-mini",
+    "status": "error",
+    "latency_ms": 1013,
+    "quality": 0.0,
+    "response": "Error code: 400 - {'error': {'message': \"Unsupported parameter: 'max_tokens' is "
+  },
+  {
+    "timestamp": "2026-04-25T03:24:58Z",
+    "provider": "openrouter",
+    "model": "google/gemma-4-26b-a4b-it:free",
+    "status": "error",
+    "latency_ms": 2109,
+    "quality": 0.0,
+    "response": "Error code: 429 - {'error': {'message': 'Provider returned error', 'code': 429, "
+  },
+  {
+    "timestamp": "2026-04-25T03:24:58Z",
+    "provider": "openrouter",
+    "model": "meta-llama/llama-3.1-8b-instruct:free",
+    "status": "error",
+    "latency_ms": 33,
+    "quality": 0.0,
+    "response": "Error code: 404 - {'error': {'message': 'No endpoints found for meta-llama/llama"
+  },
+  {
+    "timestamp": "2026-04-25T03:24:58Z",
+    "provider": "openrouter",
+    "model": "mistralai/mistral-7b-instruct:free",
+    "status": "error",
+    "latency_ms": 34,
+    "quality": 0.0,
+    "response": "Error code: 404 - {'error': {'message': 'No endpoints found for mistralai/mistra"
+  },
+  {
+    "timestamp": "2026-04-25T03:24:58Z",
+    "provider": "openrouter",
+    "model": "microsoft/phi-3-mini-128k-instruct:free",
+    "status": "error",
+    "latency_ms": 33,
+    "quality": 0.0,
+    "response": "Error code: 404 - {'error': {'message': 'No endpoints found for microsoft/phi-3-"
+  },
+  {
+    "timestamp": "2026-04-25T03:24:59Z",
+    "provider": "pollinations",
+    "model": "openai",
+    "status": "ok",
+    "latency_ms": 595,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-04-25T03:24:59Z",
     "provider": "sambanova",
     "model": "Meta-Llama-3.3-70B-Instruct",
     "status": "ok",
-    "latency_ms": 280,
+    "latency_ms": 520,
     "quality": 1.0,
     "response": "4"
+  },
+  {
+    "timestamp": "2026-04-25T03:25:00Z",
+    "provider": "sambanova",
+    "model": "Meta-Llama-3.1-405B-Instruct",
+    "status": "error",
+    "latency_ms": 218,
+    "quality": 0.0,
+    "response": "The requested model (Meta-Llama-3.1-405B-Instruct) is not available on SambaNova"
+  },
+  {
+    "timestamp": "2026-04-25T03:25:00Z",
+    "provider": "sambanova",
+    "model": "Qwen2.5-72B-Instruct",
+    "status": "error",
+    "latency_ms": 203,
+    "quality": 0.0,
+    "response": "The requested model (Qwen2.5-72B-Instruct) is not available on SambaNova Cloud. "
   }
 ]

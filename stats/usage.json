@@ -2,18 +2,18 @@
   "providers": {
     "cerebras": {
       "provider": "cerebras",
-      "calls": 6,
-      "tokens": 1329,
+      "calls": 12,
+      "tokens": 1987,
       "cost_usd": 0.0,
-      "total_latency": 1946.6900000115857,
+      "total_latency": 3877.086699998472,
       "errors": 0
     },
     "gemini": {
       "provider": "gemini",
-      "calls": 2,
-      "tokens": 225,
+      "calls": 3,
+      "tokens": 1108,
       "cost_usd": 0.0,
-      "total_latency": 1302.8886999818496,
+      "total_latency": 4428.9188999682665,
       "errors": 0
     },
     "deepseek": {
@@ -47,16 +47,24 @@
       "cost_usd": 0.0,
       "total_latency": 1742.3924999602605,
       "errors": 0
+    },
+    "sambanova": {
+      "provider": "sambanova",
+      "calls": 1,
+      "tokens": 1251,
+      "cost_usd": 0.0,
+      "total_latency": 5361.416900006589,
+      "errors": 0
     }
   },
-  "total_calls": 17,
-  "total_tokens": 5752,
+  "total_calls": 25,
+  "total_tokens": 8544,
   "total_cost_usd": 1.3349999999999998e-05,
   "claude_calls": 0,
   "claude_tokens": 0,
-  "worker_tokens": 5752,
+  "worker_tokens": 8544,
   "first_call_ts": 1776448625.4107182,
-  "last_call_ts": 1777056888.133666,
+  "last_call_ts": 1777087727.4282823,
   "call_log": [
     {
       "ts": 1777056888.133666,
@@ -64,6 +72,62 @@
       "type": "factual_qa",
       "tokens": 90,
       "ms": 597
+    },
+    {
+      "ts": 1777083521.1905403,
+      "provider": "cerebras",
+      "type": "general",
+      "tokens": 86,
+      "ms": 342
+    },
+    {
+      "ts": 1777086220.2071953,
+      "provider": "gemini",
+      "type": "summarization",
+      "tokens": 883,
+      "ms": 3126
+    },
+    {
+      "ts": 1777086715.2361717,
+      "provider": "sambanova",
+      "type": "reasoning",
+      "tokens": 1251,
+      "ms": 5361
+    },
+    {
+      "ts": 1777086947.7813144,
+      "provider": "cerebras",
+      "type": "general",
+      "tokens": 51,
+      "ms": 294
+    },
+    {
+      "ts": 1777087122.5079007,
+      "provider": "cerebras",
+      "type": "general",
+      "tokens": 46,
+      "ms": 271
+    },
+    {
+      "ts": 1777087138.1166227,
+      "provider": "cerebras",
+      "type": "general",
+      "tokens": 51,
+      "ms": 297
+    },
+    {
+      "ts": 1777087340.90336,
+      "provider": "cerebras",
+      "type": "general",
+      "tokens": 50,
+      "ms": 308
+    },
+    {
+      "ts": 1777087727.4282823,
+      "provider": "cerebras",
+      "type": "general",
+      "tokens": 374,
+      "ms": 414
     }
   ]
 }

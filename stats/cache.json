@@ -1,0 +1,16 @@
+{
+  "be7616a1a8a724892416ad4a1aa242f72104353b3caa4b809914f4fe2d78857b": {
+    "provider": "cerebras",
+    "model": "llama3.1-8b",
+    "content": "The capital of France is Paris.",
+    "cached_at": 1777087340.904883,
+    "prompt_prefix": "What is the capital of France?"
+  },
+  "934b6a550e9c19d52115a7914f519600769ac9dec2c4ac883bb3a6072b52b706": {
+    "provider": "cerebras",
+    "model": "llama3.1-8b",
+    "content": "```\n# Import required modules\nimport netifaces as ni\n\n# Get active network interfaces\ninterfaces = ni.interfaces()\n\n# Function to check IP address and netmask\ndef is_ip_active(ip):\n    if netifaces.AF_INET in ni.ifaddresses(interface):\n        ip_addresses = ni.ifaddresses(interface)[netifaces.AF_INET]\n        for addr_dict in ip_addresses:\n            if addr_dict['addr'] == ip:\n                return addr_dict['netmask']\n    return None\n\n# Iterate through the network interfaces\nfor interface in interfaces:\n    # Check the interface is an Ethernet one (e.g. no loopback)\n    if ni.AF_LINK not in ni.ifaddresses(interface) or interface == 'lo':\n        continue\n    \n    # Get IP address information\n    if is_ip_active(ni.ifaddresses(interface)[ni.AF_LINK][0]['addr']) is None:\n        continue\n\n    # Check if ARP cache (neighbours) is active\n    if 'broadcast' in ni.ifaddresses(interface)[ni.AF_INET][0]:\n        print(f\"Interface: {interface}\\nRouting active in {interface}\")\n```\n\nThis Python script gets all active Ethernet interfaces, and checks each one's IP and netmask using the `netifaces` library. It also checks the ARP cache for active neighbors on each interface. \n\nThis is what you get in the terminal:\n```\nInterface: en0\nRouting active in en0\n```\n\nOr something like this (remember, device names are not `en0` for all systems):\n```\nInterface: wlp2s0\nRouting active in wlp2s0\n```",
+    "cached_at": 1777087727.4291506,
+    "prompt_prefix": "say: health routing active"
+  }
+}

@@ -546,6 +546,9 @@ Claude's default behaviour for that window. The offloading rules in this repo's
 - **Initial release** — core orchestration system with `delegate.py`, `brain/orchestrator.py`, `brain/router.py`, `brain/stats.py`. Providers: Groq, Gemini, Mistral, Cerebras, HuggingFace, Pollinations, SambaNova.
 - **Static routing table** — curated fallback chains per task type (classification, coding, reasoning, etc.).
 - **Persistent usage stats** — every call logged to `stats/usage.json`; `report.py` for human-readable summary.
+### 2026-04-25 (session 3)
+- **GitHub Pages** — Created and launched: [soylentaquamarine.github.io/the-brain](https://soylentaquamarine.github.io/the-brain/)
+
 <!-- BRAIN_CHANGELOG_END -->
 
 ---

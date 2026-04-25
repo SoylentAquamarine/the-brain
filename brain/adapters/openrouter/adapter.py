@@ -49,9 +49,6 @@ class OpenRouterAdapter(BaseAdapter):
     DEFAULT_MODEL = "google/gemma-4-26b-a4b-it:free"
     MODELS = [
         "google/gemma-4-26b-a4b-it:free",
-        "meta-llama/llama-3.1-8b-instruct:free",
-        "mistralai/mistral-7b-instruct:free",
-        "microsoft/phi-3-mini-128k-instruct:free",
     ]
     BASE_URL = "https://openrouter.ai/api/v1"
 

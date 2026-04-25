@@ -49,8 +49,8 @@ class FireworksAdapter(BaseAdapter):
     DEFAULT_MODEL = "accounts/fireworks/models/llama-v3p3-70b-instruct"
     MODELS = [
         "accounts/fireworks/models/llama-v3p3-70b-instruct",
-        "accounts/fireworks/models/deepseek-v3-0324",
-        "accounts/fireworks/models/qwen3-30b-a3b",
+        "accounts/fireworks/models/deepseek-v3p1",
+        "accounts/fireworks/models/deepseek-v3p2",
     ]
     BASE_URL = "https://api.fireworks.ai/inference/v1"
 

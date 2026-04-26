@@ -497,6 +497,9 @@ Claude's default behaviour for that window. The offloading rules in this repo's
 ## Changelog
 
 <!-- BRAIN_CHANGELOG_START -->
+### 2026-04-25 (session 3)
+- **GitHub Pages** — Created and launched: [soylentaquamarine.github.io/the-brain](https://soylentaquamarine.github.io/the-brain/)
+
 ### 2026-04-25 (session 2)
 - **Adapter model audit & fixes** — parallel health test across all 12 providers / 30 models; pruned dead models, fixed broken ones.
 - **OpenAI o-series fix** — `o4-mini` now uses `max_completion_tokens` with 1024 minimum so reasoning tokens don't exhaust the budget and return empty content.
@@ -546,8 +549,6 @@ Claude's default behaviour for that window. The offloading rules in this repo's
 - **Initial release** — core orchestration system with `delegate.py`, `brain/orchestrator.py`, `brain/router.py`, `brain/stats.py`. Providers: Groq, Gemini, Mistral, Cerebras, HuggingFace, Pollinations, SambaNova.
 - **Static routing table** — curated fallback chains per task type (classification, coding, reasoning, etc.).
 - **Persistent usage stats** — every call logged to `stats/usage.json`; `report.py` for human-readable summary.
-### 2026-04-25 (session 3)
-- **GitHub Pages** — Created and launched: [soylentaquamarine.github.io/the-brain](https://soylentaquamarine.github.io/the-brain/)
 
 <!-- BRAIN_CHANGELOG_END -->
 

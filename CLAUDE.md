@@ -47,15 +47,15 @@ Read the result and relay it to the user. That's it.
 
 **Full fallback chains** (first available wins):
 
-- `classification`: `cerebras` → `groq` → `cloudflare` → `mistral` → `gemini` → `openai` → `cohere` → `openrouter` → `huggingface` → `pollinations`
-- `factual_qa`: `cerebras` → `groq` → `cloudflare` → `gemini` → `mistral` → `openai` → `cohere` → `pollinations` → `openrouter` → `huggingface`
-- `summarization`: `gemini` → `mistral` → `sambanova` → `cerebras` → `groq` → `openai` → `cohere` → `pollinations` → `openrouter` → `huggingface`
-- `extraction`: `mistral` → `sambanova` → `gemini` → `groq` → `cerebras` → `openai` → `cohere` → `openrouter` → `huggingface` → `pollinations`
-- `translation`: `gemini` → `mistral` → `cerebras` → `groq` → `openai` → `openrouter` → `huggingface` → `cohere` → `pollinations`
-- `coding`: `mistral` → `fireworks` → `sambanova` → `cerebras` → `groq` → `gemini` → `openai` → `openrouter` → `huggingface` → `cohere` → `pollinations`
-- `reasoning`: `sambanova` → `mistral` → `gemini` → `fireworks` → `cerebras` → `groq` → `openai` → `openrouter` → `huggingface` → `cohere` → `pollinations`
-- `creative`: `mistral` → `sambanova` → `gemini` → `pollinations` → `huggingface` → `cerebras` → `groq` → `openrouter` → `openai` → `cohere`
-- `general`: `cerebras` → `groq` → `cloudflare` → `gemini` → `mistral` → `fireworks` → `openai` → `cohere` → `pollinations` → `openrouter` → `huggingface`
+- `classification`: `cerebras` → `groq` → `cloudflare` → `mistral` → `gemini` → `openai` → `cohere` → `openrouter` → `huggingface` → `ollama` → `pollinations`
+- `factual_qa`: `cerebras` → `groq` → `cloudflare` → `gemini` → `mistral` → `openai` → `cohere` → `ollama` → `pollinations` → `openrouter` → `huggingface`
+- `summarization`: `gemini` → `mistral` → `sambanova` → `cerebras` → `groq` → `openai` → `cohere` → `ollama` → `pollinations` → `openrouter` → `huggingface`
+- `extraction`: `mistral` → `sambanova` → `gemini` → `groq` → `cerebras` → `openai` → `cohere` → `ollama` → `openrouter` → `huggingface` → `pollinations`
+- `translation`: `gemini` → `mistral` → `cerebras` → `groq` → `openai` → `openrouter` → `huggingface` → `cohere` → `ollama` → `pollinations`
+- `coding`: `mistral` → `fireworks` → `sambanova` → `cerebras` → `groq` → `gemini` → `openai` → `ollama` → `openrouter` → `huggingface` → `cohere` → `pollinations`
+- `reasoning`: `sambanova` → `mistral` → `gemini` → `fireworks` → `cerebras` → `groq` → `openai` → `ollama` → `openrouter` → `huggingface` → `cohere` → `pollinations`
+- `creative`: `mistral` → `sambanova` → `gemini` → `ollama` → `pollinations` → `huggingface` → `cerebras` → `groq` → `openrouter` → `openai` → `cohere`
+- `general`: `cerebras` → `groq` → `cloudflare` → `gemini` → `mistral` → `fireworks` → `openai` → `cohere` → `ollama` → `pollinations` → `openrouter` → `huggingface`
 
 <!-- SYNC:routing:end -->
 
@@ -72,6 +72,7 @@ Read the result and relay it to the user. That's it.
 | `cerebras` | llama3.1-8b | ultra-fast | 6/10 | Ultra-fast Llama on custom silicon (~1500 tok/s) — fastest free provider |
 | `cohere` | command-r-08-2024 | standard | 6/10 | Command-R — specialized in retrieval, extraction, and structured tasks |
 | `groq` | llama-3.1-8b-instant | fast | 6/10 | Very fast Llama/Gemma inference on LPU hardware (~400 tok/s) |
+| `ollama` | qwen2.5-coder:7b | standard | 6/10 | Local Ollama — LAN/CPU inference, fully private, no API key |
 | `cloudflare` | @cf/meta/llama-3.1-8b-instruct | fast | 5/10 | Edge-hosted open models on Cloudflare's global network, no credit card |
 | `huggingface` | Qwen/Qwen2.5-72B-Instruct | slow | 5/10 | HuggingFace serverless inference — broad model selection, last-resort fallback |
 | `openrouter` | google/gemma-4-26b-a4b-it:free | standard | 5/10 | OpenRouter — single key for 50+ models, many completely free |

@@ -470,6 +470,12 @@ Claude's default behaviour for that window. The offloading rules in this repo's
 ## Changelog
 
 <!-- BRAIN_CHANGELOG_START -->
+### 2026-05-01 — Ollama LAN adapter + outsourcing directive
+
+- Added Ollama adapter connecting to local network laptop (`10.197.1.211`) with auto model discovery (`llama3.1`, `mistral`, `llama3.2:3b`)
+- Enforced orchestrator-only directive: Claude never generates AI content directly
+- Updated `CLAUDE.md` with hard no-self-answer rule
+
 ### 2026-04-25 (session 3)
 - **GitHub Pages** — Created and launched: [soylentaquamarine.github.io/the-brain](https://soylentaquamarine.github.io/the-brain/)
 

@@ -497,6 +497,12 @@ Claude's default behaviour for that window. The offloading rules in this repo's
 ## Changelog
 
 <!-- BRAIN_CHANGELOG_START -->
+### 2026-05-01
+- **Ollama adapter** (`brain/adapters/ollama/adapter.py`) — LAN/local inference via Ollama REST API; zero extra dependencies (stdlib `urllib`). Reads `OLLAMA_HOST`/`OLLAMA_PORT` from `.env`, queries `/api/tags` on startup to auto-discover installed models, skips embedding-only models.
+- **Auto model selection** — priority order: `qwen2.5-coder:7b` → `deepseek-coder:6.7b` → `codellama:13b` → `qwen2.5:7b` → `llama3.1` → `mistral` → `phi3` → `llama3.2`. Falls back gracefully if the server is unreachable.
+- **Routing** — `ollama` added to all 9 fallback chains via `sync_docs.py`; supports coding, reasoning, general, factual_qa, summarization, extraction, creative.
+- **CLAUDE.md** updated automatically with new provider row and chain positions.
+
 ### 2026-04-25 (session 3)
 - **GitHub Pages** — Created and launched: [soylentaquamarine.github.io/the-brain](https://soylentaquamarine.github.io/the-brain/)
 

@@ -2186,5 +2186,329 @@
     "latency_ms": 743,
     "quality": 1.0,
     "response": "4"
+  },
+  {
+    "timestamp": "2026-05-02T05:00:31Z",
+    "provider": "cerebras",
+    "model": "llama3.1-8b",
+    "status": "ok",
+    "latency_ms": 465,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-05-02T05:00:33Z",
+    "provider": "cloudflare",
+    "model": "@cf/meta/llama-3.1-8b-instruct",
+    "status": "ok",
+    "latency_ms": 1260,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-05-02T05:00:33Z",
+    "provider": "cloudflare",
+    "model": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+    "status": "error",
+    "latency_ms": 0,
+    "quality": 0.0,
+    "response": "'int' object has no attribute 'strip'"
+  },
+  {
+    "timestamp": "2026-05-02T05:00:33Z",
+    "provider": "cloudflare",
+    "model": "@cf/google/gemma-3-12b-it",
+    "status": "ok",
+    "latency_ms": 347,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-05-02T05:00:33Z",
+    "provider": "cohere",
+    "model": "command-r-08-2024",
+    "status": "ok",
+    "latency_ms": 273,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-05-02T05:00:35Z",
+    "provider": "cohere",
+    "model": "command-r-plus-08-2024",
+    "status": "ok",
+    "latency_ms": 1073,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-05-02T05:00:35Z",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/llama-v3p3-70b-instruct",
+    "status": "ok",
+    "latency_ms": 692,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-05-02T05:00:36Z",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/deepseek-v3p1",
+    "status": "degraded",
+    "latency_ms": 412,
+    "quality": 0.5,
+    "response": "First, the user asks: \"What is "
+  },
+  {
+    "timestamp": "2026-05-02T05:00:38Z",
+    "provider": "fireworks",
+    "model": "accounts/fireworks/models/deepseek-v3p2",
+    "status": "degraded",
+    "latency_ms": 2122,
+    "quality": 0.5,
+    "response": "First, the user asks: \"What is "
+  },
+  {
+    "timestamp": "2026-05-02T05:00:38Z",
+    "provider": "gemini",
+    "model": "gemini-2.5-flash-lite",
+    "status": "ok",
+    "latency_ms": 545,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-05-02T05:00:39Z",
+    "provider": "gemini",
+    "model": "gemini-2.5-flash",
+    "status": "degraded",
+    "latency_ms": 527,
+    "quality": 0.0,
+    "response": ""
+  },
+  {
+    "timestamp": "2026-05-02T05:00:39Z",
+    "provider": "gemini",
+    "model": "gemini-2.0-flash",
+    "status": "error",
+    "latency_ms": 110,
+    "quality": 0.0,
+    "response": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your cu"
+  },
+  {
+    "timestamp": "2026-05-02T05:00:39Z",
+    "provider": "groq",
+    "model": "llama-3.1-8b-instant",
+    "status": "ok",
+    "latency_ms": 488,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-05-02T05:00:40Z",
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile",
+    "status": "ok",
+    "latency_ms": 133,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-05-02T05:00:41Z",
+    "provider": "huggingface",
+    "model": "Qwen/Qwen2.5-72B-Instruct",
+    "status": "ok",
+    "latency_ms": 1513,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-05-02T05:00:41Z",
+    "provider": "huggingface",
+    "model": "Qwen/Qwen2.5-Coder-32B-Instruct",
+    "status": "ok",
+    "latency_ms": 397,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-05-02T05:00:42Z",
+    "provider": "huggingface",
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "status": "ok",
+    "latency_ms": 254,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-05-02T05:00:42Z",
+    "provider": "mistral",
+    "model": "mistral-small-latest",
+    "status": "ok",
+    "latency_ms": 572,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-05-02T05:00:43Z",
+    "provider": "mistral",
+    "model": "open-mistral-7b",
+    "status": "ok",
+    "latency_ms": 250,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-05-02T05:00:43Z",
+    "provider": "mistral",
+    "model": "open-mixtral-8x7b",
+    "status": "ok",
+    "latency_ms": 336,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-05-02T05:00:44Z",
+    "provider": "ollama",
+    "model": "codellama:13b",
+    "status": "error",
+    "latency_ms": 890,
+    "quality": 0.0,
+    "response": "HTTP Error 500: Internal Server Error"
+  },
+  {
+    "timestamp": "2026-05-02T05:01:43Z",
+    "provider": "ollama",
+    "model": "deepseek-coder:6.7b",
+    "status": "ok",
+    "latency_ms": 58752,
+    "quality": 1.0,
+    "response": "4\n"
+  },
+  {
+    "timestamp": "2026-05-02T05:02:43Z",
+    "provider": "ollama",
+    "model": "qwen2.5-coder:7b",
+    "status": "error",
+    "latency_ms": 0,
+    "quality": 0.0,
+    "response": "timed out"
+  },
+  {
+    "timestamp": "2026-05-02T05:03:43Z",
+    "provider": "ollama",
+    "model": "llama3.1:latest",
+    "status": "error",
+    "latency_ms": 0,
+    "quality": 0.0,
+    "response": "timed out"
+  },
+  {
+    "timestamp": "2026-05-02T05:04:14Z",
+    "provider": "ollama",
+    "model": "llama3.2:3b",
+    "status": "ok",
+    "latency_ms": 31111,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-05-02T05:05:10Z",
+    "provider": "ollama",
+    "model": "mistral:latest",
+    "status": "ok",
+    "latency_ms": 56207,
+    "quality": 1.0,
+    "response": " 4"
+  },
+  {
+    "timestamp": "2026-05-02T05:06:10Z",
+    "provider": "ollama",
+    "model": "qwen2.5:7b",
+    "status": "error",
+    "latency_ms": 0,
+    "quality": 0.0,
+    "response": "timed out"
+  },
+  {
+    "timestamp": "2026-05-02T05:06:37Z",
+    "provider": "ollama",
+    "model": "phi3:latest",
+    "status": "ok",
+    "latency_ms": 26634,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-05-02T05:07:08Z",
+    "provider": "ollama",
+    "model": "llama3.2:latest",
+    "status": "ok",
+    "latency_ms": 31173,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-05-02T05:07:10Z",
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "status": "ok",
+    "latency_ms": 1848,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-05-02T05:07:11Z",
+    "provider": "openai",
+    "model": "gpt-4o",
+    "status": "ok",
+    "latency_ms": 1662,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-05-02T05:07:13Z",
+    "provider": "openai",
+    "model": "o4-mini",
+    "status": "ok",
+    "latency_ms": 1363,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-05-02T05:07:15Z",
+    "provider": "openrouter",
+    "model": "google/gemma-4-26b-a4b-it:free",
+    "status": "error",
+    "latency_ms": 2163,
+    "quality": 0.0,
+    "response": "Error code: 429 - {'error': {'message': 'Provider returned error', 'code': 429, "
+  },
+  {
+    "timestamp": "2026-05-02T05:07:16Z",
+    "provider": "pollinations",
+    "model": "openai",
+    "status": "ok",
+    "latency_ms": 589,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-05-02T05:07:16Z",
+    "provider": "sambanova",
+    "model": "Meta-Llama-3.3-70B-Instruct",
+    "status": "ok",
+    "latency_ms": 487,
+    "quality": 1.0,
+    "response": "4"
+  },
+  {
+    "timestamp": "2026-05-02T05:07:17Z",
+    "provider": "sambanova",
+    "model": "Llama-4-Maverick-17B-128E-Instruct",
+    "status": "ok",
+    "latency_ms": 746,
+    "quality": 1.0,
+    "response": "4"
   }
 ]

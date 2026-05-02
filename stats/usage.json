@@ -34,10 +34,10 @@
     },
     "mistral": {
       "provider": "mistral",
-      "calls": 6,
-      "tokens": 4823,
+      "calls": 8,
+      "tokens": 5493,
       "cost_usd": 0.0,
-      "total_latency": 16031.405000016093,
+      "total_latency": 18541.4490000112,
       "errors": 0
     },
     "groq": {
@@ -73,14 +73,14 @@
       "errors": 0
     }
   },
-  "total_calls": 35,
-  "total_tokens": 12024,
+  "total_calls": 37,
+  "total_tokens": 12694,
   "total_cost_usd": 1.3349999999999998e-05,
   "claude_calls": 0,
   "claude_tokens": 0,
-  "worker_tokens": 12024,
+  "worker_tokens": 12694,
   "first_call_ts": 1776448625.4107182,
-  "last_call_ts": 1777691706.5331006,
+  "last_call_ts": 1777691899.7400758,
   "call_log": [
     {
       "ts": 1777056888.133666,
@@ -214,6 +214,20 @@
       "type": "coding",
       "tokens": 94,
       "ms": 358
+    },
+    {
+      "ts": 1777691887.4576435,
+      "provider": "mistral",
+      "type": "creative",
+      "tokens": 276,
+      "ms": 1246
+    },
+    {
+      "ts": 1777691899.7400758,
+      "provider": "mistral",
+      "type": "creative",
+      "tokens": 394,
+      "ms": 1263
     }
   ]
 }

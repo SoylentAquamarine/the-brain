@@ -82,6 +82,10 @@
     .route-target { color: var(--accent); font-weight: 600; }
     .route-note { color: var(--dim); font-size: 0.75rem; margin-left: auto; }
 
+    .dev-nav { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
+    .dev-nav span { color: var(--dim); font-size: 0.75rem; align-self: center; }
+    .dev-nav a { font-size: 0.8rem; padding: 5px 14px; border-radius: 20px; border: 1px solid var(--border); color: var(--dim); text-decoration: none; }
+    .dev-nav a:hover { border-color: var(--accent); color: var(--accent); }
     footer { text-align: center; padding: 40px 20px; border-top: 1px solid var(--border); color: var(--dim); font-size: 0.83rem; }
   </style>
 </head>
@@ -96,6 +100,10 @@
     <div class="badge">💰 <strong>Saves Claude tokens</strong></div>
     <div class="badge">🔀 8 free providers</div>
     <div class="badge">📊 Usage logging</div>
+  </div>
+  <div class="dev-nav">
+    <span>Dev docs:</span>
+    <a href="blueprints/system-overview.html">System Overview</a>
   </div>
 </header>
 

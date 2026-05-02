@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Overview — The Brain</title>
+  <style>
+    :root {
+      --bg: #0d0d14; --surface: #12121e; --surface2: #1a1a2e;
+      --accent: #4ecdc4; --text: #e0e0e0; --dim: #777;
+      --border: #222236; --code-bg: #080810;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.7; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .bp-nav { display: flex; gap: 8px; padding: 0.75rem 2rem; background: var(--surface); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+    .bp-nav a { font-size: 0.82rem; padding: 0.3rem 0.9rem; border-radius: 20px; text-decoration: none; border: 1px solid var(--border); color: var(--dim); }
+    .bp-nav a:hover { border-color: var(--accent); color: var(--accent); }
+    .bp-nav a.home { background: var(--accent); color: #0d0d14; border-color: var(--accent); font-weight: 700; }
+    .bp-nav a.home:hover { opacity: 0.85; }
+    .bp-nav a.current { border-color: var(--accent); color: var(--accent); font-weight: 700; cursor: default; }
+    header { padding: 2.5rem 2rem 2rem; border-bottom: 1px solid var(--border); }
+    header h1 { font-size: 1.9rem; font-weight: 700; color: var(--accent); }
+    header p.meta { color: var(--dim); font-size: 0.85rem; margin-top: 0.4rem; }
+    main { max-width: 860px; margin: 0 auto; padding: 2rem; }
+    h2 { font-size: 1.2rem; font-weight: 700; color: var(--accent); margin: 2.5rem 0 1rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+    h3 { font-size: 1rem; font-weight: 700; color: var(--text); margin: 1.5rem 0 0.6rem; }
+    p { margin-bottom: 0.85rem; } p:last-child { margin-bottom: 0; }
+    ul, ol { margin: 0.5rem 0 0.85rem 1.4rem; } li { margin-bottom: 0.35rem; }
+    table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1rem; font-size: 0.88rem; }
+    th { background: var(--surface2); color: var(--accent); padding: 0.55rem 1rem; text-align: left; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid var(--border); }
+    td { padding: 0.5rem 1rem; border-bottom: 1px solid var(--border); }
+    tr:last-child td { border-bottom: none; } tr:hover td { background: var(--surface); }
+    code { font-family: 'Courier New', Consolas, monospace; font-size: 0.85em; background: var(--code-bg); border: 1px solid var(--border); padding: 0.1rem 0.35rem; border-radius: 3px; color: var(--accent); }
+    pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem; overflow-x: auto; margin: 0.8rem 0 1rem; }
+    pre code { background: none; border: none; padding: 0; font-size: 0.87rem; color: #ccc; }
+    footer { margin-top: 4rem; padding: 1.5rem 2rem; border-top: 1px solid var(--border); color: var(--dim); font-size: 0.82rem; text-align: center; }
+  </style>
+</head>
+<body>
+
+<div class="bp-nav">
+  <a class="home" href="../index.html">← Home</a>
+  <a class="current">System Overview</a>
+</div>
+
+<header>
+  <h1>System Overview — The Brain</h1>
+  <p class="meta">Blueprint · Last updated 2026-05-02</p>
+</header>
+
+<main>
+
+  <h2>Purpose</h2>
+  <p>The Brain is a Python CLI orchestration system that offloads AI tasks from Claude to free provider APIs. Claude acts as orchestrator — deciding what to do and which worker to use — while the actual AI work (summarization, code generation, classification, etc.) is handled by free-tier providers. All calls are logged for cost tracking.</p>
+  <p>Core promise: Claude only does what only Claude can do. Everything else is delegated.</p>
+
+  <h2>Tech Stack</h2>
+  <table>
+    <tr><th>Component</th><th>Technology</th></tr>
+    <tr><td>Runtime</td><td>Python 3</td></tr>
+    <tr><td>Entry point</td><td><code>delegate.py</code> CLI</td></tr>
+    <tr><td>Provider adapters</td><td><code>brain/adapters/</code> — one file per provider</td></tr>
+    <tr><td>Routing logic</td><td><code>brain/router.py</code></td></tr>
+    <tr><td>Stats tracking</td><td><code>brain/stats.py</code> → <code>stats/usage.json</code></td></tr>
+    <tr><td>Orchestrator</td><td><code>brain/orchestrator.py</code></td></tr>
+    <tr><td>Integration</td><td>Global <code>CLAUDE.md</code> routing table</td></tr>
+  </table>
+
+  <h2>CLI Interface</h2>
+  <pre><code>python delegate.py --provider &lt;name&gt; --type &lt;type&gt; --prompt "&lt;prompt&gt;"</code></pre>
+  <p>Claude reads the routing table in <code>CLAUDE.md</code> and calls <code>delegate.py</code> directly. The result is returned on stdout and relayed to the user.</p>
+
+  <h2>Task Types</h2>
+  <table>
+    <tr><th>Type</th><th>Best Provider</th><th>Use case</th></tr>
+    <tr><td><code>classification</code></td><td>cerebras</td><td>Yes/no, scoring, labelling</td></tr>
+    <tr><td><code>factual_qa</code></td><td>cerebras / groq</td><td>Quick factual questions, general explanation</td></tr>
+    <tr><td><code>summarization</code></td><td>gemini</td><td>Long text compression, 1M token context</td></tr>
+    <tr><td><code>translation</code></td><td>gemini</td><td>Any language pair</td></tr>
+    <tr><td><code>coding</code></td><td>mistral</td><td>Code generation, debugging</td></tr>
+    <tr><td><code>extraction</code></td><td>mistral</td><td>Structured data extraction from text</td></tr>
+    <tr><td><code>creative</code></td><td>mistral</td><td>Writing, drafting, brainstorming</td></tr>
+    <tr><td><code>reasoning</code></td><td>sambanova</td><td>Deep analysis, trade-off evaluation</td></tr>
+    <tr><td><code>general</code></td><td>cerebras</td><td>Anything that doesn't fit above</td></tr>
+  </table>
+
+  <h2>Provider Registry</h2>
+  <table>
+    <tr><th>Key</th><th>Default Model</th><th>Speed</th><th>Notes</th></tr>
+    <tr><td><code>cerebras</code></td><td>llama3.1-8b</td><td>~284ms</td><td>Ultra-fast; best for classification and quick Q&amp;A</td></tr>
+    <tr><td><code>groq</code></td><td>llama-3.1-8b-instant</td><td>~366ms</td><td>Fast LPU inference; general fallback</td></tr>
+    <tr><td><code>gemini</code></td><td>gemini-2.5-flash-lite</td><td>~541ms</td><td>1M token context; best for long docs, translation</td></tr>
+    <tr><td><code>mistral</code></td><td>mistral-small-latest</td><td>~1172ms</td><td>Best free quality for coding and creative tasks</td></tr>
+    <tr><td><code>sambanova</code></td><td>Meta-Llama-3.3-70B</td><td>~1.4s</td><td>70B model; highest free-tier quality for reasoning</td></tr>
+    <tr><td><code>fireworks</code></td><td>llama-v3p3-70b-instruct</td><td>fast</td><td>Strong coding; DeepSeek V3 available</td></tr>
+    <tr><td><code>openai</code></td><td>gpt-4o-mini</td><td>standard</td><td>Reliable all-rounder</td></tr>
+    <tr><td><code>cohere</code></td><td>command-r-08-2024</td><td>standard</td><td>Retrieval and extraction specialist</td></tr>
+    <tr><td><code>cloudflare</code></td><td>llama-3.1-8b-instruct</td><td>fast</td><td>Edge-hosted; no credit card required</td></tr>
+    <tr><td><code>huggingface</code></td><td>Qwen2.5-72B-Instruct</td><td>slow</td><td>Last-resort fallback; broad model selection</td></tr>
+    <tr><td><code>openrouter</code></td><td>gemma-4-26b-a4b-it:free</td><td>standard</td><td>50+ models via one key</td></tr>
+    <tr><td><code>ollama</code></td><td>qwen2.5-coder:7b</td><td>local</td><td>Local inference; fully private, no API key</td></tr>
+    <tr><td><code>pollinations</code></td><td>openai / flux</td><td>varies</td><td>Keyless; text and image generation fallback</td></tr>
+  </table>
+
+  <h2>Repository Structure</h2>
+  <pre><code>the-brain/
+├── delegate.py              # CLI entry point — call this to offload
+├── session_start.py         # Session startup: prints provider health + stats
+├── report.py                # Usage stats report
+├── push_stats.py            # Update GitHub README with usage stats
+├── health_check.py          # Provider health polling
+├── brain/
+│   ├── orchestrator.py      # Core dispatcher
+│   ├── router.py            # Routing table and fallback chains
+│   ├── stats.py             # Persistent usage tracking
+│   └── adapters/            # One file per provider
+├── config/
+│   ├── keys.json            # API keys (not committed)
+│   └── keys.example.json    # Template
+├── stats/
+│   └── usage.json           # Running usage log (auto-created)
+├── assets/
+│   └── brain.png            # Project image
+└── docs/
+    └── index.html           # Public project page (GitHub Pages)</code></pre>
+
+  <h2>Persistence</h2>
+  <table>
+    <tr><th>File</th><th>Contents</th></tr>
+    <tr><td><code>config/keys.json</code></td><td>API keys per provider (gitignored)</td></tr>
+    <tr><td><code>stats/usage.json</code></td><td>Running log of every delegate call: provider, type, tokens, latency, cost</td></tr>
+  </table>
+
+  <h2>Integration with Claude Code</h2>
+  <p>The Brain is activated by adding a routing table to the global <code>CLAUDE.md</code> (at <code>C:\Users\&lt;user&gt;\.claude\CLAUDE.md</code>). Claude reads this at session start and automatically delegates matching tasks rather than answering them directly.</p>
+  <p>Session startup runs <code>session_start.py</code> which prints live provider health and usage stats so routing advisories can be relayed before any work begins.</p>
+
+</main>
+
+<footer>Blueprint · The Brain · <a href="../index.html">← Back to docs</a></footer>
+</body>
+</html>

@@ -34,10 +34,10 @@
     },
     "mistral": {
       "provider": "mistral",
-      "calls": 8,
-      "tokens": 5493,
+      "calls": 26,
+      "tokens": 27038,
       "cost_usd": 0.0,
-      "total_latency": 18541.4490000112,
+      "total_latency": 253861.02020002727,
       "errors": 0
     },
     "groq": {
@@ -73,14 +73,14 @@
       "errors": 0
     }
   },
-  "total_calls": 38,
-  "total_tokens": 14547,
+  "total_calls": 56,
+  "total_tokens": 36092,
   "total_cost_usd": 1.3349999999999998e-05,
   "claude_calls": 0,
   "claude_tokens": 0,
-  "worker_tokens": 14547,
+  "worker_tokens": 36092,
   "first_call_ts": 1776448625.4107182,
-  "last_call_ts": 1777692751.895205,
+  "last_call_ts": 1777750705.3986793,
   "call_log": [
     {
       "ts": 1777056888.133666,
@@ -235,6 +235,132 @@
       "type": "general",
       "tokens": 1853,
       "ms": 3996
+    },
+    {
+      "ts": 1777706896.630918,
+      "provider": "mistral",
+      "type": "general",
+      "tokens": 480,
+      "ms": 1665
+    },
+    {
+      "ts": 1777707459.3366697,
+      "provider": "mistral",
+      "type": "creative",
+      "tokens": 1374,
+      "ms": 35698
+    },
+    {
+      "ts": 1777707472.5277739,
+      "provider": "mistral",
+      "type": "creative",
+      "tokens": 2015,
+      "ms": 5814
+    },
+    {
+      "ts": 1777707490.192107,
+      "provider": "mistral",
+      "type": "creative",
+      "tokens": 599,
+      "ms": 2612
+    },
+    {
+      "ts": 1777707521.5937095,
+      "provider": "mistral",
+      "type": "creative",
+      "tokens": 1748,
+      "ms": 6565
+    },
+    {
+      "ts": 1777707546.8606467,
+      "provider": "mistral",
+      "type": "creative",
+      "tokens": 1972,
+      "ms": 5819
+    },
+    {
+      "ts": 1777750226.3431323,
+      "provider": "mistral",
+      "type": "creative",
+      "tokens": 867,
+      "ms": 4136
+    },
+    {
+      "ts": 1777750308.7792294,
+      "provider": "mistral",
+      "type": "creative",
+      "tokens": 852,
+      "ms": 45525
+    },
+    {
+      "ts": 1777750325.0886285,
+      "provider": "mistral",
+      "type": "creative",
+      "tokens": 1383,
+      "ms": 5549
+    },
+    {
+      "ts": 1777750376.6714687,
+      "provider": "mistral",
+      "type": "creative",
+      "tokens": 849,
+      "ms": 3132
+    },
+    {
+      "ts": 1777750405.3345582,
+      "provider": "mistral",
+      "type": "creative",
+      "tokens": 1314,
+      "ms": 5565
+    },
+    {
+      "ts": 1777750471.2867937,
+      "provider": "mistral",
+      "type": "creative",
+      "tokens": 960,
+      "ms": 45670
+    },
+    {
+      "ts": 1777750522.9991956,
+      "provider": "mistral",
+      "type": "creative",
+      "tokens": 1328,
+      "ms": 4865
+    },
+    {
+      "ts": 1777750550.3546953,
+      "provider": "mistral",
+      "type": "creative",
+      "tokens": 1439,
+      "ms": 5499
+    },
+    {
+      "ts": 1777750571.9423468,
+      "provider": "mistral",
+      "type": "creative",
+      "tokens": 1121,
+      "ms": 3973
+    },
+    {
+      "ts": 1777750657.819911,
+      "provider": "mistral",
+      "type": "creative",
+      "tokens": 937,
+      "ms": 45301
+    },
+    {
+      "ts": 1777750682.3539455,
+      "provider": "mistral",
+      "type": "creative",
+      "tokens": 1140,
+      "ms": 3919
+    },
+    {
+      "ts": 1777750705.3986793,
+      "provider": "mistral",
+      "type": "creative",
+      "tokens": 1167,
+      "ms": 4004
     }
   ]
 }

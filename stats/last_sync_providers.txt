@@ -1,0 +1,1 @@
+cerebras,cloudflare,cohere,fireworks,gemini,groq,huggingface,mistral,ollama,openai,openrouter,pollinations,sambanova

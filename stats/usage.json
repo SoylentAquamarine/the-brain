@@ -2,10 +2,10 @@
   "providers": {
     "cerebras": {
       "provider": "cerebras",
-      "calls": 14,
-      "tokens": 2090,
+      "calls": 16,
+      "tokens": 2231,
       "cost_usd": 0.0,
-      "total_latency": 4697.528300006525,
+      "total_latency": 5402.306099989801,
       "errors": 0
     },
     "gemini": {
@@ -73,14 +73,14 @@
       "errors": 0
     }
   },
-  "total_calls": 33,
-  "total_tokens": 11883,
+  "total_calls": 35,
+  "total_tokens": 12024,
   "total_cost_usd": 1.3349999999999998e-05,
   "claude_calls": 0,
   "claude_tokens": 0,
-  "worker_tokens": 11883,
+  "worker_tokens": 12024,
   "first_call_ts": 1776448625.4107182,
-  "last_call_ts": 1777691372.2252958,
+  "last_call_ts": 1777691706.5331006,
   "call_log": [
     {
       "ts": 1777056888.133666,
@@ -200,6 +200,20 @@
       "type": "classification",
       "tokens": 53,
       "ms": 304
+    },
+    {
+      "ts": 1777691648.1518843,
+      "provider": "cerebras",
+      "type": "general",
+      "tokens": 47,
+      "ms": 345
+    },
+    {
+      "ts": 1777691706.5331006,
+      "provider": "cerebras",
+      "type": "coding",
+      "tokens": 94,
+      "ms": 358
     }
   ]
 }

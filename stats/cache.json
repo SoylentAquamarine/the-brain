@@ -159,5 +159,12 @@
     "content": "Yes.",
     "cached_at": 1777691372.2318316,
     "prompt_prefix": "Is 2+2 equal to 4? Answer yes or no."
+  },
+  "e8ec0b0e219eefe22a150e4ffe7121eb6af387d0ed9aa4890a27c96a18c84a4a": {
+    "provider": "cerebras",
+    "model": "llama3.1-8b",
+    "content": "`s = input(); print(s[::-1])` \n\nThis one-liner reads a string from the user, then prints the reversed string. The `[::-1]` syntax is a slice that steps backwards through the entire string.",
+    "cached_at": 1777691706.5368674,
+    "prompt_prefix": "Write a Python one-liner that reverses a string."
   }
 }

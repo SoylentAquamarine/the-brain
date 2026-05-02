@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Architecture — The Brain</title>
+  <style>
+    :root {
+      --bg: #0d0d14; --surface: #12121e; --surface2: #1a1a2e;
+      --accent: #4ecdc4; --text: #e0e0e0; --dim: #777;
+      --border: #222236; --code-bg: #080810;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.7; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .bp-nav { display: flex; gap: 8px; padding: 0.75rem 2rem; background: var(--surface); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+    .bp-nav a { font-size: 0.82rem; padding: 0.3rem 0.9rem; border-radius: 20px; text-decoration: none; border: 1px solid var(--border); color: var(--dim); }
+    .bp-nav a:hover { border-color: var(--accent); color: var(--accent); }
+    .bp-nav a.home { background: var(--accent); color: #0d0d14; border-color: var(--accent); font-weight: 700; }
+    .bp-nav a.home:hover { opacity: 0.85; }
+    .bp-nav a.current { border-color: var(--accent); color: var(--accent); font-weight: 700; cursor: default; }
+    header { padding: 2.5rem 2rem 2rem; border-bottom: 1px solid var(--border); }
+    header h1 { font-size: 1.9rem; font-weight: 700; color: var(--accent); }
+    header p.meta { color: var(--dim); font-size: 0.85rem; margin-top: 0.4rem; }
+    main { max-width: 860px; margin: 0 auto; padding: 2rem; }
+    h2 { font-size: 1.2rem; font-weight: 700; color: var(--accent); margin: 2.5rem 0 1rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+    h3 { font-size: 1rem; font-weight: 700; color: var(--text); margin: 1.5rem 0 0.6rem; }
+    p { margin-bottom: 0.85rem; } p:last-child { margin-bottom: 0; }
+    ul, ol { margin: 0.5rem 0 0.85rem 1.4rem; } li { margin-bottom: 0.35rem; }
+    table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1rem; font-size: 0.88rem; }
+    th { background: var(--surface2); color: var(--accent); padding: 0.55rem 1rem; text-align: left; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid var(--border); }
+    td { padding: 0.5rem 1rem; border-bottom: 1px solid var(--border); }
+    tr:last-child td { border-bottom: none; } tr:hover td { background: var(--surface); }
+    code { font-family: 'Courier New', Consolas, monospace; font-size: 0.85em; background: var(--code-bg); border: 1px solid var(--border); padding: 0.1rem 0.35rem; border-radius: 3px; color: var(--accent); }
+    pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem; overflow-x: auto; margin: 0.8rem 0 1rem; }
+    pre code { background: none; border: none; padding: 0; font-size: 0.87rem; color: #ccc; }
+    footer { margin-top: 4rem; padding: 1.5rem 2rem; border-top: 1px solid var(--border); color: var(--dim); font-size: 0.82rem; text-align: center; }
+  </style>
+</head>
+<body>
+
+<div class="bp-nav">
+  <a class="home" href="../index.html">← Home</a>
+  <a href="system-overview.html">System Overview</a>
+  <a class="current">Architecture</a>
+  <a href="data-pipeline.html">Data Pipeline</a>
+  <a href="health-system.html">Health System</a>
+  <a href="usage-system.html">Usage System</a>
+  <a href="workflows.html">Workflows</a>
+  <a href="mcp-tools.html">MCP Tools</a>
+</div>
+
+<header>
+  <h1>Architecture — The Brain</h1>
+  <p class="meta">Blueprint · Last updated 2026-05-02</p>
+</header>
+
+<main>
+
+<h2>Module Map</h2>
+<table>
+  <tr><th>Module</th><th>Purpose</th></tr>
+  <tr><td><code>delegate.py</code></td><td>CLI entry point — parses <code>--provider</code>, <code>--type</code>, <code>--prompt</code>, <code>--context</code> flags; builds a <code>Task</code>; invokes the orchestrator; prints the result.</td></tr>
+  <tr><td><code>brain/orchestrator.py</code></td><td>Core dispatcher — runs a <code>Task</code> through the router and chosen adapter; retries on failure using the per-type fallback chain.</td></tr>
+  <tr><td><code>brain/router.py</code></td><td>Routing table plus per-<code>task_type</code> ordered fallback chains; maps each task type to a list of provider keys to try in sequence.</td></tr>
+  <tr><td><code>brain/stats.py</code></td><td>Appends every call's metadata to <code>stats/usage.json</code> (provider, model, tokens, latency, cost, success, error) regardless of outcome.</td></tr>
+  <tr><td><code>brain/adapters/</code></td><td>One file per provider — each exports <code>async def call(task: Task) -&gt; Result</code>.</td></tr>
+  <tr><td><code>mcp_server.py</code></td><td>MCP server — exposes the <code>delegate</code> tool natively in Claude Code; same orchestrator, no bash required.</td></tr>
+  <tr><td><code>session_start.py</code></td><td>Session startup script — runs health check, prints provider status table, emits routing advisories.</td></tr>
+  <tr><td><code>health_check.py</code></td><td>Polls each provider with a lightweight test call; reports online/offline/degraded status.</td></tr>
+  <tr><td><code>report.py</code></td><td>Formats and prints a usage summary from <code>stats/usage.json</code>.</td></tr>
+  <tr><td><code>push_stats.py</code></td><td>Updates the GitHub README stats table and pushes to GitHub.</td></tr>
+</table>
+
+<h2>Provider Adapters</h2>
+<p>One file per provider in <code>brain/adapters/</code>:</p>
+<ul>
+  <li><code>cerebras.py</code>, <code>groq.py</code>, <code>gemini.py</code>, <code>mistral.py</code>, <code>sambanova.py</code></li>
+  <li><code>fireworks.py</code>, <code>openai.py</code>, <code>cohere.py</code>, <code>cloudflare.py</code></li>
+  <li><code>huggingface.py</code>, <code>openrouter.py</code>, <code>ollama.py</code>, <code>pollinations.py</code></li>
+</ul>
+
+<h2>Adapter Contract</h2>
+<p>Every adapter implements the same interface:</p>
+<pre><code>async def call(task: Task) -> Result</code></pre>
+<p><code>Result</code> fields:</p>
+<table>
+  <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+  <tr><td><code>provider</code></td><td>str</td><td>Provider key used</td></tr>
+  <tr><td><code>model</code></td><td>str</td><td>Model identifier</td></tr>
+  <tr><td><code>content</code></td><td>str</td><td>AI response text</td></tr>
+  <tr><td><code>tokens_used</code></td><td>int</td><td>Output token count</td></tr>
+  <tr><td><code>latency_ms</code></td><td>int</td><td>End-to-end response time</td></tr>
+  <tr><td><code>cost_usd</code></td><td>float</td><td>Estimated cost (0.0 for free tier)</td></tr>
+  <tr><td><code>succeeded</code></td><td>bool</td><td>Whether the call succeeded</td></tr>
+  <tr><td><code>error</code></td><td>str | None</td><td>Error message if failed</td></tr>
+</table>
+
+<h2>Task Object</h2>
+<table>
+  <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+  <tr><td><code>prompt</code></td><td>str</td><td>The input prompt</td></tr>
+  <tr><td><code>task_type</code></td><td>TaskType enum</td><td>Routing category (classification, coding, reasoning, etc.)</td></tr>
+  <tr><td><code>context</code></td><td>str | None</td><td>Optional text prepended to the prompt (document content, file contents)</td></tr>
+  <tr><td><code>max_tokens</code></td><td>int</td><td>Maximum output tokens (default 2048)</td></tr>
+  <tr><td><code>preferred_model</code></td><td>str</td><td>Provider key to try first</td></tr>
+</table>
+
+<h2>Fallback Chain Execution</h2>
+<ol>
+  <li>Orchestrator invokes the adapter for <code>preferred_model</code>.</li>
+  <li>On failure, router looks up the fallback chain for <code>task_type</code>.</li>
+  <li>Orchestrator iterates the chain, trying each provider until one succeeds.</li>
+  <li>All attempts are logged to <code>stats/usage.json</code> — including failures.</li>
+  <li>If no provider succeeds, an error <code>Result</code> is returned.</li>
+</ol>
+
+<h2>Integration Modes</h2>
+<table>
+  <tr><th>Mode</th><th>Entry Point</th><th>How Claude calls it</th></tr>
+  <tr><td>CLI</td><td><code>delegate.py</code></td><td>Bash tool: <code>python delegate.py --provider &lt;name&gt; --type &lt;type&gt; --prompt "..."</code></td></tr>
+  <tr><td>MCP Server</td><td><code>mcp_server.py</code></td><td>Native <code>delegate</code> tool — appears in Claude's tool list alongside Bash, Read, Edit</td></tr>
+</table>
+
+</main>
+
+<footer>Blueprint · The Brain · <a href="../index.html">← Back to docs</a></footer>
+</body>
+</html>

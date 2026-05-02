@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MCP Tools — The Brain</title>
+  <style>
+    :root {
+      --bg: #0d0d14; --surface: #12121e; --surface2: #1a1a2e;
+      --accent: #4ecdc4; --text: #e0e0e0; --dim: #777;
+      --border: #222236; --code-bg: #080810;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.7; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .bp-nav { display: flex; gap: 8px; padding: 0.75rem 2rem; background: var(--surface); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+    .bp-nav a { font-size: 0.82rem; padding: 0.3rem 0.9rem; border-radius: 20px; text-decoration: none; border: 1px solid var(--border); color: var(--dim); }
+    .bp-nav a:hover { border-color: var(--accent); color: var(--accent); }
+    .bp-nav a.home { background: var(--accent); color: #0d0d14; border-color: var(--accent); font-weight: 700; }
+    .bp-nav a.home:hover { opacity: 0.85; }
+    .bp-nav a.current { border-color: var(--accent); color: var(--accent); font-weight: 700; cursor: default; }
+    header { padding: 2.5rem 2rem 2rem; border-bottom: 1px solid var(--border); }
+    header h1 { font-size: 1.9rem; font-weight: 700; color: var(--accent); }
+    header p.meta { color: var(--dim); font-size: 0.85rem; margin-top: 0.4rem; }
+    main { max-width: 860px; margin: 0 auto; padding: 2rem; }
+    h2 { font-size: 1.2rem; font-weight: 700; color: var(--accent); margin: 2.5rem 0 1rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+    h3 { font-size: 1rem; font-weight: 700; color: var(--text); margin: 1.5rem 0 0.6rem; }
+    p { margin-bottom: 0.85rem; } p:last-child { margin-bottom: 0; }
+    ul { margin: 0.5rem 0 0.85rem 1.4rem; } li { margin-bottom: 0.35rem; }
+    table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1rem; font-size: 0.88rem; }
+    th { background: var(--surface2); color: var(--accent); padding: 0.55rem 1rem; text-align: left; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid var(--border); }
+    td { padding: 0.5rem 1rem; border-bottom: 1px solid var(--border); }
+    tr:last-child td { border-bottom: none; } tr:hover td { background: var(--surface); }
+    code { font-family: 'Courier New', Consolas, monospace; font-size: 0.85em; background: var(--code-bg); border: 1px solid var(--border); padding: 0.1rem 0.35rem; border-radius: 3px; color: var(--accent); }
+    pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem; overflow-x: auto; margin: 0.8rem 0 1rem; }
+    pre code { background: none; border: none; padding: 0; font-size: 0.87rem; color: #ccc; }
+    footer { margin-top: 4rem; padding: 1.5rem 2rem; border-top: 1px solid var(--border); color: var(--dim); font-size: 0.82rem; text-align: center; }
+  </style>
+</head>
+<body>
+
+<div class="bp-nav">
+  <a class="home" href="../index.html">← Home</a>
+  <a href="system-overview.html">System Overview</a>
+  <a href="architecture.html">Architecture</a>
+  <a href="data-pipeline.html">Data Pipeline</a>
+  <a href="health-system.html">Health System</a>
+  <a href="usage-system.html">Usage System</a>
+  <a href="workflows.html">Workflows</a>
+  <a class="current">MCP Tools</a>
+</div>
+
+<header>
+  <h1>MCP Tools — The Brain</h1>
+  <p class="meta">Blueprint · Last updated 2026-05-02</p>
+</header>
+
+<main>
+
+<h2>Overview</h2>
+<p>The Brain exposes itself as a Model Context Protocol server via <code>mcp_server.py</code>. This allows Claude to call the <code>delegate</code> tool natively — it appears in Claude's tool list alongside Bash, Read, and Edit — rather than via a Bash call. The same orchestrator runs in both modes.</p>
+
+<h2>Registration</h2>
+<p>Add to <code>~/.claude/settings.json</code>:</p>
+<pre><code>{
+  "mcpServers": {
+    "the-brain": {
+      "command": "python",
+      "args": ["C:\\Claude\\git\\the-brain\\mcp_server.py"]
+    }
+  }
+}</code></pre>
+<p>Claude Code picks it up automatically on next launch. Run <code>python mcp_server.py</code> from the command line to verify the server starts before registering.</p>
+
+<h2>Exposed Tool: <code>delegate</code></h2>
+<p>This is the only tool The Brain exposes. Claude reaches for it automatically for any AI task that matches the routing guide in <code>CLAUDE.md</code>.</p>
+
+<h3>Input Schema</h3>
+<table>
+  <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+  <tr><td><code>provider</code></td><td>string</td><td>yes</td><td>Provider key: <code>cerebras</code> <code>groq</code> <code>gemini</code> <code>mistral</code> <code>sambanova</code> <code>fireworks</code> <code>openai</code> <code>huggingface</code> <code>cloudflare</code> <code>openrouter</code> <code>ollama</code> <code>pollinations</code></td></tr>
+  <tr><td><code>task_type</code></td><td>enum</td><td>yes</td><td><code>classification</code> <code>summarization</code> <code>coding</code> <code>creative</code> <code>reasoning</code> <code>factual_qa</code> <code>extraction</code> <code>translation</code> <code>general</code></td></tr>
+  <tr><td><code>prompt</code></td><td>string</td><td>yes</td><td>Full prompt to send to the worker</td></tr>
+  <tr><td><code>context</code></td><td>string</td><td>no</td><td>Optional context block prepended to the prompt</td></tr>
+  <tr><td><code>max_tokens</code></td><td>integer</td><td>no</td><td>Maximum output tokens (default: 2048)</td></tr>
+</table>
+
+<h2>Response Format</h2>
+<p>Each call returns <code>TextContent</code> with a header line followed by the content:</p>
+<pre><code>[mistral / mistral-small-latest | 512 tokens | 1172ms | free]
+
+&lt;content from the worker&gt;</code></pre>
+
+<h2>CLI Equivalent</h2>
+<p>The MCP tool call above is equivalent to running:</p>
+<pre><code>python delegate.py --provider mistral --type coding --prompt "..."</code></pre>
+<p>Both invoke the same <code>Orchestrator</code> and log to <code>stats/usage.json</code>.</p>
+
+</main>
+
+<footer>Blueprint · The Brain · <a href="../index.html">← Back to docs</a></footer>
+</body>
+</html>

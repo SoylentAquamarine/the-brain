@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workflows — The Brain</title>
+  <style>
+    :root {
+      --bg: #0d0d14; --surface: #12121e; --surface2: #1a1a2e;
+      --accent: #4ecdc4; --text: #e0e0e0; --dim: #777;
+      --border: #222236; --code-bg: #080810;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.7; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .bp-nav { display: flex; gap: 8px; padding: 0.75rem 2rem; background: var(--surface); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+    .bp-nav a { font-size: 0.82rem; padding: 0.3rem 0.9rem; border-radius: 20px; text-decoration: none; border: 1px solid var(--border); color: var(--dim); }
+    .bp-nav a:hover { border-color: var(--accent); color: var(--accent); }
+    .bp-nav a.home { background: var(--accent); color: #0d0d14; border-color: var(--accent); font-weight: 700; }
+    .bp-nav a.home:hover { opacity: 0.85; }
+    .bp-nav a.current { border-color: var(--accent); color: var(--accent); font-weight: 700; cursor: default; }
+    header { padding: 2.5rem 2rem 2rem; border-bottom: 1px solid var(--border); }
+    header h1 { font-size: 1.9rem; font-weight: 700; color: var(--accent); }
+    header p.meta { color: var(--dim); font-size: 0.85rem; margin-top: 0.4rem; }
+    main { max-width: 860px; margin: 0 auto; padding: 2rem; }
+    h2 { font-size: 1.2rem; font-weight: 700; color: var(--accent); margin: 2.5rem 0 1rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+    h3 { font-size: 1rem; font-weight: 700; color: var(--text); margin: 1.5rem 0 0.6rem; }
+    p { margin-bottom: 0.85rem; } p:last-child { margin-bottom: 0; }
+    ul { margin: 0.5rem 0 0.85rem 1.4rem; } li { margin-bottom: 0.35rem; }
+    table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1rem; font-size: 0.88rem; }
+    th { background: var(--surface2); color: var(--accent); padding: 0.55rem 1rem; text-align: left; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid var(--border); }
+    td { padding: 0.5rem 1rem; border-bottom: 1px solid var(--border); }
+    tr:last-child td { border-bottom: none; } tr:hover td { background: var(--surface); }
+    code { font-family: 'Courier New', Consolas, monospace; font-size: 0.85em; background: var(--code-bg); border: 1px solid var(--border); padding: 0.1rem 0.35rem; border-radius: 3px; color: var(--accent); }
+    footer { margin-top: 4rem; padding: 1.5rem 2rem; border-top: 1px solid var(--border); color: var(--dim); font-size: 0.82rem; text-align: center; }
+  </style>
+</head>
+<body>
+
+<div class="bp-nav">
+  <a class="home" href="../index.html">← Home</a>
+  <a href="system-overview.html">System Overview</a>
+  <a href="architecture.html">Architecture</a>
+  <a href="data-pipeline.html">Data Pipeline</a>
+  <a href="health-system.html">Health System</a>
+  <a href="usage-system.html">Usage System</a>
+  <a class="current">Workflows</a>
+  <a href="mcp-tools.html">MCP Tools</a>
+</div>
+
+<header>
+  <h1>Workflows — The Brain</h1>
+  <p class="meta">Blueprint · Last updated 2026-05-02</p>
+</header>
+
+<main>
+
+<h2>No Workflow System</h2>
+<p>The Brain does not have a workflow system in the traditional sense. There are no tabs, sessions, or persistent conversation contexts. Each <code>delegate.py</code> call is stateless and independent. The equivalent of a workflow is a <strong>task type</strong> — the routing category that determines which provider chain is used.</p>
+
+<h2>Task Types</h2>
+<table>
+  <tr><th>Task Type</th><th>Description</th><th>Primary Provider</th></tr>
+  <tr><td><code>classification</code></td><td>Yes/no, scoring, labelling</td><td>cerebras</td></tr>
+  <tr><td><code>factual_qa</code></td><td>Quick factual questions and general explanation</td><td>cerebras / groq</td></tr>
+  <tr><td><code>summarization</code></td><td>Long text compression, up to 1M token context</td><td>gemini</td></tr>
+  <tr><td><code>translation</code></td><td>Any language pair</td><td>gemini</td></tr>
+  <tr><td><code>coding</code></td><td>Code generation and debugging</td><td>mistral</td></tr>
+  <tr><td><code>extraction</code></td><td>Structured data extraction from existing text</td><td>mistral</td></tr>
+  <tr><td><code>creative</code></td><td>Writing, drafting, brainstorming</td><td>mistral</td></tr>
+  <tr><td><code>reasoning</code></td><td>Deep analysis and trade-off evaluation</td><td>sambanova</td></tr>
+  <tr><td><code>general</code></td><td>Anything that does not fit another type</td><td>cerebras</td></tr>
+</table>
+
+<h2>How Task Type Affects Routing</h2>
+<p><code>router.py</code> maintains a full fallback chain per task type. The primary provider is first; if it fails the next is tried automatically. The chain is tuned so the most capable provider for each category is attempted first.</p>
+
+<h3>Choosing the Right Task Type</h3>
+<ul>
+  <li>Use <code>classification</code> for binary answers, <code>factual_qa</code> for explanations — not interchangeable.</li>
+  <li>Use <code>extraction</code> (not <code>coding</code>) when pulling structured data from existing text.</li>
+  <li>Use <code>reasoning</code> only for genuinely complex multi-step analysis — SambaNova has higher latency than other primary providers.</li>
+  <li>When uncertain, <code>general</code> routes to cerebras first and falls back broadly.</li>
+</ul>
+
+</main>
+
+<footer>Blueprint · The Brain · <a href="../index.html">← Back to docs</a></footer>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Pipeline — The Brain</title>
+  <style>
+    :root {
+      --bg: #0d0d14; --surface: #12121e; --surface2: #1a1a2e;
+      --accent: #4ecdc4; --text: #e0e0e0; --dim: #777;
+      --border: #222236; --code-bg: #080810;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.7; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .bp-nav { display: flex; gap: 8px; padding: 0.75rem 2rem; background: var(--surface); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+    .bp-nav a { font-size: 0.82rem; padding: 0.3rem 0.9rem; border-radius: 20px; text-decoration: none; border: 1px solid var(--border); color: var(--dim); }
+    .bp-nav a:hover { border-color: var(--accent); color: var(--accent); }
+    .bp-nav a.home { background: var(--accent); color: #0d0d14; border-color: var(--accent); font-weight: 700; }
+    .bp-nav a.home:hover { opacity: 0.85; }
+    .bp-nav a.current { border-color: var(--accent); color: var(--accent); font-weight: 700; cursor: default; }
+    header { padding: 2.5rem 2rem 2rem; border-bottom: 1px solid var(--border); }
+    header h1 { font-size: 1.9rem; font-weight: 700; color: var(--accent); }
+    header p.meta { color: var(--dim); font-size: 0.85rem; margin-top: 0.4rem; }
+    main { max-width: 860px; margin: 0 auto; padding: 2rem; }
+    h2 { font-size: 1.2rem; font-weight: 700; color: var(--accent); margin: 2.5rem 0 1rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+    h3 { font-size: 1rem; font-weight: 700; color: var(--text); margin: 1.5rem 0 0.6rem; }
+    p { margin-bottom: 0.85rem; } p:last-child { margin-bottom: 0; }
+    ul, ol { margin: 0.5rem 0 0.85rem 1.4rem; } li { margin-bottom: 0.35rem; }
+    table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1rem; font-size: 0.88rem; }
+    th { background: var(--surface2); color: var(--accent); padding: 0.55rem 1rem; text-align: left; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid var(--border); }
+    td { padding: 0.5rem 1rem; border-bottom: 1px solid var(--border); }
+    tr:last-child td { border-bottom: none; } tr:hover td { background: var(--surface); }
+    code { font-family: 'Courier New', Consolas, monospace; font-size: 0.85em; background: var(--code-bg); border: 1px solid var(--border); padding: 0.1rem 0.35rem; border-radius: 3px; color: var(--accent); }
+    pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem; overflow-x: auto; margin: 0.8rem 0 1rem; }
+    pre code { background: none; border: none; padding: 0; font-size: 0.87rem; color: #ccc; }
+    footer { margin-top: 4rem; padding: 1.5rem 2rem; border-top: 1px solid var(--border); color: var(--dim); font-size: 0.82rem; text-align: center; }
+  </style>
+</head>
+<body>
+
+<div class="bp-nav">
+  <a class="home" href="../index.html">← Home</a>
+  <a href="system-overview.html">System Overview</a>
+  <a href="architecture.html">Architecture</a>
+  <a class="current">Data Pipeline</a>
+  <a href="health-system.html">Health System</a>
+  <a href="usage-system.html">Usage System</a>
+  <a href="workflows.html">Workflows</a>
+  <a href="mcp-tools.html">MCP Tools</a>
+</div>
+
+<header>
+  <h1>Data Pipeline — The Brain</h1>
+  <p class="meta">Blueprint · Last updated 2026-05-02</p>
+</header>
+
+<main>
+
+<h2>Request Flow</h2>
+<ol>
+  <li>Claude calls <code>delegate.py</code> with <code>--provider</code>, <code>--type</code>, <code>--prompt</code>, and optionally <code>--context</code> flags.</li>
+  <li><code>delegate.py</code> constructs a <code>Task</code> object containing the prompt, task type, context, and preferred provider.</li>
+  <li><code>orchestrator.py</code> receives the <code>Task</code> and looks up the fallback chain for <code>task_type</code> in <code>router.py</code>.</li>
+  <li>The orchestrator invokes the adapter for the preferred provider first.</li>
+  <li>On adapter failure: logs the failure, advances to the next provider in the chain, retries.</li>
+  <li>On success: <code>stats.py</code> appends the call metadata to <code>stats/usage.json</code> and the result is printed to stdout.</li>
+</ol>
+
+<h2>Fallback Chain</h2>
+<p>Each <code>task_type</code> has an ordered fallback chain in <code>router.py</code>. All attempts are logged regardless of outcome. Example for <code>coding</code>:</p>
+<pre><code>mistral → fireworks → sambanova → cerebras → groq → gemini
+       → openai → ollama → openrouter → huggingface → cohere → pollinations</code></pre>
+
+<h2>Task Type Dispatch</h2>
+<table>
+  <tr><th>Task Type</th><th>Primary Provider</th><th>Early Fallbacks</th></tr>
+  <tr><td><code>classification</code></td><td>cerebras</td><td>groq → cloudflare</td></tr>
+  <tr><td><code>factual_qa</code></td><td>cerebras</td><td>groq → cloudflare → gemini</td></tr>
+  <tr><td><code>summarization</code></td><td>gemini</td><td>mistral → sambanova</td></tr>
+  <tr><td><code>coding</code></td><td>mistral</td><td>fireworks → sambanova</td></tr>
+  <tr><td><code>reasoning</code></td><td>sambanova</td><td>mistral → gemini → fireworks</td></tr>
+  <tr><td><code>creative</code></td><td>mistral</td><td>sambanova → gemini</td></tr>
+  <tr><td><code>translation</code></td><td>gemini</td><td>mistral → cerebras</td></tr>
+  <tr><td><code>extraction</code></td><td>mistral</td><td>sambanova → gemini</td></tr>
+  <tr><td><code>general</code></td><td>cerebras</td><td>groq → cloudflare → gemini</td></tr>
+</table>
+
+<h2>MCP Mode</h2>
+<p>When running as an MCP server via <code>mcp_server.py</code>, the same orchestrator is invoked by the <code>delegate</code> tool. Claude calls it natively — no Bash required. The response is returned as <code>TextContent</code> with a header line:</p>
+<pre><code>[mistral / mistral-small-latest | 512 tokens | 1172ms | free]
+
+&lt;content&gt;</code></pre>
+
+<h2>Context Window</h2>
+<p>The optional <code>--context</code> parameter is prepended to the prompt before sending to the provider. Used to pass document text to summarization tasks, or file contents to coding tasks, without inflating the main prompt.</p>
+
+</main>
+
+<footer>Blueprint · The Brain · <a href="../index.html">← Back to docs</a></footer>
+</body>
+</html>

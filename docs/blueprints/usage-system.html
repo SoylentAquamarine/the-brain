@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Usage System — The Brain</title>
+  <style>
+    :root {
+      --bg: #0d0d14; --surface: #12121e; --surface2: #1a1a2e;
+      --accent: #4ecdc4; --text: #e0e0e0; --dim: #777;
+      --border: #222236; --code-bg: #080810;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.7; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .bp-nav { display: flex; gap: 8px; padding: 0.75rem 2rem; background: var(--surface); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+    .bp-nav a { font-size: 0.82rem; padding: 0.3rem 0.9rem; border-radius: 20px; text-decoration: none; border: 1px solid var(--border); color: var(--dim); }
+    .bp-nav a:hover { border-color: var(--accent); color: var(--accent); }
+    .bp-nav a.home { background: var(--accent); color: #0d0d14; border-color: var(--accent); font-weight: 700; }
+    .bp-nav a.home:hover { opacity: 0.85; }
+    .bp-nav a.current { border-color: var(--accent); color: var(--accent); font-weight: 700; cursor: default; }
+    header { padding: 2.5rem 2rem 2rem; border-bottom: 1px solid var(--border); }
+    header h1 { font-size: 1.9rem; font-weight: 700; color: var(--accent); }
+    header p.meta { color: var(--dim); font-size: 0.85rem; margin-top: 0.4rem; }
+    main { max-width: 860px; margin: 0 auto; padding: 2rem; }
+    h2 { font-size: 1.2rem; font-weight: 700; color: var(--accent); margin: 2.5rem 0 1rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+    p { margin-bottom: 0.85rem; } p:last-child { margin-bottom: 0; }
+    ul { margin: 0.5rem 0 0.85rem 1.4rem; } li { margin-bottom: 0.35rem; }
+    table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1rem; font-size: 0.88rem; }
+    th { background: var(--surface2); color: var(--accent); padding: 0.55rem 1rem; text-align: left; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid var(--border); }
+    td { padding: 0.5rem 1rem; border-bottom: 1px solid var(--border); }
+    tr:last-child td { border-bottom: none; } tr:hover td { background: var(--surface); }
+    code { font-family: 'Courier New', Consolas, monospace; font-size: 0.85em; background: var(--code-bg); border: 1px solid var(--border); padding: 0.1rem 0.35rem; border-radius: 3px; color: var(--accent); }
+    pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem; overflow-x: auto; margin: 0.8rem 0 1rem; }
+    pre code { background: none; border: none; padding: 0; font-size: 0.87rem; color: #ccc; }
+    footer { margin-top: 4rem; padding: 1.5rem 2rem; border-top: 1px solid var(--border); color: var(--dim); font-size: 0.82rem; text-align: center; }
+  </style>
+</head>
+<body>
+
+<div class="bp-nav">
+  <a class="home" href="../index.html">← Home</a>
+  <a href="system-overview.html">System Overview</a>
+  <a href="architecture.html">Architecture</a>
+  <a href="data-pipeline.html">Data Pipeline</a>
+  <a href="health-system.html">Health System</a>
+  <a class="current">Usage System</a>
+  <a href="workflows.html">Workflows</a>
+  <a href="mcp-tools.html">MCP Tools</a>
+</div>
+
+<header>
+  <h1>Usage System — The Brain</h1>
+  <p class="meta">Blueprint · Last updated 2026-05-02</p>
+</header>
+
+<main>
+
+<h2>Overview</h2>
+<p>Every <code>delegate.py</code> call is appended to <code>stats/usage.json</code> regardless of success or failure. This provides a persistent record of all AI worker usage for cost analysis and routing optimization.</p>
+
+<h2>stats/usage.json Schema</h2>
+<pre><code>{
+  "ts": "2026-05-02T14:23:11",
+  "provider": "mistral",
+  "model": "mistral-small-latest",
+  "task_type": "coding",
+  "tokens_used": 512,
+  "latency_ms": 1172,
+  "cost_usd": 0.000000,
+  "succeeded": true,
+  "error": null
+}</code></pre>
+<p>The file is an append-only JSON array, auto-created on first call, and gitignored (not committed to GitHub).</p>
+
+<h2>Key Metrics Tracked</h2>
+<table>
+  <tr><th>Metric</th><th>Description</th></tr>
+  <tr><td><code>ts</code></td><td>ISO 8601 timestamp of the call</td></tr>
+  <tr><td><code>provider</code> / <code>model</code></td><td>Which provider and model handled the task</td></tr>
+  <tr><td><code>task_type</code></td><td>Routing category — enables per-type breakdowns</td></tr>
+  <tr><td><code>tokens_used</code></td><td>Output token count from provider response</td></tr>
+  <tr><td><code>latency_ms</code></td><td>End-to-end response time</td></tr>
+  <tr><td><code>cost_usd</code></td><td>Provider cost (0.0 for free tier providers)</td></tr>
+  <tr><td><code>succeeded</code></td><td>Whether the call returned a valid response</td></tr>
+  <tr><td><code>error</code></td><td>Error message for failed calls, null on success</td></tr>
+</table>
+
+<h2>report.py</h2>
+<p>Run <code>python report.py</code> for a formatted usage summary showing:</p>
+<ul>
+  <li>Per-provider breakdown: calls, tokens, average latency, success rate, total cost</li>
+  <li>Overall totals</li>
+  <li>Estimated Claude tokens saved</li>
+</ul>
+
+<h2>push_stats.py</h2>
+<p>Run <code>python push_stats.py</code> to update the GitHub README stats table with the latest provider metrics and push to GitHub. Run at the end of each session.</p>
+
+</main>
+
+<footer>Blueprint · The Brain · <a href="../index.html">← Back to docs</a></footer>
+</body>
+</html>

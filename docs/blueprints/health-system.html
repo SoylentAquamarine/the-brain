@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Health System — The Brain</title>
+  <style>
+    :root {
+      --bg: #0d0d14; --surface: #12121e; --surface2: #1a1a2e;
+      --accent: #4ecdc4; --text: #e0e0e0; --dim: #777;
+      --border: #222236; --code-bg: #080810;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.7; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .bp-nav { display: flex; gap: 8px; padding: 0.75rem 2rem; background: var(--surface); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+    .bp-nav a { font-size: 0.82rem; padding: 0.3rem 0.9rem; border-radius: 20px; text-decoration: none; border: 1px solid var(--border); color: var(--dim); }
+    .bp-nav a:hover { border-color: var(--accent); color: var(--accent); }
+    .bp-nav a.home { background: var(--accent); color: #0d0d14; border-color: var(--accent); font-weight: 700; }
+    .bp-nav a.home:hover { opacity: 0.85; }
+    .bp-nav a.current { border-color: var(--accent); color: var(--accent); font-weight: 700; cursor: default; }
+    header { padding: 2.5rem 2rem 2rem; border-bottom: 1px solid var(--border); }
+    header h1 { font-size: 1.9rem; font-weight: 700; color: var(--accent); }
+    header p.meta { color: var(--dim); font-size: 0.85rem; margin-top: 0.4rem; }
+    main { max-width: 860px; margin: 0 auto; padding: 2rem; }
+    h2 { font-size: 1.2rem; font-weight: 700; color: var(--accent); margin: 2.5rem 0 1rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+    p { margin-bottom: 0.85rem; } p:last-child { margin-bottom: 0; }
+    ul { margin: 0.5rem 0 0.85rem 1.4rem; } li { margin-bottom: 0.35rem; }
+    table { width: 100%; border-collapse: collapse; margin: 0.8rem 0 1rem; font-size: 0.88rem; }
+    th { background: var(--surface2); color: var(--accent); padding: 0.55rem 1rem; text-align: left; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid var(--border); }
+    td { padding: 0.5rem 1rem; border-bottom: 1px solid var(--border); }
+    tr:last-child td { border-bottom: none; } tr:hover td { background: var(--surface); }
+    code { font-family: 'Courier New', Consolas, monospace; font-size: 0.85em; background: var(--code-bg); border: 1px solid var(--border); padding: 0.1rem 0.35rem; border-radius: 3px; color: var(--accent); }
+    pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem; overflow-x: auto; margin: 0.8rem 0 1rem; }
+    pre code { background: none; border: none; padding: 0; font-size: 0.87rem; color: #ccc; }
+    footer { margin-top: 4rem; padding: 1.5rem 2rem; border-top: 1px solid var(--border); color: var(--dim); font-size: 0.82rem; text-align: center; }
+  </style>
+</head>
+<body>
+
+<div class="bp-nav">
+  <a class="home" href="../index.html">← Home</a>
+  <a href="system-overview.html">System Overview</a>
+  <a href="architecture.html">Architecture</a>
+  <a href="data-pipeline.html">Data Pipeline</a>
+  <a class="current">Health System</a>
+  <a href="usage-system.html">Usage System</a>
+  <a href="workflows.html">Workflows</a>
+  <a href="mcp-tools.html">MCP Tools</a>
+</div>
+
+<header>
+  <h1>Health System — The Brain</h1>
+  <p class="meta">Blueprint · Last updated 2026-05-02</p>
+</header>
+
+<main>
+
+<h2>Overview</h2>
+<p><code>health_check.py</code> polls provider endpoints to verify they are reachable and responding before tasks are delegated. Results are informational — used by <code>session_start.py</code> to surface provider status at session startup so routing decisions can be made with current information.</p>
+
+<h2>What Is Checked</h2>
+<p>Each provider is tested with a lightweight API call (a short prompt). Success is defined as HTTP 2xx with a valid response body. Failure includes HTTP errors (4xx, 5xx), timeouts, and malformed responses.</p>
+
+<h2>Output Columns</h2>
+<table>
+  <tr><th>Column</th><th>Description</th></tr>
+  <tr><td><code>provider</code></td><td>Provider key</td></tr>
+  <tr><td><code>status</code></td><td><code>online</code>, <code>offline</code>, or <code>degraded</code></td></tr>
+  <tr><td><code>latency_ms</code></td><td>Response time of the health check call</td></tr>
+  <tr><td><code>model</code></td><td>Model used for the test call</td></tr>
+  <tr><td><code>error</code></td><td>Error message if status is not <code>online</code></td></tr>
+</table>
+
+<h2>session_start.py Integration</h2>
+<p><code>session_start.py</code> runs <code>health_check.py</code> at the start of every Claude Code session. It prints a provider status table to the terminal and emits routing advisories if a primary provider is offline — so Claude can adjust <code>delegate.py</code> calls before any work begins.</p>
+
+<h2>Advisory-Only — No Automatic Penalty</h2>
+<p>Unlike ManyAI Desktop, The Brain's health system does not automatically penalize offline providers in routing. It is advisory only. Claude reads the advisories and adjusts provider choices manually. This keeps the routing logic simple and fully transparent.</p>
+
+<h2>Manual Invocation</h2>
+<pre><code>python health_check.py</code></pre>
+<p>Run standalone at any time to check current provider status without starting a full session.</p>
+
+</main>
+
+<footer>Blueprint · The Brain · <a href="../index.html">← Back to docs</a></footer>
+</body>
+</html>

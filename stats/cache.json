@@ -152,5 +152,12 @@
     "content": "```python\nreverse_string = lambda s: s[::-1]\n```",
     "cached_at": 1777674662.8796248,
     "prompt_prefix": "Write a one-line Python function that reverses a string."
+  },
+  "f9ee830471d1b248af5b227f064952d55930f43e98ec74d37db4bbc4e288934e": {
+    "provider": "cerebras",
+    "model": "llama3.1-8b",
+    "content": "Yes.",
+    "cached_at": 1777691372.2318316,
+    "prompt_prefix": "Is 2+2 equal to 4? Answer yes or no."
   }
 }

@@ -21,6 +21,7 @@ from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 HEALTH_LOG   = Path(__file__).parent / "stats" / "health_log.json"
+USAGE_FILE   = Path(__file__).parent / "stats" / "usage.json"
 SYNC_STAMP   = Path(__file__).parent / "stats" / "last_sync_providers.txt"
 HOURS        = 24
 
@@ -105,6 +106,29 @@ def _sync_if_needed() -> None:
         print(f"  [sync] skipped ({exc})")
 
 
+def _usage_summary() -> str:
+    """One-line usage summary from stats/usage.json."""
+    if not USAGE_FILE.exists():
+        return "No usage data yet."
+    try:
+        import json, time
+        d = json.loads(USAGE_FILE.read_text(encoding="utf-8"))
+        calls   = d.get("total_calls", 0)
+        saved   = d.get("worker_tokens", 0)
+        cost    = d.get("total_cost_usd", 0.0)
+        last_ts = d.get("last_call_ts", 0)
+        age_min = int((time.time() - last_ts) / 60) if last_ts else None
+        age_str = f"{age_min}m ago" if age_min is not None and age_min < 1440 else (
+            f"{age_min // 60}h ago" if age_min else "never"
+        )
+        return (
+            f"{calls:,} total calls · {saved:,} tokens offloaded from Claude · "
+            f"${cost:.4f} spent · last call {age_str}"
+        )
+    except Exception as exc:
+        return f"(usage read error: {exc})"
+
+
 def main() -> None:
     _sync_if_needed()
     entries = load_recent(HOURS)
@@ -120,6 +144,9 @@ def main() -> None:
         print("   No health data yet.")
         print("   Run: python health_check.py")
         print("   Or trigger the GitHub Action manually.")
+        print()
+        print(f"   Usage: {_usage_summary()}")
+        print("=" * 60)
         print()
         return
 
@@ -157,6 +184,8 @@ def main() -> None:
     # Timestamp of last check
     last_ts = entries[-1].get("timestamp", "unknown")
     print(f"   Last check: {last_ts}")
+    print()
+    print(f"   Usage: {_usage_summary()}")
     print("=" * 60)
     print()
 

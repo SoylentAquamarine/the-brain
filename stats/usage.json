@@ -50,10 +50,10 @@
     },
     "sambanova": {
       "provider": "sambanova",
-      "calls": 2,
-      "tokens": 2402,
+      "calls": 3,
+      "tokens": 4255,
       "cost_usd": 0.0,
-      "total_latency": 9506.495600013295,
+      "total_latency": 13503.303200006485,
       "errors": 0
     },
     "huggingface": {
@@ -73,14 +73,14 @@
       "errors": 0
     }
   },
-  "total_calls": 37,
-  "total_tokens": 12694,
+  "total_calls": 38,
+  "total_tokens": 14547,
   "total_cost_usd": 1.3349999999999998e-05,
   "claude_calls": 0,
   "claude_tokens": 0,
-  "worker_tokens": 12694,
+  "worker_tokens": 14547,
   "first_call_ts": 1776448625.4107182,
-  "last_call_ts": 1777691899.7400758,
+  "last_call_ts": 1777692751.895205,
   "call_log": [
     {
       "ts": 1777056888.133666,
@@ -228,6 +228,13 @@
       "type": "creative",
       "tokens": 394,
       "ms": 1263
+    },
+    {
+      "ts": 1777692751.895205,
+      "provider": "sambanova",
+      "type": "general",
+      "tokens": 1853,
+      "ms": 3996
     }
   ]
 }

@@ -58,45 +58,56 @@
 <main>
 
 <h2>Overview</h2>
-<p>Every <code>delegate.py</code> call is appended to <code>stats/usage.json</code> regardless of success or failure. This provides a persistent record of all AI worker usage for cost analysis and routing optimization.</p>
+<p>Every <code>delegate.py</code> call is recorded in two places: <code>stats/usage.json</code> (aggregate totals) and <code>stats/call_log.jsonl</code> (permanent per-call history). All counters are additive — they accumulate across the lifetime of the project and are never reset or averaged.</p>
 
-<h2>stats/usage.json Schema</h2>
+<h2>stats/usage.json — Aggregate Totals</h2>
+<p>A single structured JSON object updated after every call. Tracks lifetime totals per provider plus a rolling window of the last 100 calls for display:</p>
 <pre><code>{
-  "ts": "2026-05-02T14:23:11",
-  "provider": "mistral",
-  "model": "mistral-small-latest",
-  "task_type": "coding",
-  "tokens_used": 512,
-  "latency_ms": 1172,
-  "cost_usd": 0.000000,
-  "succeeded": true,
-  "error": null
+  "providers": {
+    "mistral": {
+      "provider":      "mistral",
+      "calls":         26,
+      "tokens":        27038,
+      "cost_usd":      0.0,
+      "total_latency": 253840,
+      "errors":        0
+    }
+  },
+  "total_calls":    57,
+  "total_tokens":   36143,
+  "total_cost_usd": 0.0,
+  "claude_calls":   0,
+  "claude_tokens":  0,
+  "worker_tokens":  36143,
+  "first_call_ts":  1746100000.0,
+  "last_call_ts":   1746200000.0,
+  "call_log":       [ ... ]
 }</code></pre>
-<p>The file is an append-only JSON array, auto-created on first call, and gitignored (not committed to GitHub).</p>
 
-<h2>Key Metrics Tracked</h2>
+<h2>stats/call_log.jsonl — Permanent Per-Call Log</h2>
+<p>Append-only JSONL file — one JSON object per line, never truncated. The complete history of every delegate call ever made:</p>
+<pre><code>{"ts": 1746200000.0, "provider": "mistral", "type": "creative", "tokens": 1167, "ms": 4004}
+{"ts": 1746200060.0, "provider": "cerebras", "type": "factual_qa", "tokens": 51, "ms": 478}</code></pre>
+
+<h2>Key Metrics</h2>
 <table>
-  <tr><th>Metric</th><th>Description</th></tr>
-  <tr><td><code>ts</code></td><td>ISO 8601 timestamp of the call</td></tr>
-  <tr><td><code>provider</code> / <code>model</code></td><td>Which provider and model handled the task</td></tr>
-  <tr><td><code>task_type</code></td><td>Routing category — enables per-type breakdowns</td></tr>
-  <tr><td><code>tokens_used</code></td><td>Output token count from provider response</td></tr>
-  <tr><td><code>latency_ms</code></td><td>End-to-end response time</td></tr>
-  <tr><td><code>cost_usd</code></td><td>Provider cost (0.0 for free tier providers)</td></tr>
-  <tr><td><code>succeeded</code></td><td>Whether the call returned a valid response</td></tr>
-  <tr><td><code>error</code></td><td>Error message for failed calls, null on success</td></tr>
+  <tr><th>Metric</th><th>Where</th><th>Description</th></tr>
+  <tr><td><code>calls</code> / <code>tokens</code> / <code>cost_usd</code></td><td>usage.json per-provider</td><td>Lifetime totals — additive, never reset</td></tr>
+  <tr><td><code>total_latency</code></td><td>usage.json per-provider</td><td>Sum of all latencies; divide by calls for average</td></tr>
+  <tr><td><code>worker_tokens</code></td><td>usage.json top-level</td><td>Tokens handled by non-Claude providers — the primary savings metric</td></tr>
+  <tr><td><code>claude_tokens_saved</code></td><td>Computed property</td><td>Alias for <code>worker_tokens</code></td></tr>
+  <tr><td><code>estimated_savings_usd</code></td><td>Computed property</td><td><code>worker_tokens / 1000 × Claude Sonnet rate</code></td></tr>
+  <tr><td><code>call_log</code></td><td>usage.json</td><td>Last 100 calls for display only — not the source of truth</td></tr>
 </table>
 
 <h2>report.py</h2>
-<p>Run <code>python report.py</code> for a formatted usage summary showing:</p>
-<ul>
-  <li>Per-provider breakdown: calls, tokens, average latency, success rate, total cost</li>
-  <li>Overall totals</li>
-  <li>Estimated Claude tokens saved</li>
-</ul>
+<p>Run <code>python report.py</code> for a terminal usage summary. Tier labels (FREE / PAID) are read live from the adapter REGISTRY — no hardcoded list. Flags: <code>--json</code> for machine-readable output, <code>--reset</code> to wipe all stats.</p>
 
 <h2>push_stats.py</h2>
-<p>Run <code>python push_stats.py</code> to update the GitHub README stats table with the latest provider metrics and push to GitHub. Run at the end of each session.</p>
+<p>Run <code>python push_stats.py</code> at the end of each session to inject live stats into the GitHub README and push. Health block failures are non-fatal — stats always publish even if the health block cannot be built.</p>
+
+<h2>update_readme_stats.py</h2>
+<p>Lower-level script called by <code>push_stats.py</code>. Injects two auto-managed blocks into README.md: <code>&lt;!-- BRAIN_STATS_START/END --&gt;</code> and <code>&lt;!-- BRAIN_HEALTH_START/END --&gt;</code>. Flags: <code>--stats-only</code>, <code>--dry-run</code>, <code>--push</code>.</p>
 
 </main>
 

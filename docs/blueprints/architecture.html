@@ -69,21 +69,24 @@
   <tr><td><code>mcp_server.py</code></td><td>MCP server — exposes the <code>delegate</code> tool natively in Claude Code; same orchestrator, no bash required.</td></tr>
   <tr><td><code>session_start.py</code></td><td>Session startup script — runs health check, prints provider status table, emits routing advisories.</td></tr>
   <tr><td><code>health_check.py</code></td><td>Polls each provider with a lightweight test call; reports online/offline/degraded status.</td></tr>
-  <tr><td><code>report.py</code></td><td>Formats and prints a usage summary from <code>stats/usage.json</code>.</td></tr>
-  <tr><td><code>push_stats.py</code></td><td>Updates the GitHub README stats table and pushes to GitHub.</td></tr>
+  <tr><td><code>brain/model_state.py</code></td><td>Reads/writes <code>stats/model_state.json</code> — pause, disable, or unpause individual provider models based on health probe outcomes.</td></tr>
+  <tr><td><code>brain/health_rollup.py</code></td><td>Aggregates raw <code>health_log.json</code> entries into per-provider uptime and latency summaries for display.</td></tr>
+  <tr><td><code>report.py</code></td><td>Formats and prints a usage summary; reads tier labels live from the adapter REGISTRY (no hardcoded list).</td></tr>
+  <tr><td><code>push_stats.py</code></td><td>Updates the GitHub README stats table and pushes to GitHub. Stats-only by default — health failures never block a stats commit.</td></tr>
 </table>
 
 <h2>Provider Adapters</h2>
-<p>One file per provider in <code>brain/adapters/</code>:</p>
+<p>One subdirectory per provider in <code>brain/adapters/</code>, each containing <code>adapter.py</code>. Auto-discovered by the REGISTRY at import time via <code>load_adapters()</code>:</p>
 <ul>
-  <li><code>cerebras.py</code>, <code>groq.py</code>, <code>gemini.py</code>, <code>mistral.py</code>, <code>sambanova.py</code></li>
-  <li><code>fireworks.py</code>, <code>openai.py</code>, <code>cohere.py</code>, <code>cloudflare.py</code></li>
-  <li><code>huggingface.py</code>, <code>openrouter.py</code>, <code>ollama.py</code>, <code>pollinations.py</code></li>
+  <li><code>cerebras/</code>, <code>groq/</code>, <code>gemini/</code>, <code>mistral/</code>, <code>sambanova/</code></li>
+  <li><code>fireworks/</code>, <code>openai/</code>, <code>cohere/</code>, <code>cloudflare/</code></li>
+  <li><code>huggingface/</code>, <code>openrouter/</code>, <code>ollama/</code>, <code>pollinations/</code>, <code>anthropic/</code></li>
 </ul>
+<p>Each adapter declares class-level metadata: <code>PROVIDER_KEY</code>, <code>TIER</code>, <code>MODELS</code>, <code>DEFAULT_MODEL</code>, <code>QUALITY_SCORE</code>, <code>SPEED_TIER</code>, <code>DESCRIPTION</code>, <code>COST_PER_1K_TOKENS</code>.</p>
 
 <h2>Adapter Contract</h2>
-<p>Every adapter implements the same interface:</p>
-<pre><code>async def call(task: Task) -> Result</code></pre>
+<p>Every adapter extends <code>BaseAdapter</code> and implements a synchronous <code>complete</code> method:</p>
+<pre><code>def complete(task: Task) -> TaskResult</code></pre>
 <p><code>Result</code> fields:</p>
 <table>
   <tr><th>Field</th><th>Type</th><th>Description</th></tr>

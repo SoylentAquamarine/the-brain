@@ -135,8 +135,11 @@
   <h2>Persistence</h2>
   <table>
     <tr><th>File</th><th>Contents</th></tr>
-    <tr><td><code>config/keys.json</code></td><td>API keys per provider (gitignored)</td></tr>
-    <tr><td><code>stats/usage.json</code></td><td>Running log of every delegate call: provider, type, tokens, latency, cost</td></tr>
+    <tr><td><code>.env</code></td><td>API keys per provider (gitignored)</td></tr>
+    <tr><td><code>stats/usage.json</code></td><td>Aggregate lifetime totals per provider; last 100 calls for display (bounded)</td></tr>
+    <tr><td><code>stats/call_log.jsonl</code></td><td>Permanent per-call history — one JSON line per delegate call, never truncated</td></tr>
+    <tr><td><code>stats/health_log.json</code></td><td>Append-only health probe results — one entry per provider/model per check cycle</td></tr>
+    <tr><td><code>stats/model_state.json</code></td><td>Per-model state: active / paused / disabled with reason and timestamp</td></tr>
   </table>
 
   <h2>Integration with Claude Code</h2>

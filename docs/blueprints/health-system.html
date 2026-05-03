@@ -58,30 +58,62 @@
 <main>
 
 <h2>Overview</h2>
-<p><code>health_check.py</code> polls provider endpoints to verify they are reachable and responding before tasks are delegated. Results are informational — used by <code>session_start.py</code> to surface provider status at session startup so routing decisions can be made with current information.</p>
+<p><code>health_check.py</code> pings every registered provider/model on an hourly schedule (Windows Task Scheduler). Results are appended to <code>stats/health_log.json</code> — never overwritten or averaged. Model state (active/paused/disabled) is written to <code>stats/model_state.json</code> and read by the orchestrator at routing time.</p>
 
-<h2>What Is Checked</h2>
-<p>Each provider is tested with a lightweight API call (a short prompt). Success is defined as HTTP 2xx with a valid response body. Failure includes HTTP errors (4xx, 5xx), timeouts, and malformed responses.</p>
+<h2>Probe Design</h2>
+<p>Each model receives a randomized math question (e.g. "What is 7+7? Reply with only the number.") from a pool of 10 prompts. The expected numeric answer is checked in the response. Using a varied prompt pool prevents cached responses from masking a broken model.</p>
+<p>Models of the same provider are spaced <strong>90 seconds apart</strong> to avoid triggering rate limits mid-cycle.</p>
 
-<h2>Output Columns</h2>
+<h2>Model State Machine</h2>
 <table>
-  <tr><th>Column</th><th>Description</th></tr>
-  <tr><td><code>provider</code></td><td>Provider key</td></tr>
-  <tr><td><code>status</code></td><td><code>online</code>, <code>offline</code>, or <code>degraded</code></td></tr>
-  <tr><td><code>latency_ms</code></td><td>Response time of the health check call</td></tr>
-  <tr><td><code>model</code></td><td>Model used for the test call</td></tr>
-  <tr><td><code>error</code></td><td>Error message if status is not <code>online</code></td></tr>
+  <tr><th>State</th><th>Routing</th><th>Health checks</th><th>Transition</th></tr>
+  <tr><td><code>active</code></td><td>Included</td><td>Tested every cycle</td><td>→ paused on temporary failure; → disabled on 3+ hard failures</td></tr>
+  <tr><td><code>paused</code></td><td>Excluded</td><td>Tested every cycle</td><td>→ active automatically on first passing probe</td></tr>
+  <tr><td><code>disabled</code></td><td>Excluded</td><td>Skipped entirely</td><td>Manual edit of <code>stats/model_state.json</code> to re-enable</td></tr>
 </table>
 
-<h2>session_start.py Integration</h2>
-<p><code>session_start.py</code> runs <code>health_check.py</code> at the start of every Claude Code session. It prints a provider status table to the terminal and emits routing advisories if a primary provider is offline — so Claude can adjust <code>delegate.py</code> calls before any work begins.</p>
+<h2>Failure Classification</h2>
+<table>
+  <tr><th>failure_type</th><th>Cause</th><th>Action</th></tr>
+  <tr><td><code>timeout</code></td><td>Request did not complete within deadline</td><td>Pause model</td></tr>
+  <tr><td><code>rate_limit</code></td><td>HTTP 429 or "rate" in error message</td><td>Pause model</td></tr>
+  <tr><td><code>http_error</code></td><td>HTTP 5xx server error</td><td>Pause model</td></tr>
+  <tr><td><code>wrong_answer</code></td><td>Response succeeded but answer was incorrect</td><td>Increment failure count; disable after 3</td></tr>
+  <tr><td><code>error</code></td><td>Any other exception</td><td>Increment failure count; disable after 3</td></tr>
+</table>
 
-<h2>Advisory-Only — No Automatic Penalty</h2>
-<p>Unlike ManyAI Desktop, The Brain's health system does not automatically penalize offline providers in routing. It is advisory only. Claude reads the advisories and adjusts provider choices manually. This keeps the routing logic simple and fully transparent.</p>
+<h2>Log Format — stats/health_log.json</h2>
+<p>Append-only JSON array. One entry per model per check cycle:</p>
+<pre><code>{
+  "ts":           "2026-05-02T14:00:00Z",
+  "provider":     "mistral",
+  "model":        "mistral-small-latest",
+  "ok":           1,
+  "latency_ms":   639,
+  "failure_type": ""
+}</code></pre>
+
+<h2>Model State File — stats/model_state.json</h2>
+<pre><code>{
+  "mistral::mistral-large-latest": {
+    "state":                "paused",
+    "reason":               "timeout",
+    "since":                "2026-05-02T15:00:00Z",
+    "consecutive_failures": 1
+  }
+}</code></pre>
+
+<h2>Effect on Routing</h2>
+<p><code>BaseAdapter.list_models()</code> filters out paused and disabled models before returning the model list to the orchestrator. Paused/disabled models are never chosen for a delegate call — no routing code change required.</p>
+
+<h2>session_start.py Integration</h2>
+<p><code>session_start.py</code> reads <code>health_log.json</code> and prints a 24h uptime/latency summary at session start. It also reads model state and emits routing advisories for any provider with uptime below 75% or a last status of error.</p>
+
+<h2>health_rollup.py</h2>
+<p><code>brain/health_rollup.py</code> aggregates raw log entries into per-provider <code>uptime</code>, <code>avg_latency_ms</code>, and <code>sample_count</code> for the README health block and session briefing. Handles both the current format (<code>ok</code> field) and the legacy averaged format for backward compatibility.</p>
 
 <h2>Manual Invocation</h2>
 <pre><code>python health_check.py</code></pre>
-<p>Run standalone at any time to check current provider status without starting a full session.</p>
 
 </main>
 

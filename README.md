@@ -515,6 +515,17 @@ Claude's default behaviour for that window. The offloading rules in this repo's
 ## Changelog
 
 <!-- BRAIN_CHANGELOG_START -->
+### 2026-05-02 — Model sync, model state management, health check improvements
+
+- **Model sync from ManyAI-Desktop** — all 14 providers confirmed registered; added 6 missing models: cerebras `gpt-oss-120b`, cohere `command-a-03-2025`, huggingface `zephyr-7b-beta`, mistral `mistral-large-latest`, openrouter `auto` + `llama-3.3-70b`, pollinations `mistral` + `llama`
+- **Pollinations API key** — `POLLINATIONS_API_KEY` now wired as Bearer auth; model passed as `?model=` query param so mistral/llama routes work
+- **`brain/model_state.py`** — new module; persistent active/paused/disabled state per model backed by `stats/model_state.json`; auto-unpauses on passing probe
+- **`health_check.py`** rewrite — 90s spacing between same-provider models; 10-prompt randomized pool; pause on timeout/rate-limit/5xx; disable after 3 consecutive hard failures
+- **`BaseAdapter.list_models()`** — filters paused/disabled models; orchestrator never routes to unavailable models without any routing code change
+- **`report.py`** — replaced hardcoded `_TIERS` dict with live REGISTRY lookup
+- **README** — corrected all provider and model listings; removed Cohere from "not in use"; added Ollama section; fixed env key examples
+- **Blueprints** — updated system-overview, architecture, health-system, usage-system to match current implementation
+
 ### 2026-05-02 — MCP server, stats decoupling, session lifecycle hooks
 
 - **MCP server** (`mcp_server.py`) — exposes `delegate` as a native Claude Code tool alongside Bash/Read/Edit; offloading now happens automatically rather than relying on CLAUDE.md instructions. Install dep: `pip install mcp`

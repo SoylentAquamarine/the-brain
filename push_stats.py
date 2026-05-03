@@ -31,6 +31,9 @@ def main() -> None:
     else:
         cmd.append("--push")
 
+    if not args.dry_run:
+        cmd.append("--stats-only")
+
     result = subprocess.run(cmd, cwd=Path(__file__).parent)
     sys.exit(result.returncode)
 

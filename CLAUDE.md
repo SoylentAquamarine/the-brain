@@ -113,7 +113,7 @@ python delegate.py --provider mistral --type extraction --prompt "Extract all sk
 ## After offloading
 
 - Read the result and present it naturally to the user
-- You do NOT need to say "I offloaded this" — just deliver the result
+- You need to say "I offloaded this" — just deliver the result
 - If the result is poor quality, retry with a stronger model (e.g. sambanova instead of groq)
 - Run `python report.py` if the user asks about usage stats
 - Run `python update_readme_stats.py --push` to update the GitHub README with stats
@@ -156,3 +156,29 @@ This prints a live dashboard showing:
 - Usage per provider (calls, tokens, avg latency, success rate, cost)
 - Total Claude tokens saved and estimated dollar savings
 - Stats file location and last-modified time
+
+## Blueprint System (Source of Truth)
+
+- `/docs/blueprints/` is the authoritative system design.
+- All system changes must be reflected in the relevant blueprint files.
+- Blueprints must always match current implementation, not future intent.
+
+## Required Behavior
+
+When code or workflows change:
+1. Identify affected blueprint(s)
+2. Update only those files
+3. Keep structure stable (do not rewrite unrelated sections)
+4. Ensure consistency with actual repo state
+
+## Documentation Output
+
+- `/docs/index.html` serves as the public portal
+- It must link to all blueprints
+- It should not contain system logic or duplication of blueprints
+
+## Rule Priority
+
+If code and blueprint disagree:
+- code is execution truth
+- blueprints must be updated to match code

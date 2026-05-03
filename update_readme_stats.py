@@ -206,10 +206,9 @@ def git_commit_and_push(push: bool = False) -> None:
     repo = Path(__file__).parent
 
     files = ["README.md", "stats/usage.json"]
-    if _HEALTH_LOG.exists():
-        files.append("stats/health_log.json")
-    if (repo / "stats" / "cache.json").exists():
-        files.append("stats/cache.json")
+    for optional in ["stats/call_log.jsonl", "stats/health_log.json", "stats/cache.json"]:
+        if (repo / optional).exists():
+            files.append(optional)
 
     subprocess.run(["git", "add"] + files, cwd=repo)
     result = subprocess.run(
@@ -236,13 +235,22 @@ def git_commit_and_push(push: bool = False) -> None:
 
 def main() -> None:
     p = argparse.ArgumentParser(description="Update README with live stats and health")
-    p.add_argument("--push",    action="store_true", help="Push to GitHub after committing")
-    p.add_argument("--dry-run", action="store_true", help="Print blocks without writing")
+    p.add_argument("--push",        action="store_true", help="Push to GitHub after committing")
+    p.add_argument("--dry-run",     action="store_true", help="Print blocks without writing")
+    p.add_argument("--stats-only",  action="store_true", help="Update usage stats only, skip health block")
     args = p.parse_args()
 
-    stats        = tracker.get()
-    stats_block  = build_stats_block(stats)
-    health_block = build_health_block()
+    stats       = tracker.get()
+    stats_block = build_stats_block(stats)
+
+    if args.stats_only:
+        health_block = None
+    else:
+        try:
+            health_block = build_health_block()
+        except Exception as exc:
+            print(f"Warning: health block failed ({exc}), updating stats only.")
+            health_block = None
 
     if args.dry_run:
         out = sys.stdout.buffer if hasattr(sys.stdout, "buffer") else sys.stdout
@@ -250,15 +258,22 @@ def main() -> None:
             out.write((text + "\n").encode("utf-8", errors="replace"))
         _safe_print("=== STATS ===")
         _safe_print(stats_block)
-        _safe_print("\n=== HEALTH ===")
-        _safe_print(health_block)
+        if health_block is not None:
+            _safe_print("\n=== HEALTH ===")
+            _safe_print(health_block)
         return
 
-    if update_readme(stats_block, health_block):
-        print("README.md updated.")
-        git_commit_and_push(push=args.push)
-    else:
+    if not _README.exists():
+        print("README.md not found.")
         sys.exit(1)
+
+    content = _README.read_text(encoding="utf-8")
+    content = _inject(content, _STATS_START, _STATS_END, stats_block)
+    if health_block is not None:
+        content = _inject(content, _HEALTH_START, _HEALTH_END, health_block)
+    _README.write_text(content, encoding="utf-8")
+    print("README.md updated.")
+    git_commit_and_push(push=args.push)
 
 
 if __name__ == "__main__":

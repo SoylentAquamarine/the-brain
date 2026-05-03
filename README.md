@@ -51,24 +51,31 @@ You → Orchestrator (Claude) → Router
 
 ### Free — API key required (no credit card)
 
-| Provider | Model | Best for | Speed | Sign up |
+| Provider | Default model | All models | Best for | Sign up |
 |---|---|---|---|---|
-| **Cerebras** | Llama 3.1 8B | Classification, scoring, yes/no | ~284ms | [cloud.cerebras.ai](https://cloud.cerebras.ai) |
-| **Groq** | Llama 3.1 8B Instant | Factual Q&A, general tasks | ~366ms | [console.groq.com](https://console.groq.com) |
-| **Gemini** | 2.5 Flash Lite | Summarisation, long text (1M context), translation | ~541ms | [aistudio.google.com](https://aistudio.google.com/app/apikey) |
-| **Mistral** | Mistral Small | Coding, creative writing, extraction | ~1172ms | [console.mistral.ai](https://console.mistral.ai) |
-| **HuggingFace** | Llama 3 8B | Open-source fallback | ~924ms | [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens) |
-| **SambaNova** | Llama 3.3 70B | High-quality free inference | ~11s | [cloud.sambanova.ai](https://cloud.sambanova.ai) |
-| **Fireworks AI** | DeepSeek V3 | Fast general inference, free tier | ~1963ms | [fireworks.ai](https://fireworks.ai) |
-| **Cloudflare Workers AI** | llama-3.1-8b-instruct | General, classification | ✓ Free (no CC) | [dash.cloudflare.com](https://dash.cloudflare.com) |
-| **OpenRouter** | llama-3.1-8b-instruct:free | General fallback, many models | ✓ Free tier | [openrouter.ai](https://openrouter.ai) |
-| **OpenAI** | GPT-4o-mini | Coding, structured output, general tasks | ~2372ms | [platform.openai.com](https://platform.openai.com/api-keys) |
+| **Cerebras** | `llama3.1-8b` | `llama3.1-8b` · `gpt-oss-120b` | Classification, scoring, yes/no | [cloud.cerebras.ai](https://cloud.cerebras.ai) |
+| **Groq** | `llama-3.1-8b-instant` | `llama-3.1-8b-instant` · `llama-3.3-70b-versatile` | Factual Q&A, general tasks | [console.groq.com](https://console.groq.com) |
+| **Gemini** | `gemini-2.5-flash-lite` | `gemini-2.5-flash-lite` · `gemini-2.5-flash` · `gemini-2.0-flash` | Summarisation, long text (1M context), translation | [aistudio.google.com](https://aistudio.google.com/app/apikey) |
+| **Mistral** | `mistral-small-latest` | `mistral-small-latest` · `mistral-large-latest` · `open-mistral-7b` · `open-mixtral-8x7b` | Coding, creative writing, extraction | [console.mistral.ai](https://console.mistral.ai) |
+| **HuggingFace** | `Qwen/Qwen2.5-72B-Instruct` | `Qwen2.5-72B` · `Qwen2.5-Coder-32B` · `Llama-3.1-8B` · `zephyr-7b-beta` | Open-source model variety, last-resort fallback | [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens) |
+| **SambaNova** | `Meta-Llama-3.3-70B-Instruct` | `Llama-3.3-70B` · `Llama-4-Maverick-17B` | High-quality free inference, deep reasoning | [cloud.sambanova.ai](https://cloud.sambanova.ai) |
+| **Fireworks AI** | `llama-v3p3-70b-instruct` | `llama-v3p3-70b` · `deepseek-v3p1` · `deepseek-v3p2` | Fast coding and general inference | [fireworks.ai](https://fireworks.ai) |
+| **Cloudflare Workers AI** | `@cf/meta/llama-3.1-8b-instruct` | `llama-3.1-8b` · `llama-3.3-70b-fp8` · `gemma-3-12b` | General, classification, edge-hosted | [dash.cloudflare.com](https://dash.cloudflare.com) |
+| **Cohere** | `command-r-08-2024` | `command-r-08-2024` · `command-r-plus-08-2024` · `command-a-03-2025` | Summarisation, retrieval, structured extraction | [dashboard.cohere.com](https://dashboard.cohere.com) |
+| **OpenRouter** | `google/gemma-4-26b-a4b-it:free` | `gemma-4-26b:free` · `openrouter/auto` · `llama-3.3-70b` | General fallback, access to many models | [openrouter.ai](https://openrouter.ai) |
+| **OpenAI** | `gpt-4o-mini` | `gpt-4o-mini` · `gpt-4o` · `o4-mini` | Coding, structured output, general tasks | [platform.openai.com](https://platform.openai.com/api-keys) |
 
-### Free — no key, no sign-up
+### Free — no key required
 
-| Provider | Capability | Notes |
+| Provider | Default model | All models | Capability | Notes |
+|---|---|---|---|---|
+| **Pollinations.ai** | `openai` | `openai` · `mistral` · `llama` (text) | Text + Image generation | API key optional for higher rate limits; FLUX model for images |
+
+### Local
+
+| Provider | Models | Notes |
 |---|---|---|
-| **Pollinations.ai** | Text + Image generation | HTTP GET only, zero setup, FLUX model for images |
+| **Ollama** | Auto-discovered from running instance | LAN/local inference via `OLLAMA_HOST`; private, zero-cost |
 
 ---
 
@@ -77,12 +84,9 @@ You → Orchestrator (Claude) → Router
 | Provider | Reason |
 |---|---|
 | **xAI (Grok)** | Free API tier removed in 2026 |
-| **Cohere** | API key was never properly configured (placeholder value) |
-| **OpenRouter (free models)** | Free tier models rotate frequently — keep as fallback only |
 | **DeepSeek** | Key is valid but account has no balance |
 | **Together AI** | Credit limit exceeded — needs payment added |
-| **Anthropic (direct)** | Key not configured — would be paid anyway; Claude is already the orchestrator |
-| **Ollama** | Local-only, requires local installation — no cloud option |
+| **Anthropic (direct)** | Claude is the orchestrator, not a worker |
 | **DuckDuckGo AI** | Officially blocked/archived as of January 2026 |
 | **GPT4Free (g4f)** | Providers break daily — too fragile for a stable system |
 | **mlvoca.com** | Unproven, very new service |
@@ -112,80 +116,89 @@ SAMBANOVA_API_KEY=...
 FIREWORKS_API_KEY=...
 OPENAI_API_KEY=...
 OPENROUTER_API_KEY=...
-CLOUDFLARE_API_KEY=...  # format: accountID:apiToken — get both from dash.cloudflare.com
+COHERE_API_KEY=...
+CLOUDFLARE_API_KEY=...       # format: accountID:apiToken — get both from dash.cloudflare.com
+POLLINATIONS_API_KEY=...     # optional — raises rate limits; works without a key
 ```
 
 ### 3. Offload a task
 
 #### Cerebras — fastest inference (~1500 tok/s), best for classification
-**Available models:** `llama3.1-8b` (default) · `qwen-3-235b-a22b-instruct-2507` · `gpt-oss-120b`
+**Available models:** `llama3.1-8b` (default) · `gpt-oss-120b`
 ```bash
 python delegate.py --provider cerebras --type classification --prompt "Is this positive or negative: 'Great product!'"
 python delegate.py --provider cerebras --type factual_qa     --prompt "What is the capital of France?"
 ```
 
 #### Groq — very fast, great all-rounder
-**Available models:** `llama-3.1-8b-instant` (default) · `meta-llama/llama-4-scout-17b-16e-instruct` · `qwen/qwen3-32b` · `groq/compound`
+**Available models:** `llama-3.1-8b-instant` (default) · `llama-3.3-70b-versatile`
 ```bash
 python delegate.py --provider groq --type factual_qa   --prompt "What year was Python created?"
 python delegate.py --provider groq --type general      --prompt "Explain REST APIs in plain English"
 ```
 
 #### Gemini — huge context window (1M tokens), best for long documents
-**Available models:** `gemini-2.5-flash-lite` (default) · `gemini-2.5-flash` · `gemini-2.5-pro` · `gemini-2.0-flash` · `gemma-3-27b-it`
+**Available models:** `gemini-2.5-flash-lite` (default) · `gemini-2.5-flash` · `gemini-2.0-flash`
 ```bash
 python delegate.py --provider gemini --type summarization --prompt "Summarise this 50-page document: ..."
 python delegate.py --provider gemini --type translation   --prompt "Translate to Spanish: ..."
 ```
 
 #### Mistral — best free model for coding and creative writing
-**Available models:** `mistral-small-latest` (default) · `mistral-medium-latest` · `codestral-latest` · `devstral-latest` · `open-mistral-nemo`
+**Available models:** `mistral-small-latest` (default) · `mistral-large-latest` · `open-mistral-7b` · `open-mixtral-8x7b`
 ```bash
 python delegate.py --provider mistral --type coding    --prompt "Write a Python function that sorts a list of dicts by key"
 python delegate.py --provider mistral --type creative  --prompt "Write a cover letter for a software engineer role at Stripe"
 python delegate.py --provider mistral --type extraction --prompt "Extract all skills mentioned in this job posting: ..."
 ```
 
-#### OpenAI — strong all-rounder, free tier
-**Available models:** `gpt-4o-mini` (default) · `gpt-4o` · `gpt-5.4-mini` · `gpt-5.4` · `gpt-3.5-turbo`
+#### OpenAI — strong all-rounder
+**Available models:** `gpt-4o-mini` (default) · `gpt-4o` · `o4-mini`
 ```bash
 python delegate.py --provider openai --type coding    --prompt "Write a regex to validate email addresses"
 python delegate.py --provider openai --type reasoning --prompt "What are the trade-offs between SQL and NoSQL databases?"
 ```
 
 #### HuggingFace — open-source model variety, free fallback
-**Available models:** `meta-llama/Meta-Llama-3-8B-Instruct` (default) · `mistralai/Mistral-7B-Instruct-v0.3` · `HuggingFaceH4/zephyr-7b-beta`
+**Available models:** `Qwen/Qwen2.5-72B-Instruct` (default) · `Qwen/Qwen2.5-Coder-32B-Instruct` · `meta-llama/Llama-3.1-8B-Instruct` · `HuggingFaceH4/zephyr-7b-beta`
 ```bash
 python delegate.py --provider huggingface --type general      --prompt "Summarise the key points of this paragraph: ..."
 python delegate.py --provider huggingface --type factual_qa   --prompt "What is machine learning?"
 ```
 
 #### SambaNova — free 70B model, highest quality of the free providers
-**Available models:** `Meta-Llama-3.3-70B-Instruct` (default) · `Llama-4-Maverick-17B-128E-Instruct` · `DeepSeek-V3.1` · `DeepSeek-V3.2` · `gemma-3-12b-it`
+**Available models:** `Meta-Llama-3.3-70B-Instruct` (default) · `Llama-4-Maverick-17B-128E-Instruct`
 ```bash
 python delegate.py --provider sambanova --type reasoning   --prompt "Analyse the pros and cons of microservices architecture"
 python delegate.py --provider sambanova --type creative    --prompt "Write a detailed blog post about AI orchestration"
 ```
 
 #### Fireworks — fast inference, free tier
-**Available models:** `accounts/fireworks/models/deepseek-v3p1` (default) · `accounts/fireworks/models/deepseek-v3p2` · `accounts/fireworks/models/kimi-k2p5` · `accounts/fireworks/models/gpt-oss-120b`
+**Available models:** `accounts/fireworks/models/llama-v3p3-70b-instruct` (default) · `accounts/fireworks/models/deepseek-v3p1` · `accounts/fireworks/models/deepseek-v3p2`
 ```bash
 python delegate.py --provider fireworks --type coding   --prompt "Write a Python class for a binary search tree"
 python delegate.py --provider fireworks --type general  --prompt "What are the SOLID principles?"
 ```
 
 #### Cloudflare Workers AI — edge-hosted, fast, free tier
-**Available models:** `@cf/meta/llama-3.1-8b-instruct` (default) · `@cf/meta/llama-3.3-70b-instruct-fp8-fast`
+**Available models:** `@cf/meta/llama-3.1-8b-instruct` (default) · `@cf/meta/llama-3.3-70b-instruct-fp8-fast` · `@cf/google/gemma-3-12b-it`
 **Key format:** Set `CLOUDFLARE_API_KEY=accountID:apiToken` in .env
 ```bash
 python delegate.py --provider cloudflare --type general        --prompt "Explain what an API is"
 python delegate.py --provider cloudflare --type classification --prompt "Classify as question or statement: 'What time is it?'"
 ```
 
-#### OpenRouter — gateway to hundreds of models, free tier available
-**Available models:** `meta-llama/llama-3.1-8b-instruct:free` (default) · `google/gemma-3-27b-it:free` · `mistralai/mistral-small-3.1-24b-instruct:free`
+#### OpenRouter — gateway to many models, free tier available
+**Available models:** `google/gemma-4-26b-a4b-it:free` (default) · `openrouter/auto` · `meta-llama/llama-3.3-70b-instruct`
 ```bash
 python delegate.py --provider openrouter --type general  --prompt "What is the difference between TCP and UDP?"
+```
+
+#### Cohere — strong at summarisation and retrieval
+**Available models:** `command-r-08-2024` (default) · `command-r-plus-08-2024` · `command-a-03-2025`
+```bash
+python delegate.py --provider cohere --type summarization --prompt "Summarise: ..."
+python delegate.py --provider cohere --type extraction    --prompt "Extract key data from: ..."
 ```
 
 #### Pollinations — no key needed, text and images
@@ -405,16 +418,18 @@ free tiers — no credit card required for most of them.
 cp .env.example .env   # or create it manually
 
 # Add keys for the providers you want — you don't need all of them
-GROQ_API_KEY=...        # https://console.groq.com
-GEMINI_API_KEY=...      # https://aistudio.google.com/app/apikey
-MISTRAL_API_KEY=...     # https://console.mistral.ai
-CEREBRAS_API_KEY=...    # https://cloud.cerebras.ai
-HUGGINGFACE_API_KEY=... # https://huggingface.co/settings/tokens
-SAMBANOVA_API_KEY=...   # https://cloud.sambanova.ai
-FIREWORKS_API_KEY=...   # https://fireworks.ai
-OPENAI_API_KEY=...      # https://platform.openai.com/api-keys
-OPENROUTER_API_KEY=...  # https://openrouter.ai
-CLOUDFLARE_API_KEY=...  # format: accountID:apiToken — get both from dash.cloudflare.com
+GROQ_API_KEY=...             # https://console.groq.com
+GEMINI_API_KEY=...           # https://aistudio.google.com/app/apikey
+MISTRAL_API_KEY=...          # https://console.mistral.ai
+CEREBRAS_API_KEY=...         # https://cloud.cerebras.ai
+HUGGINGFACE_API_KEY=...      # https://huggingface.co/settings/tokens
+SAMBANOVA_API_KEY=...        # https://cloud.sambanova.ai
+FIREWORKS_API_KEY=...        # https://fireworks.ai
+OPENAI_API_KEY=...           # https://platform.openai.com/api-keys
+OPENROUTER_API_KEY=...       # https://openrouter.ai
+COHERE_API_KEY=...           # https://dashboard.cohere.com
+CLOUDFLARE_API_KEY=...       # format: accountID:apiToken — dash.cloudflare.com
+POLLINATIONS_API_KEY=...     # optional — raises rate limits
 ```
 
 Even with just one or two keys you get meaningful offloading. Groq + Gemini

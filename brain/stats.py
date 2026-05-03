@@ -29,7 +29,8 @@ logger = logging.getLogger(__name__)
 
 # Absolute path to the stats file, anchored to the project root.
 # Using __file__ means this works regardless of where Python is invoked.
-_STATS_FILE = Path(__file__).parent.parent / STATS_FILE_PATH
+_STATS_FILE    = Path(__file__).parent.parent / STATS_FILE_PATH
+_CALL_LOG_FILE = Path(__file__).parent.parent / "stats" / "call_log.jsonl"
 
 
 # ---------------------------------------------------------------------------
@@ -191,14 +192,24 @@ class StatsTracker:
 
         self._stats.total_tokens += result.tokens_used
 
-        # Append a timestamped entry to the activity log (keep last 100).
-        self._stats.call_log.append({
+        entry = {
             "ts":       self._stats.last_call_ts,
             "provider": provider,
             "type":     task.task_type.value,
             "tokens":   result.tokens_used,
             "ms":       int(result.latency_ms),
-        })
+        }
+
+        # Append to the permanent call log (never truncated).
+        try:
+            _CALL_LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
+            with _CALL_LOG_FILE.open("a", encoding="utf-8") as fh:
+                fh.write(json.dumps(entry) + "\n")
+        except Exception as exc:
+            logger.warning("Could not append to call_log.jsonl: %s", exc)
+
+        # Keep last 100 in usage.json for display purposes only.
+        self._stats.call_log.append(entry)
         if len(self._stats.call_log) > 100:
             self._stats.call_log = self._stats.call_log[-100:]
 

@@ -30,11 +30,14 @@ def load_recent(hours: int = HOURS) -> list:
     if not HEALTH_LOG.exists():
         return []
     cutoff = datetime.now(timezone.utc) - timedelta(hours=hours)
-    entries = json.loads(HEALTH_LOG.read_text(encoding="utf-8"))
+    raw = json.loads(HEALTH_LOG.read_text(encoding="utf-8"))
+    if not isinstance(raw, list):
+        return []
     result = []
-    for e in entries:
+    for e in raw:
         try:
-            ts = datetime.fromisoformat(e["timestamp"].replace("Z", "+00:00"))
+            ts_str = e.get("ts") or e.get("timestamp", "")
+            ts = datetime.fromisoformat(ts_str.replace("Z", "+00:00"))
             if ts >= cutoff:
                 result.append(e)
         except Exception:
@@ -50,13 +53,23 @@ def summarise(entries: list) -> dict:
 
     summary = {}
     for provider, checks in by_provider.items():
-        valid_latencies = [c["latency_ms"] for c in checks if c["quality"] > 0 and c["latency_ms"] > 0]
-        ok_count = sum(1 for c in checks if c["quality"] >= 0.8)
+        valid_latencies = [c["latency_ms"] for c in checks if c.get("latency_ms", 0) > 0]
+        # Support both new format (ok=1/0) and old format (quality=float)
+        ok_count = sum(
+            1 for c in checks
+            if c.get("ok", 1 if c.get("quality", 1.0) >= 0.8 else 0)
+        )
         # Last check per model, then take worst overall status for the provider
         model_last: dict = {}
         for c in checks:
             model_last[c.get("model", "n/a")] = c
-        last_statuses = [v["status"] for v in model_last.values()]
+        # New format has no "status" field — derive from ok flag
+        last_statuses = []
+        for v in model_last.values():
+            if "status" in v:
+                last_statuses.append(v["status"])
+            else:
+                last_statuses.append("ok" if v.get("ok", 1) else "error")
         worst = (
             "error"    if "error"    in last_statuses else
             "degraded" if "degraded" in last_statuses else

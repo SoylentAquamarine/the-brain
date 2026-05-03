@@ -1,4 +1,12 @@
 #!/usr/bin/env python3
+"""
+health_check.py — Ping every provider and append results to stats/health_log.json.
+
+Runs hourly via Windows Task Scheduler. Each call appends one entry per
+provider:model tested — no data is ever overwritten or averaged.
+
+    python health_check.py
+"""
 from __future__ import annotations
 
 import json
@@ -9,26 +17,25 @@ from pathlib import Path
 from brain.adapters import REGISTRY
 from brain.task import Task, TaskType
 
-LOG_FILE = Path(__file__).parent / "stats" / "health_log.json"
+LOG_FILE    = Path(__file__).parent / "stats" / "health_log.json"
 PING_PROMPT = "What is 2+2? Reply with only the number."
 
 
-def load():
+def load() -> list:
     if LOG_FILE.exists():
-        return json.loads(LOG_FILE.read_text())
-    return {}
+        raw = json.loads(LOG_FILE.read_text(encoding="utf-8"))
+        if isinstance(raw, list):
+            return raw
+    return []
 
 
-def save(data):
+def save(entries: list) -> None:
     LOG_FILE.parent.mkdir(exist_ok=True)
-    LOG_FILE.write_text(json.dumps(data, indent=2))
+    LOG_FILE.write_text(json.dumps(entries, indent=2), encoding="utf-8")
 
 
-def key(provider, model):
-    return f"{provider}:{model}"
-
-
-def ping(adapter, model):
+def ping(adapter, model: str) -> tuple[int, int]:
+    """Return (ok, latency_ms). ok=1 if response contains '4', else 0."""
     task = Task(PING_PROMPT, TaskType.FACTUAL_QA, max_tokens=10)
 
     old = adapter._get_active_model()
@@ -41,32 +48,32 @@ def ping(adapter, model):
     finally:
         adapter._set_active_model(old)
 
-    ok = res.succeeded and "4" in (res.content or "")
+    ok = 1 if (res.succeeded and "4" in (res.content or "")) else 0
     return ok, latency
 
 
-def main():
-    data = load()
-    now = datetime.now(timezone.utc).isoformat()
+def main() -> None:
+    entries = load()
+    now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
+    added = 0
     for provider, adapter in REGISTRY.items():
         if not adapter.is_available():
             continue
 
         for model in adapter.list_models():
-            k = key(provider, model)
             ok, latency = ping(adapter, model)
-
-            bucket = data.setdefault(k, [])
-            bucket.append({
-                "ts": now,
-                "ok": 1 if ok else 0,
-                "latency": latency
+            entries.append({
+                "ts":         now,
+                "provider":   provider,
+                "model":      model,
+                "ok":         ok,
+                "latency_ms": latency,
             })
+            added += 1
 
-            data[k] = bucket[-24:]  # keep last 24 checks only
-
-    save(data)
+    save(entries)
+    print(f"Health check complete: {added} probes appended ({len(entries)} total in log).")
 
 
 if __name__ == "__main__":

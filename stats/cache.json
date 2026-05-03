@@ -334,5 +334,26 @@
     "content": "1 + 1 = 2.",
     "cached_at": 1777768861.6713767,
     "prompt_prefix": "What is 1+1?"
+  },
+  "9c2cbbbe29f6bdc0a5f96a5c1ef23a378c43c1ca54363ff4937bb0883b8ba0b4": {
+    "provider": "sambanova",
+    "model": "Meta-Llama-3.3-70B-Instruct",
+    "content": "Here are the evaluations:\n\n1. **DO LATER**: Separating the agent from the chat UI is a good idea, but it's not a priority since the current architecture works well and the team is small.\n2. **DO NOW**: Abstracting tools into an interface is a good idea to improve modularity and scalability before adding more tools or features.\n3. **DO SOON**: Separating provider adapters per-provider will help with maintainability and flexibility when adding more providers.\n4. **DO LATER**: Runtime capability flags are a good idea, but they can be implemented later when more providers or features are added.\n5. **DO SOON**: Moving workflow definitions to declarative JSON config will improve flexibility and maintainability, and is a good step towards scaling the application.\n6. **DO LATER**: Introducing execution context/session objects is a good idea, but it's a complex feature that can be implemented later when the application requires more advanced functionality.\n7. **SKIP**: Adding permission boundaries early may be premature, and can be implemented later when the application is more mature and requires more advanced security features.\n8. **SKIP**: Moving agent execution out of the renderer into the main process or background service is not necessary, as the current architecture works well and the team is small, making it a potentially unnecessary complexity.",
+    "cached_at": 1777786974.4674084,
+    "prompt_prefix": "An Electron + React + TypeScript desktop AI app (ManyAI-Desktop) has this curren"
+  },
+  "637a01c27a2a94489168373ec5aa91bd555f7d9ffbcf98626c36b14750fa02d9": {
+    "provider": "sambanova",
+    "model": "Meta-Llama-3.3-70B-Instruct",
+    "content": "Based on the given criteria, the top 3 highest-value things to store in SQLite are:\n\n1. **Chat message history**: Storing chat messages in SQLite will provide a significant user-visible impact, as users will be able to access their conversation history even after closing the app. Token savings potential is moderate, and implementation complexity is relatively low.\n2. **Smart routing history**: Migrating smart routing history from localStorage to SQLite will increase storage capacity and provide a better user experience. Token savings potential is high, as it can help optimize routing and reduce unnecessary API calls. Implementation complexity is moderate.\n3. **Agent audit log**: Storing agent interactions in SQLite will provide valuable insights and help with debugging. Token savings potential is low, but user-visible impact is moderate. Implementation complexity is relatively high due to the need to integrate with the agent system.\n\nSQLite does not directly save API tokens. Instead, you can store encrypted or hashed tokens in SQLite, using a separate encryption mechanism (e.g., Electron's `crypto` module) to protect sensitive information. For example, you can store a hashed token using `better-sqlite3` and then verify it when needed.",
+    "cached_at": 1777787084.5335462,
+    "prompt_prefix": "Electron desktop app (ManyAI Desktop) currently stores: chat messages only in Re"
+  },
+  "83bd8f617b64319327b712abf7b82d81312e545b458615c66ee333054e15bc75": {
+    "provider": "mistral",
+    "model": "mistral-small-latest",
+    "content": "- System prompt now sent natively per provider API format (Gemini uses `systemInstruction`, Anthropic uses `system`, OpenAI-compat uses `system` role message).\n- Added `systemPromptStyle` field to provider JSON schema with options: `system-role`, `system-field`, `system-instruction`.\n- Provider add/edit form now includes a dropdown to select the system prompt style.\n- Fixed WorkflowPickerModal to exclude built-in modules (IRC, RSS, Terminal, Programming).\n- Corrected conversation logging to log user message once (raw text) before parallel provider calls and assistant response after—both sides now captured.\n- Fixed log file rotation bug: new file only created when current rotation file also exceeds 512KB, not on every write.\n- Added friendly section headers to log entries (User Posted Content / Answer from Provider).",
+    "cached_at": 1777821454.925762,
+    "prompt_prefix": "Write a changelog entry for a desktop AI app. Date: 2026-05-03. Changes made: (1"
   }
 }

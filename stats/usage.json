@@ -34,10 +34,10 @@
     },
     "mistral": {
       "provider": "mistral",
-      "calls": 26,
-      "tokens": 27038,
+      "calls": 27,
+      "tokens": 27453,
       "cost_usd": 0.0,
-      "total_latency": 253861.02020002727,
+      "total_latency": 255525.7263000094,
       "errors": 0
     },
     "groq": {
@@ -50,10 +50,10 @@
     },
     "sambanova": {
       "provider": "sambanova",
-      "calls": 3,
-      "tokens": 4255,
+      "calls": 5,
+      "tokens": 5329,
       "cost_usd": 0.0,
-      "total_latency": 13503.303200006485,
+      "total_latency": 26048.437699995702,
       "errors": 0
     },
     "huggingface": {
@@ -73,14 +73,14 @@
       "errors": 0
     }
   },
-  "total_calls": 57,
-  "total_tokens": 36143,
+  "total_calls": 60,
+  "total_tokens": 37632,
   "total_cost_usd": 1.3349999999999998e-05,
   "claude_calls": 0,
   "claude_tokens": 0,
-  "worker_tokens": 36143,
+  "worker_tokens": 37632,
   "first_call_ts": 1776448625.4107182,
-  "last_call_ts": 1777768861.6671917,
+  "last_call_ts": 1777821454.9184124,
   "call_log": [
     {
       "ts": 1777056888.133666,
@@ -368,6 +368,27 @@
       "type": "factual_qa",
       "tokens": 51,
       "ms": 2727
+    },
+    {
+      "ts": 1777786974.4640667,
+      "provider": "sambanova",
+      "type": "reasoning",
+      "tokens": 688,
+      "ms": 3144
+    },
+    {
+      "ts": 1777787084.4903822,
+      "provider": "sambanova",
+      "type": "reasoning",
+      "tokens": 386,
+      "ms": 9401
+    },
+    {
+      "ts": 1777821454.9184124,
+      "provider": "mistral",
+      "type": "general",
+      "tokens": 415,
+      "ms": 1664
     }
   ]
 }

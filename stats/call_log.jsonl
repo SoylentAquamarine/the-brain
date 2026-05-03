@@ -1,1 +1,4 @@
 {"ts": 1777768861.6671917, "provider": "cerebras", "type": "factual_qa", "tokens": 51, "ms": 2727}
+{"ts": 1777786974.4640667, "provider": "sambanova", "type": "reasoning", "tokens": 688, "ms": 3144}
+{"ts": 1777787084.4903822, "provider": "sambanova", "type": "reasoning", "tokens": 386, "ms": 9401}
+{"ts": 1777821454.9184124, "provider": "mistral", "type": "general", "tokens": 415, "ms": 1664}

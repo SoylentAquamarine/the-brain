@@ -61,6 +61,7 @@ class HuggingFaceAdapter(BaseAdapter):
         "Qwen/Qwen2.5-72B-Instruct",
         "Qwen/Qwen2.5-Coder-32B-Instruct",
         "meta-llama/Llama-3.1-8B-Instruct",
+        "HuggingFaceH4/zephyr-7b-beta",
     ]
 
     def __init__(self) -> None:

@@ -21,19 +21,20 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from brain.stats import tracker
+from brain.adapters import REGISTRY
 
 # Claude Sonnet retail rate for the "saved" calculation.
 _CLAUDE_COST_PER_1K = 0.003
 
-# Tier labels for display
-_TIERS = {
-    "groq":         "FREE",
-    "gemini":       "FREE",
-    "mistral":      "FREE",
-    "cerebras":     "FREE",
-    "huggingface":  "FREE",
-    "pollinations": "FREE",
-}
+
+def _tier(key: str) -> str:
+    adapter = REGISTRY.get(key)
+    if not adapter:
+        return "?"
+    if adapter.TIER == "free":
+        return "FREE"
+    cost = adapter.COST_PER_1K_TOKENS
+    return f"${cost}/1k" if cost else "PAID"
 
 
 def main() -> None:
@@ -97,7 +98,7 @@ def main() -> None:
 
     sorted_providers = sorted(stats.providers.items(), key=lambda x: -x[1].tokens)
     for key, ps in sorted_providers:
-        tier     = _TIERS.get(key, "?")
+        tier     = _tier(key)
         cost_str = f"${ps.cost_usd:.4f}" if ps.cost_usd else "free"
         print(
             f"  {key:<13} {tier:<6} {ps.calls:>7} {ps.tokens:>12,} "
@@ -127,7 +128,7 @@ def main() -> None:
         for key, ps in sorted_providers:
             pct = ps.tokens / stats.total_tokens * 100
             bar = "#" * int(pct / 2)
-            tier = _TIERS.get(key, "?")
+            tier = _tier(key)
             print(f"    {key:<12} [{tier}]  {bar:<50} {pct:5.1f}%")
     print()
 

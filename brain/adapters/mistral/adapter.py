@@ -64,6 +64,7 @@ class MistralAdapter(BaseAdapter):
     DEFAULT_MODEL = "mistral-small-latest"
     MODELS = [
         "mistral-small-latest",
+        "mistral-large-latest",
         "open-mistral-7b",
         "open-mixtral-8x7b",
     ]

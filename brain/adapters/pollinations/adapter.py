@@ -56,11 +56,11 @@ class PollinationsAdapter(BaseAdapter):
     SPEED_TIER    = "slow"
 
     DEFAULT_MODEL = "openai"   # Pollinations text uses openai-compatible model names
-    MODELS = ["openai"]  # text endpoint; single health-check target
+    MODELS = ["openai", "mistral", "llama"]  # text models only
 
     def __init__(self) -> None:
-        # No credentials needed — always available if requests is installed.
-        pass
+        self._api_key = os.getenv("POLLINATIONS_API_KEY", "")
+        self._model   = self.DEFAULT_MODEL
 
     def is_available(self) -> bool:
         return _REQUESTS_AVAILABLE
@@ -78,20 +78,24 @@ class PollinationsAdapter(BaseAdapter):
         return self._generate_text(task)
 
     def _generate_text(self, task: Task) -> TaskResult:
-        start = self._start_timer()
+        start  = self._start_timer()
+        model  = self._get_active_model() or self.DEFAULT_MODEL
         try:
             encoded = urllib.parse.quote(task.full_prompt())
-            url     = _TEXT_URL.format(prompt=encoded)
-            r = requests.get(url, timeout=60)
+            url     = f"{_TEXT_URL.format(prompt=encoded)}?model={model}"
+            headers = {}
+            if self._api_key:
+                headers["Authorization"] = f"Bearer {self._api_key}"
+            r = requests.get(url, headers=headers, timeout=60)
             r.raise_for_status()
             return self._make_result(
-                task, self.PROVIDER_KEY, self.DEFAULT_MODEL,
+                task, self.PROVIDER_KEY, model,
                 content=r.text,
                 latency_ms=self._elapsed_ms(start),
             )
         except Exception as exc:
             return self._make_result(
-                task, self.PROVIDER_KEY, self.DEFAULT_MODEL, "",
+                task, self.PROVIDER_KEY, model, "",
                 latency_ms=self._elapsed_ms(start),
                 error=str(exc),
             )

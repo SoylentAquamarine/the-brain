@@ -65,6 +65,7 @@ class CerebrasAdapter(BaseAdapter):
     DEFAULT_MODEL = "llama3.1-8b"
     MODELS = [
         "llama3.1-8b",
+        "gpt-oss-120b",
     ]
 
     def __init__(self) -> None:

@@ -51,6 +51,7 @@ class CohereAdapter(BaseAdapter):
     MODELS = [
         "command-r-08-2024",
         "command-r-plus-08-2024",
+        "command-a-03-2025",
     ]
 
     def __init__(self) -> None:

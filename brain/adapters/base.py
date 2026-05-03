@@ -100,15 +100,17 @@ class BaseAdapter(ABC):
 
     def list_models(self) -> List[str]:
         """
-        Return the list of models this provider supports.
+        Return the list of active (non-paused, non-disabled) models for routing.
 
-        Falls back to DEFAULT_MODEL (if defined on the subclass) when MODELS
-        is empty so existing adapters work without changes.
+        Falls back to DEFAULT_MODEL when MODELS is empty.
+        Paused and disabled models are excluded so the orchestrator never routes to them.
         """
-        if self.MODELS:
-            return list(self.MODELS)
-        default = getattr(self, "DEFAULT_MODEL", None)
-        return [default] if default else []
+        from brain import model_state as _ms
+        provider = getattr(self, "PROVIDER_KEY", "")
+        candidates = list(self.MODELS) if self.MODELS else (
+            [getattr(self, "DEFAULT_MODEL")] if getattr(self, "DEFAULT_MODEL", None) else []
+        )
+        return [m for m in candidates if _ms.is_active(provider, m)]
 
     def _get_active_model(self) -> str:
         """Return the model string currently configured on this adapter instance."""

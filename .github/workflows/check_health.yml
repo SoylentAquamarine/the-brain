@@ -38,3 +38,11 @@ jobs:
 
       - name: Run health check
         run: python health_check.py
+
+      - name: Commit health log
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add stats/health_log.json
+          git commit -m "update health log" || exit 0
+          git push
